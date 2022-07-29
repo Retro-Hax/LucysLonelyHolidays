@@ -1,14 +1,14 @@
-# Super Mario 64
+# Lucys Lonely Holidays (Hack of Super Mario 64)
 
 - This repo contains a full decompilation of Super Mario 64 (J), (U), (E), and (SH).
 - Naming and documentation of the source code and data structures are in progress.
 
 It builds the following ROMs:
 
-* sm64.jp.z64 `sha1: 8a20a5c83d6ceb0f0506cfc9fa20d8f438cafe51`
-* sm64.us.z64 `sha1: 9bef1128717f958171a4afac3ed78ee2bb4e86ce`
-* sm64.eu.z64 `sha1: 4ac5721683d0e0b6bbb561b58a71740845dceea9`
-* sm64.sh.z64 `sha1: 3f319ae697533a255a1003d09202379d78d5a2e0`
+* LLH.jp.z64 `sha1: 8a20a5c83d6ceb0f0506cfc9fa20d8f438cafe51`
+* LLH.us.z64 `sha1: 9bef1128717f958171a4afac3ed78ee2bb4e86ce`
+* LLH.eu.z64 `sha1: 4ac5721683d0e0b6bbb561b58a71740845dceea9`
+* LLH.sh.z64 `sha1: 3f319ae697533a255a1003d09202379d78d5a2e0`
 
 This repo does not include all assets necessary for compiling the ROMs.
 A prior copy of the game is required to extract the assets.
@@ -31,7 +31,7 @@ Install WSL and a distro of your choice following
 We recommend either Debian or Ubuntu 18.04 Linux distributions under WSL.
 Note: WSL1 does not currently support Ubuntu 20.04.
 
-Next, clone the SM64 repo from within the Linux shell:
+Next, clone the LucysLonelyHolidays repo from within the Linux shell:
 `git clone http://gitea.retro-hax.net/Retro-Hax/LucysLonelyHolidays.git`
 
 Then continue following the directions in the [Linux](#linux) installation section below.
@@ -133,29 +133,30 @@ gmake VERSION=jp -j4       # build (J) version instead with 4 jobs
 
 After installing and starting Docker, create the docker image. This only needs to be done once.
 ```
-docker build -t sm64 .
+docker build -t LucysLonelyHolidays .
 ```
 
 #### Build
 
-To build, mount the local filesystem into the Docker container and build the ROM with `docker run sm64 make`.
+To build, mount the local filesystem into the Docker container and build the ROM with `docker run LucysLonelyHolidays make`.
 
 ##### macOS example for (U):
 ```
-docker run --rm --mount type=bind,source="$(pwd)",destination=/sm64 sm64 make VERSION=us -j4
+docker run --rm --mount type=bind,source="$(pwd)",destination=/LucysLonelyHolidays LucysLonelyHolidays make VERSION=us -j4
 ```
 
 ##### Linux example for (U):
 For a Linux host, Docker needs to be instructed which user should own the output files:
 ```
-docker run --rm --mount type=bind,source="$(pwd)",destination=/sm64 --user $UID:$GID sm64 make VERSION=us -j4
+docker run --rm --mount type=bind,source="$(pwd)",destination=/LucysLonelyHolidays --user $UID:$GID LucysLonelyHolidays make VERSION=us -j4
 ```
 
 Resulting artifacts can be found in the `build` directory.
 
 ## Project Structure
 	
-	sm64
+	LucysLonelyHolidays
+	├──CustomAssets: Includes all Modified/Custom Made Assets the Game requires to Compile
 	├── actors: object behaviors, geo layout, and display lists
 	├── asm: handwritten assembly code, rom header
 	│   └── non_matchings: asm for non-matching sections
@@ -182,12 +183,3 @@ Resulting artifacts can be found in the `build` directory.
 	├── text: dialog, level names, act names
 	├── textures: skybox and generic texture data
 	└── tools: build tools
-
-## Contributing
-
-Pull requests are welcome. For major changes, please open an issue first to
-discuss what you would like to change.
-
-Run `clang-format` on your code to ensure it meets the project's coding standards.
-
-Official Discord: [discord.gg/DuYH3Fh](https://discord.gg/DuYH3Fh)
