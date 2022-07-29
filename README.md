@@ -168,7 +168,7 @@ Resulting artifacts can be found in the `build` directory.
 	├── data: behavior scripts, misc. data
 	├── doxygen: documentation infrastructure
 	├── enhancements: example source modifications
-	├── include: header files
+	├── include: header files and Patch Configuration Files
 	├── levels: level scripts, geo layout, and display lists
 	├── lib: SDK library code
 	├── rsp: audio and Fast3D RSP assembly code
