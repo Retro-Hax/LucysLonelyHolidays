@@ -156,7 +156,7 @@ Resulting artifacts can be found in the `build` directory.
 ## Project Structure
 	
 	LucysLonelyHolidays
-	├──CustomAssets: Includes all Modified/Custom Made Assets the Game requires to Compile
+	├── CustomAssets: Includes all Modified/Custom Made Assets the Game requires to Compile
 	├── actors: object behaviors, geo layout, and display lists
 	├── asm: handwritten assembly code, rom header
 	│   └── non_matchings: asm for non-matching sections
