@@ -16,3 +16,5 @@
 #include "levels/sa/areas/1/geo.inc.c"
 
 #include "levels/sa/geo.inc.c"
+
+#include "levels/sa/eyerok_col/geo.inc.c"

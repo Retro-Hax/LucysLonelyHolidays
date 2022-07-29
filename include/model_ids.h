@@ -361,8 +361,6 @@
 #define MODEL_POKEY_BODY_PART             0x55        // pokey_body_part_geo
 #define MODEL_TWEESTER                    0x56        // tweester_geo
 #define MODEL_KLEPTO                      0x57        // klepto_geo
-#define MODEL_EYEROK_LEFT_HAND            0x58        // eyerok_left_hand_geo
-#define MODEL_EYEROK_RIGHT_HAND           0x59        // eyerok_right_hand_geo
 
 // group 6
 #define MODEL_DL_MONTY_MOLE_HOLE          0x54        // monty_mole_hole_seg5_dl_05000840
@@ -425,15 +423,21 @@
 // group 14
 #define MODEL_BULLY                       0x56        // bully_geo
 #define MODEL_BULLY_BOSS                  0x57        // bully_boss_geo
+#define MODEL_EYEROK_LEFT_HAND            0x58        // eyerok_left_hand_geo
+#define MODEL_EYEROK_RIGHT_HAND           0x59        // eyerok_right_hand_geo
 #define MODEL_PIRANHA_PLANT               0x64        // piranha_plant_geo
 #define MODEL_WHOMP                       0x67        // whomp_geo
 #define MODEL_KOOPA_WITH_SHELL            0x68        // koopa_with_shell_geo
-#define MODEL_METALLIC_BALL               0x6D        // metallic_ball_geo
-#define MODEL_CHAIN_CHOMP                 0x6C        // chain_chomp
 #define MODEL_TREASURE_CHEST_BASE         0x65        // treasure_chest_base_geo
 #define MODEL_TREASURE_CHEST_LID          0x66        // treasure_chest_lid_geo
+#define MODEL_SCUTTLEBUG                  0x69        // scuttlebug_geo
+#define MODEL_MR_I_IRIS                   0x70        // mr_i_iris_geo
+#define MODEL_MR_I                        0x71        // mr_i_geo
+#define MODEL_SNUFIT                      0x72        // snufit_geo
 #define MODEL_KOOPA_FLAG                  0x6A        // koopa_flag_geo
 #define MODEL_WOODEN_POST                 0x6B        // wooden_post_geo
+#define MODEL_METALLIC_BALL               0x6D        // metallic_ball_geo
+#define MODEL_CHAIN_CHOMP                 0x6C        // chain_chomp
 
 // group 15
 #define MODEL_MIPS                        0x64        // mips_geo
@@ -447,9 +451,6 @@
 
 // group 17
 #define MODEL_SWOOP                       0x64        // swoop_geo
-#define MODEL_SCUTTLEBUG                  0x65        // scuttlebug_geo
-#define MODEL_MR_I_IRIS                   0x66        // mr_i_iris_geo
-#define MODEL_MR_I                        0x67        // mr_i_geo
 #define MODEL_DORRIE                      0x68        // dorrie_geo
 
 // other models
@@ -542,7 +543,6 @@
 #define MODEL_RED_FLAME_SHADOW            0xCB        // red_flame_shadow_geo
 #define MODEL_BOWSER_KEY                  0xCC        // bowser_key_geo
 #define MODEL_EXPLOSION                   0xCD        // explosion_geo
-#define MODEL_SNUFIT                      0xCE        // snufit_geo
 #define MODEL_PURPLE_SWITCH               0xCF        // purple_switch_geo
 #define MODEL_CASTLE_STAR_DOOR_30_STARS   0xD0        // castle_geo_000F00
 #define MODEL_CASTLE_STAR_DOOR_50_STARS   0xD1        // castle_geo_000F00

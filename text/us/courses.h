@@ -3,7 +3,7 @@ COURSE_ACTS(COURSE_BOB, _(" 1 Fly Guy Kingdom"),
        _("Stuck in the Mud")          , _("Scattered Red Coins")        , _("The Gardens Secret"))
 
 COURSE_ACTS(COURSE_WF, _(" 2 Tropical Resort"),
-       _("Defeat King Pimp Omb")        , _("Ship Jumping for 5 Blue Coins")    , _("Hidden behind the Waterfall"),
+       _("Defeat King Pimp Omb")        , _("Ship Jumping for 5 Yellow Coins")    , _("Hidden behind the Waterfall"),
        _("Red Coins of the Castle Ruins"), _("The Ruins Secret Treasure")    , _("The Power Stars Edge Case"))
 
 COURSE_ACTS(COURSE_JRB, _(" 3 "),

@@ -1,55 +1,3 @@
-Lights1 castle_grounds_dl_tex16_f3d_v4_lights = gdSPDefLights1(
-	0x7F, 0x7F, 0x7F,
-	0xFE, 0xFE, 0xFE, 0x28, 0x28, 0x28);
-
-Lights1 castle_grounds_dl_tex16_001_f3d_v4_lights = gdSPDefLights1(
-	0x7F, 0x7F, 0x7F,
-	0xFE, 0xFE, 0xFE, 0x28, 0x28, 0x28);
-
-Lights1 castle_grounds_dl_tex16_002_f3d_v4_lights = gdSPDefLights1(
-	0x7F, 0x7F, 0x7F,
-	0xFE, 0xFE, 0xFE, 0x28, 0x28, 0x28);
-
-Lights1 castle_grounds_dl_tex16_f3d_001_v4_lights = gdSPDefLights1(
-	0x7F, 0x7F, 0x7F,
-	0xFE, 0xFE, 0xFE, 0x28, 0x28, 0x28);
-
-Lights1 castle_grounds_dl_tex16_f3d_002_v4_lights = gdSPDefLights1(
-	0x7F, 0x7F, 0x7F,
-	0xFE, 0xFE, 0xFE, 0x28, 0x28, 0x28);
-
-Lights1 castle_grounds_dl_tex16_f3d_003_v4_lights = gdSPDefLights1(
-	0x7F, 0x7F, 0x7F,
-	0xFE, 0xFE, 0xFE, 0x28, 0x28, 0x28);
-
-Lights1 castle_grounds_dl_tex16_f3d_004_v4_lights = gdSPDefLights1(
-	0x7F, 0x7F, 0x7F,
-	0xFE, 0xFE, 0xFE, 0x28, 0x28, 0x28);
-
-Lights1 castle_grounds_dl_tex16_f3d_005_v4_lights = gdSPDefLights1(
-	0x7F, 0x7F, 0x7F,
-	0xFE, 0xFE, 0xFE, 0x28, 0x28, 0x28);
-
-Lights1 castle_grounds_dl_tex16_f3d_021_v4_lights = gdSPDefLights1(
-	0x7F, 0x7F, 0x7F,
-	0xFE, 0xFE, 0xFE, 0x28, 0x28, 0x28);
-
-Lights1 castle_grounds_dl_tex16_f3d_022_v4_lights = gdSPDefLights1(
-	0x7F, 0x7F, 0x7F,
-	0xFE, 0xFE, 0xFE, 0x28, 0x28, 0x28);
-
-Lights1 castle_grounds_dl_tex16_f3d_023_v4_lights = gdSPDefLights1(
-	0x7F, 0x7F, 0x7F,
-	0xFE, 0xFE, 0xFE, 0x28, 0x28, 0x28);
-
-Lights1 castle_grounds_dl_tex16_f3d_024_v4_lights = gdSPDefLights1(
-	0x7F, 0x7F, 0x7F,
-	0xFE, 0xFE, 0xFE, 0x28, 0x28, 0x28);
-
-Lights1 castle_grounds_dl_tex16_f3d_025_v4_lights = gdSPDefLights1(
-	0x7F, 0x7F, 0x7F,
-	0xFE, 0xFE, 0xFE, 0x28, 0x28, 0x28);
-
 Lights1 castle_grounds_dl_Mountain_v4_001_lights = gdSPDefLights1(
 	0x7F, 0x7F, 0x7F,
 	0xFE, 0xFE, 0xFE, 0x28, 0x28, 0x28);
@@ -18483,7 +18431,7 @@ Gfx castle_grounds_dl_WaterCol_mesh_layer_1_tri_0[] = {
 
 Gfx mat_castle_grounds_dl_tex16_f3d_v4[] = {
 	gsDPPipeSync(),
-	gsDPSetCombineLERP(TEXEL0, 0, SHADE, 0, 0, 0, 0, ENVIRONMENT, TEXEL0, 0, SHADE, 0, 0, 0, 0, ENVIRONMENT),
+	gsDPSetCombineLERP(0, 0, 0, TEXEL0, 0, 0, 0, ENVIRONMENT, 0, 0, 0, TEXEL0, 0, 0, 0, ENVIRONMENT),
 	gsSPTexture(65535, 65535, 0, 0, 1),
 	gsDPSetTextureLUT(G_TT_RGBA16),
 	gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, castle_grounds_dl__61_ci8_pal_rgba16),
@@ -18500,7 +18448,6 @@ Gfx mat_castle_grounds_dl_tex16_f3d_v4[] = {
 	gsDPPipeSync(),
 	gsDPSetTile(G_IM_FMT_CI, G_IM_SIZ_8b, 4, 0, 0, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0),
 	gsDPSetTileSize(0, 0, 0, 124, 124),
-	gsSPSetLights1(castle_grounds_dl_tex16_f3d_v4_lights),
 	gsSPEndDisplayList(),
 };
 
@@ -18512,7 +18459,7 @@ Gfx mat_revert_castle_grounds_dl_tex16_f3d_v4[] = {
 
 Gfx mat_castle_grounds_dl_tex16_001_f3d_v4[] = {
 	gsDPPipeSync(),
-	gsDPSetCombineLERP(TEXEL0, 0, SHADE, 0, 0, 0, 0, ENVIRONMENT, TEXEL0, 0, SHADE, 0, 0, 0, 0, ENVIRONMENT),
+	gsDPSetCombineLERP(0, 0, 0, TEXEL0, 0, 0, 0, ENVIRONMENT, 0, 0, 0, TEXEL0, 0, 0, 0, ENVIRONMENT),
 	gsSPTexture(65535, 65535, 0, 0, 1),
 	gsDPSetTextureLUT(G_TT_RGBA16),
 	gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, castle_grounds_dl__61_ci8_pal_rgba16_copy),
@@ -18529,7 +18476,6 @@ Gfx mat_castle_grounds_dl_tex16_001_f3d_v4[] = {
 	gsDPPipeSync(),
 	gsDPSetTile(G_IM_FMT_CI, G_IM_SIZ_8b, 4, 0, 0, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0),
 	gsDPSetTileSize(0, 0, 0, 124, 124),
-	gsSPSetLights1(castle_grounds_dl_tex16_001_f3d_v4_lights),
 	gsSPEndDisplayList(),
 };
 
@@ -18541,7 +18487,7 @@ Gfx mat_revert_castle_grounds_dl_tex16_001_f3d_v4[] = {
 
 Gfx mat_castle_grounds_dl_tex16_002_f3d_v4[] = {
 	gsDPPipeSync(),
-	gsDPSetCombineLERP(TEXEL0, 0, SHADE, 0, 0, 0, 0, ENVIRONMENT, TEXEL0, 0, SHADE, 0, 0, 0, 0, ENVIRONMENT),
+	gsDPSetCombineLERP(0, 0, 0, TEXEL0, 0, 0, 0, ENVIRONMENT, 0, 0, 0, TEXEL0, 0, 0, 0, ENVIRONMENT),
 	gsSPTexture(65535, 65535, 0, 0, 1),
 	gsDPSetTextureLUT(G_TT_RGBA16),
 	gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, castle_grounds_dl__61_ci8_pal_rgba16_copy_copy),
@@ -18558,7 +18504,6 @@ Gfx mat_castle_grounds_dl_tex16_002_f3d_v4[] = {
 	gsDPPipeSync(),
 	gsDPSetTile(G_IM_FMT_CI, G_IM_SIZ_8b, 4, 0, 0, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0),
 	gsDPSetTileSize(0, 0, 0, 124, 124),
-	gsSPSetLights1(castle_grounds_dl_tex16_002_f3d_v4_lights),
 	gsSPEndDisplayList(),
 };
 
@@ -18570,7 +18515,7 @@ Gfx mat_revert_castle_grounds_dl_tex16_002_f3d_v4[] = {
 
 Gfx mat_castle_grounds_dl_tex16_f3d_001_v4[] = {
 	gsDPPipeSync(),
-	gsDPSetCombineLERP(TEXEL0, 0, SHADE, 0, 0, 0, 0, ENVIRONMENT, TEXEL0, 0, SHADE, 0, 0, 0, 0, ENVIRONMENT),
+	gsDPSetCombineLERP(0, 0, 0, TEXEL0, 0, 0, 0, ENVIRONMENT, 0, 0, 0, TEXEL0, 0, 0, 0, ENVIRONMENT),
 	gsSPTexture(65535, 65535, 0, 0, 1),
 	gsDPSetTextureLUT(G_TT_RGBA16),
 	gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, castle_grounds_dl__61_ci8_pal_rgba16_copy_copy_copy),
@@ -18587,7 +18532,6 @@ Gfx mat_castle_grounds_dl_tex16_f3d_001_v4[] = {
 	gsDPPipeSync(),
 	gsDPSetTile(G_IM_FMT_CI, G_IM_SIZ_8b, 4, 0, 0, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0),
 	gsDPSetTileSize(0, 0, 0, 124, 124),
-	gsSPSetLights1(castle_grounds_dl_tex16_f3d_001_v4_lights),
 	gsSPEndDisplayList(),
 };
 
@@ -18599,7 +18543,7 @@ Gfx mat_revert_castle_grounds_dl_tex16_f3d_001_v4[] = {
 
 Gfx mat_castle_grounds_dl_tex16_f3d_002_v4[] = {
 	gsDPPipeSync(),
-	gsDPSetCombineLERP(TEXEL0, 0, SHADE, 0, 0, 0, 0, ENVIRONMENT, TEXEL0, 0, SHADE, 0, 0, 0, 0, ENVIRONMENT),
+	gsDPSetCombineLERP(0, 0, 0, TEXEL0, 0, 0, 0, ENVIRONMENT, 0, 0, 0, TEXEL0, 0, 0, 0, ENVIRONMENT),
 	gsSPTexture(65535, 65535, 0, 0, 1),
 	gsDPSetTextureLUT(G_TT_RGBA16),
 	gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, castle_grounds_dl__61_ci8_pal_rgba16_copy_copy_copy_copy),
@@ -18616,7 +18560,6 @@ Gfx mat_castle_grounds_dl_tex16_f3d_002_v4[] = {
 	gsDPPipeSync(),
 	gsDPSetTile(G_IM_FMT_CI, G_IM_SIZ_8b, 4, 0, 0, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0),
 	gsDPSetTileSize(0, 0, 0, 124, 124),
-	gsSPSetLights1(castle_grounds_dl_tex16_f3d_002_v4_lights),
 	gsSPEndDisplayList(),
 };
 
@@ -18628,7 +18571,7 @@ Gfx mat_revert_castle_grounds_dl_tex16_f3d_002_v4[] = {
 
 Gfx mat_castle_grounds_dl_tex16_f3d_003_v4[] = {
 	gsDPPipeSync(),
-	gsDPSetCombineLERP(TEXEL0, 0, SHADE, 0, 0, 0, 0, ENVIRONMENT, TEXEL0, 0, SHADE, 0, 0, 0, 0, ENVIRONMENT),
+	gsDPSetCombineLERP(0, 0, 0, TEXEL0, 0, 0, 0, ENVIRONMENT, 0, 0, 0, TEXEL0, 0, 0, 0, ENVIRONMENT),
 	gsSPTexture(65535, 65535, 0, 0, 1),
 	gsDPSetTextureLUT(G_TT_RGBA16),
 	gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, castle_grounds_dl__61_ci8_pal_rgba16_copy_copy_copy_copy_copy),
@@ -18645,7 +18588,6 @@ Gfx mat_castle_grounds_dl_tex16_f3d_003_v4[] = {
 	gsDPPipeSync(),
 	gsDPSetTile(G_IM_FMT_CI, G_IM_SIZ_8b, 4, 0, 0, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0),
 	gsDPSetTileSize(0, 0, 0, 124, 124),
-	gsSPSetLights1(castle_grounds_dl_tex16_f3d_003_v4_lights),
 	gsSPEndDisplayList(),
 };
 
@@ -18657,7 +18599,7 @@ Gfx mat_revert_castle_grounds_dl_tex16_f3d_003_v4[] = {
 
 Gfx mat_castle_grounds_dl_tex16_f3d_004_v4[] = {
 	gsDPPipeSync(),
-	gsDPSetCombineLERP(TEXEL0, 0, SHADE, 0, 0, 0, 0, ENVIRONMENT, TEXEL0, 0, SHADE, 0, 0, 0, 0, ENVIRONMENT),
+	gsDPSetCombineLERP(0, 0, 0, TEXEL0, 0, 0, 0, ENVIRONMENT, 0, 0, 0, TEXEL0, 0, 0, 0, ENVIRONMENT),
 	gsSPTexture(65535, 65535, 0, 0, 1),
 	gsDPSetTextureLUT(G_TT_RGBA16),
 	gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, castle_grounds_dl__61_ci8_pal_rgba16_copy_copy_copy_copy_copy_copy),
@@ -18674,7 +18616,6 @@ Gfx mat_castle_grounds_dl_tex16_f3d_004_v4[] = {
 	gsDPPipeSync(),
 	gsDPSetTile(G_IM_FMT_CI, G_IM_SIZ_8b, 4, 0, 0, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0),
 	gsDPSetTileSize(0, 0, 0, 124, 124),
-	gsSPSetLights1(castle_grounds_dl_tex16_f3d_004_v4_lights),
 	gsSPEndDisplayList(),
 };
 
@@ -18686,7 +18627,7 @@ Gfx mat_revert_castle_grounds_dl_tex16_f3d_004_v4[] = {
 
 Gfx mat_castle_grounds_dl_tex16_f3d_005_v4[] = {
 	gsDPPipeSync(),
-	gsDPSetCombineLERP(TEXEL0, 0, SHADE, 0, 0, 0, 0, ENVIRONMENT, TEXEL0, 0, SHADE, 0, 0, 0, 0, ENVIRONMENT),
+	gsDPSetCombineLERP(0, 0, 0, TEXEL0, 0, 0, 0, ENVIRONMENT, 0, 0, 0, TEXEL0, 0, 0, 0, ENVIRONMENT),
 	gsSPTexture(65535, 65535, 0, 0, 1),
 	gsDPSetTextureLUT(G_TT_RGBA16),
 	gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, castle_grounds_dl__61_ci8_pal_rgba16_copy_copy_copy_copy_copy_copy_copy),
@@ -18703,7 +18644,6 @@ Gfx mat_castle_grounds_dl_tex16_f3d_005_v4[] = {
 	gsDPPipeSync(),
 	gsDPSetTile(G_IM_FMT_CI, G_IM_SIZ_8b, 4, 0, 0, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0),
 	gsDPSetTileSize(0, 0, 0, 124, 124),
-	gsSPSetLights1(castle_grounds_dl_tex16_f3d_005_v4_lights),
 	gsSPEndDisplayList(),
 };
 
@@ -18715,7 +18655,7 @@ Gfx mat_revert_castle_grounds_dl_tex16_f3d_005_v4[] = {
 
 Gfx mat_castle_grounds_dl_tex16_f3d_021_v4[] = {
 	gsDPPipeSync(),
-	gsDPSetCombineLERP(TEXEL0, 0, SHADE, 0, 0, 0, 0, ENVIRONMENT, TEXEL0, 0, SHADE, 0, 0, 0, 0, ENVIRONMENT),
+	gsDPSetCombineLERP(0, 0, 0, TEXEL0, 0, 0, 0, ENVIRONMENT, 0, 0, 0, TEXEL0, 0, 0, 0, ENVIRONMENT),
 	gsSPTexture(65535, 65535, 0, 0, 1),
 	gsDPSetTextureLUT(G_TT_RGBA16),
 	gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, castle_grounds_dl__61_ci8_pal_rgba16_copy_copy_copy_copy_copy_copy_copy_copy),
@@ -18732,7 +18672,6 @@ Gfx mat_castle_grounds_dl_tex16_f3d_021_v4[] = {
 	gsDPPipeSync(),
 	gsDPSetTile(G_IM_FMT_CI, G_IM_SIZ_8b, 4, 0, 0, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0),
 	gsDPSetTileSize(0, 0, 0, 124, 124),
-	gsSPSetLights1(castle_grounds_dl_tex16_f3d_021_v4_lights),
 	gsSPEndDisplayList(),
 };
 
@@ -18744,7 +18683,7 @@ Gfx mat_revert_castle_grounds_dl_tex16_f3d_021_v4[] = {
 
 Gfx mat_castle_grounds_dl_tex16_f3d_022_v4[] = {
 	gsDPPipeSync(),
-	gsDPSetCombineLERP(TEXEL0, 0, SHADE, 0, 0, 0, 0, ENVIRONMENT, TEXEL0, 0, SHADE, 0, 0, 0, 0, ENVIRONMENT),
+	gsDPSetCombineLERP(0, 0, 0, TEXEL0, 0, 0, 0, ENVIRONMENT, 0, 0, 0, TEXEL0, 0, 0, 0, ENVIRONMENT),
 	gsSPTexture(65535, 65535, 0, 0, 1),
 	gsDPSetTextureLUT(G_TT_RGBA16),
 	gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, castle_grounds_dl__61_ci8_pal_rgba16_copy_copy_copy_copy_copy_copy_copy_copy_copy),
@@ -18761,7 +18700,6 @@ Gfx mat_castle_grounds_dl_tex16_f3d_022_v4[] = {
 	gsDPPipeSync(),
 	gsDPSetTile(G_IM_FMT_CI, G_IM_SIZ_8b, 4, 0, 0, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0),
 	gsDPSetTileSize(0, 0, 0, 124, 124),
-	gsSPSetLights1(castle_grounds_dl_tex16_f3d_022_v4_lights),
 	gsSPEndDisplayList(),
 };
 
@@ -18773,7 +18711,7 @@ Gfx mat_revert_castle_grounds_dl_tex16_f3d_022_v4[] = {
 
 Gfx mat_castle_grounds_dl_tex16_f3d_023_v4[] = {
 	gsDPPipeSync(),
-	gsDPSetCombineLERP(TEXEL0, 0, SHADE, 0, 0, 0, 0, ENVIRONMENT, TEXEL0, 0, SHADE, 0, 0, 0, 0, ENVIRONMENT),
+	gsDPSetCombineLERP(0, 0, 0, TEXEL0, 0, 0, 0, ENVIRONMENT, 0, 0, 0, TEXEL0, 0, 0, 0, ENVIRONMENT),
 	gsSPTexture(65535, 65535, 0, 0, 1),
 	gsDPSetTextureLUT(G_TT_RGBA16),
 	gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, castle_grounds_dl__61_ci8_pal_rgba16_copy_copy_copy_copy_copy_copy_copy_copy_copy_copy),
@@ -18790,7 +18728,6 @@ Gfx mat_castle_grounds_dl_tex16_f3d_023_v4[] = {
 	gsDPPipeSync(),
 	gsDPSetTile(G_IM_FMT_CI, G_IM_SIZ_8b, 4, 0, 0, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0),
 	gsDPSetTileSize(0, 0, 0, 124, 124),
-	gsSPSetLights1(castle_grounds_dl_tex16_f3d_023_v4_lights),
 	gsSPEndDisplayList(),
 };
 
@@ -18802,7 +18739,7 @@ Gfx mat_revert_castle_grounds_dl_tex16_f3d_023_v4[] = {
 
 Gfx mat_castle_grounds_dl_tex16_f3d_024_v4[] = {
 	gsDPPipeSync(),
-	gsDPSetCombineLERP(TEXEL0, 0, SHADE, 0, 0, 0, 0, ENVIRONMENT, TEXEL0, 0, SHADE, 0, 0, 0, 0, ENVIRONMENT),
+	gsDPSetCombineLERP(0, 0, 0, TEXEL0, 0, 0, 0, ENVIRONMENT, 0, 0, 0, TEXEL0, 0, 0, 0, ENVIRONMENT),
 	gsSPTexture(65535, 65535, 0, 0, 1),
 	gsDPSetTextureLUT(G_TT_RGBA16),
 	gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, castle_grounds_dl__61_ci8_pal_rgba16_copy_copy_copy_copy_copy_copy_copy_copy_copy_copy_copy),
@@ -18819,7 +18756,6 @@ Gfx mat_castle_grounds_dl_tex16_f3d_024_v4[] = {
 	gsDPPipeSync(),
 	gsDPSetTile(G_IM_FMT_CI, G_IM_SIZ_8b, 4, 0, 0, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0),
 	gsDPSetTileSize(0, 0, 0, 124, 124),
-	gsSPSetLights1(castle_grounds_dl_tex16_f3d_024_v4_lights),
 	gsSPEndDisplayList(),
 };
 
@@ -18831,7 +18767,7 @@ Gfx mat_revert_castle_grounds_dl_tex16_f3d_024_v4[] = {
 
 Gfx mat_castle_grounds_dl_tex16_f3d_025_v4[] = {
 	gsDPPipeSync(),
-	gsDPSetCombineLERP(TEXEL0, 0, SHADE, 0, 0, 0, 0, ENVIRONMENT, TEXEL0, 0, SHADE, 0, 0, 0, 0, ENVIRONMENT),
+	gsDPSetCombineLERP(0, 0, 0, TEXEL0, 0, 0, 0, ENVIRONMENT, 0, 0, 0, TEXEL0, 0, 0, 0, ENVIRONMENT),
 	gsSPTexture(65535, 65535, 0, 0, 1),
 	gsDPSetTextureLUT(G_TT_RGBA16),
 	gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, castle_grounds_dl__61_ci8_pal_rgba16_copy_copy_copy_copy_copy_copy_copy_copy_copy_copy_copy_copy),
@@ -18848,7 +18784,6 @@ Gfx mat_castle_grounds_dl_tex16_f3d_025_v4[] = {
 	gsDPPipeSync(),
 	gsDPSetTile(G_IM_FMT_CI, G_IM_SIZ_8b, 4, 0, 0, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0),
 	gsDPSetTileSize(0, 0, 0, 124, 124),
-	gsSPSetLights1(castle_grounds_dl_tex16_f3d_025_v4_lights),
 	gsSPEndDisplayList(),
 };
 

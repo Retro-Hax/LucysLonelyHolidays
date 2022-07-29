@@ -16,3 +16,8 @@
 #include "chain_chomp/geo.inc.c"
 #include "treasure_chest/geo.inc.c"
 #include "bully/geo.inc.c"
+#include "snufit/geo.inc.c"
+#include "scuttlebug/geo.inc.c"
+#include "mr_i_eyeball/geo.inc.c"
+#include "mr_i_iris/geo.inc.c"
+#include "eyerok/geo.inc.c"

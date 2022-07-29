@@ -46,3 +46,22 @@ UNUSED static const u64 binid_7 = 7;
 
 #include "treasure_chest/model.inc.c"
 UNUSED static const u64 binid_8 = 8;
+
+#include "mr_i_eyeball/model.inc.c"
+UNUSED static const u64 binid_9 = 9;
+
+#include "mr_i_iris/model.inc.c"
+UNUSED static const u64 binid_10 = 10;
+
+#include "snufit/model.inc.c"
+UNUSED static const u64 binid_11 = 11;
+
+#include "scuttlebug/model.inc.c"
+#include "scuttlebug/anims/data.inc.c"
+#include "scuttlebug/anims/table.inc.c"
+UNUSED static const u64 binid_12 = 12;
+
+#include "eyerok/model.inc.c"
+#include "eyerok/anims/data.inc.c"
+#include "eyerok/anims/table.inc.c"
+UNUSED static const u64 binid_13 = 13;

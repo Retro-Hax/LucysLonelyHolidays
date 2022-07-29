@@ -121,7 +121,7 @@ const LevelScript level_bitfs_entry[] = {
 		OBJECT(MODEL_YELLOW_COIN, -3377, -1920, -5835, 0, 0, 0, 0x00000000, bhvYellowCoin),
 		OBJECT(MODEL_NONE, -3377, -1920, -5835, 0, 0, 0, 0x000A0000, bhvCoinFormation),
 		OBJECT(MODEL_YELLOW_COIN, -120, 2056, 4515, 0, 0, 0, 0x00000000, bhvYellowCoin),
-		OBJECT(MODEL_NONE, 6938, -739, -932, 0, 0, 0, 0x00000000, bhvYellowCoin),
+		OBJECT(MODEL_YELLOW_COIN, 6938, -739, -932, 0, 0, 0, 0x00000000, bhvYellowCoin),
 		TERRAIN(bitfs_area_1_collision),
 		MACRO_OBJECTS(bitfs_area_1_macro_objs),
 		SET_BACKGROUND_MUSIC(0x00, SEQ_EVENT_CUTSCENE_LAKITU),

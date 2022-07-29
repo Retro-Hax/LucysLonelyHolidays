@@ -232,8 +232,6 @@ const LevelScript script_func_global_6[] = {
     LOAD_MODEL_FROM_GEO(MODEL_POKEY_BODY_PART,         pokey_body_part_geo),
     LOAD_MODEL_FROM_GEO(MODEL_TWEESTER,                tweester_geo),
     LOAD_MODEL_FROM_GEO(MODEL_KLEPTO,                  klepto_geo),
-    LOAD_MODEL_FROM_GEO(MODEL_EYEROK_LEFT_HAND,        eyerok_left_hand_geo),
-    LOAD_MODEL_FROM_GEO(MODEL_EYEROK_RIGHT_HAND,       eyerok_right_hand_geo),
     RETURN(),
 };
 
@@ -323,6 +321,12 @@ const LevelScript script_func_global_15[] = {
     LOAD_MODEL_FROM_GEO(MODEL_WOODEN_POST,             wooden_post_geo),
     LOAD_MODEL_FROM_GEO(MODEL_TREASURE_CHEST_BASE,     treasure_chest_base_geo),
     LOAD_MODEL_FROM_GEO(MODEL_TREASURE_CHEST_LID,      treasure_chest_lid_geo),
+    LOAD_MODEL_FROM_GEO(MODEL_SNUFIT,                  snufit_geo),
+    LOAD_MODEL_FROM_GEO(MODEL_SCUTTLEBUG,              scuttlebug_geo),
+    LOAD_MODEL_FROM_GEO(MODEL_MR_I_IRIS,               mr_i_iris_geo),
+    LOAD_MODEL_FROM_GEO(MODEL_MR_I,                    mr_i_geo),
+    LOAD_MODEL_FROM_GEO(MODEL_EYEROK_LEFT_HAND,        eyerok_left_hand_geo),
+    LOAD_MODEL_FROM_GEO(MODEL_EYEROK_RIGHT_HAND,       eyerok_right_hand_geo),
     RETURN(),
 };
 
@@ -343,10 +347,7 @@ const LevelScript script_func_global_17[] = {
 
 const LevelScript script_func_global_18[] = {
     LOAD_MODEL_FROM_GEO(MODEL_SWOOP,                   swoop_geo),
-    LOAD_MODEL_FROM_GEO(MODEL_SCUTTLEBUG,              scuttlebug_geo),
-    LOAD_MODEL_FROM_GEO(MODEL_MR_I_IRIS,               mr_i_iris_geo),
-    LOAD_MODEL_FROM_GEO(MODEL_MR_I,                    mr_i_geo),
     LOAD_MODEL_FROM_GEO(MODEL_DORRIE,                  dorrie_geo),
-    LOAD_MODEL_FROM_GEO(MODEL_SNUFIT,                  snufit_geo),
+
     RETURN(),
 };
