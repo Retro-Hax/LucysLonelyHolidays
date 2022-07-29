@@ -52,6 +52,7 @@
 #include "levels/wf/header.h"
 #include "levels/bowser_2/header.h"
 #include "levels/ttm/header.h"
+#include "levels/cotmc/header.h"
 
 #include "make_const_nonconst.h"
 #include "behavior_data.h"
@@ -2286,10 +2287,6 @@ const BehaviorScript bhvLllMovingOctagonalMeshPlatform[] = {
     END_LOOP(),
 };
 
-const BehaviorScript bhvSnowBall[] = {
-    BREAK(),
-};
-
 const BehaviorScript bhvLllRotatingBlockWithFireBars[] = {
     BEGIN(OBJ_LIST_SURFACE),
     OR_INT(oFlags, (OBJ_FLAG_COMPUTE_DIST_TO_MARIO | OBJ_FLAG_SET_FACE_YAW_TO_MOVE_YAW | OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
@@ -3238,24 +3235,6 @@ const BehaviorScript bhvScuttlebug[] = {
     SET_OBJ_PHYSICS(/*Wall hitbox radius*/ 80, /*Gravity*/ -400, /*Bounciness*/ -50, /*Drag strength*/ 0, /*Friction*/ 0, /*Buoyancy*/ 200, /*Unused*/ 0, 0),
     SET_HOME(),
     CALL_NATIVE(bhv_init_room),
-    BEGIN_LOOP(),
-        CALL_NATIVE(bhv_scuttlebug_loop),
-    END_LOOP(),
-};
-
-const BehaviorScript bhvScuttlebugSpawn[] = {
-    BEGIN(OBJ_LIST_SPAWNER),
-    OR_INT(oFlags, (OBJ_FLAG_COMPUTE_DIST_TO_MARIO | OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
-    BEGIN_LOOP(),
-        CALL_NATIVE(bhv_scuttlebug_spawn_loop),
-    END_LOOP(),
-};
-
-const BehaviorScript bhvWhompKingBoss[] = {
-    BEGIN(OBJ_LIST_SURFACE),
-    SET_INT(oBehParams2ndByte, 1),
-    SET_INT(oHealth, 3),
-    GOTO(bhvSmallWhomp + 1 + 1),
 };
 
 const BehaviorScript bhvSmallWhomp[] = {
@@ -3519,10 +3498,8 @@ const BehaviorScript bhvMario[] = {
 const BehaviorScript bhvToadMessage[] = {
     BEGIN(OBJ_LIST_GENACTOR),
     OR_INT(oFlags, (OBJ_FLAG_PERSISTENT_RESPAWN | OBJ_FLAG_COMPUTE_DIST_TO_MARIO | OBJ_FLAG_SET_FACE_YAW_TO_MOVE_YAW | OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
-    LOAD_ANIMATIONS(oAnimations, toad_seg6_anims_0600FB58),
-    ANIMATE(6),
     SET_INTERACT_TYPE(INTERACT_TEXT),
-    SET_HITBOX(/*Radius*/ 80, /*Height*/ 100),
+    SET_HITBOX(/*Radius*/ 100, /*Height*/ 100),
     SET_INT(oIntangibleTimer, 0),
     CALL_NATIVE(bhv_init_room),
     CALL_NATIVE(bhv_toad_message_init),
@@ -4241,21 +4218,9 @@ const BehaviorScript bhvLllDrawbridge[] = {
     END_LOOP(),
 };
 
-const BehaviorScript bhvSmallBomp[] = {
-    BEGIN(OBJ_LIST_SURFACE),
-    OR_INT(oFlags, (OBJ_FLAG_MOVE_XZ_USING_FVEL | OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
-    LOAD_COLLISION_DATA(wf_seg7_collision_small_bomp),
-    CALL_NATIVE(bhv_small_bomp_init),
-    BEGIN_LOOP(),
-        CALL_NATIVE(bhv_small_bomp_loop),
-        CALL_NATIVE(load_object_collision_model),
-    END_LOOP(),
-};
-
 const BehaviorScript bhvLargeBomp[] = {
     BEGIN(OBJ_LIST_SURFACE),
-    OR_INT(oFlags, (OBJ_FLAG_MOVE_XZ_USING_FVEL | OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
-    LOAD_COLLISION_DATA(wf_seg7_collision_large_bomp),
+    OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
     CALL_NATIVE(bhv_large_bomp_init),
     BEGIN_LOOP(),
         CALL_NATIVE(bhv_large_bomp_loop),
@@ -5060,19 +5025,19 @@ const BehaviorScript bhvMips[] = {
     END_LOOP(),
 };
 
+// Spritzies Script
 const BehaviorScript bhvYoshi[] = {
     BEGIN(OBJ_LIST_GENACTOR),
-    OR_INT(oFlags, (OBJ_FLAG_COMPUTE_ANGLE_TO_MARIO | OBJ_FLAG_SET_FACE_YAW_TO_MOVE_YAW | OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
-    LOAD_ANIMATIONS(oAnimations, yoshi_seg5_anims_05024100),
+    OR_INT(oFlags, (OBJ_FLAG_PERSISTENT_RESPAWN | OBJ_FLAG_COMPUTE_ANGLE_TO_MARIO | OBJ_FLAG_HOLDABLE | OBJ_FLAG_COMPUTE_DIST_TO_MARIO | OBJ_FLAG_SET_FACE_YAW_TO_MOVE_YAW | OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
     SET_INTERACT_TYPE(INTERACT_TEXT),
     DROP_TO_FLOOR(),
-    SET_HITBOX(/*Radius*/ 160, /*Height*/ 150),
-    ANIMATE(0),
+    SET_HITBOX(/*Radius*/ 100, /*Height*/ 60),
+    SET_INT(oBobombBuddyRole, 0),
     SET_HOME(),
-    CALL_NATIVE(bhv_yoshi_init),
+    CALL_NATIVE(bhv_spritzie_init),
     BEGIN_LOOP(),
         SET_INT(oIntangibleTimer, 0),
-        CALL_NATIVE(bhv_yoshi_loop),
+        CALL_NATIVE(bhv_spritzie_loop),
     END_LOOP(),
 };
 
@@ -6107,4 +6072,15 @@ const BehaviorScript bhvIntroScene[] = {
     END_LOOP(),
 };
 
-
+const BehaviorScript bhvSnowBall[] = {
+    BEGIN(OBJ_LIST_SURFACE),
+    OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
+    LOAD_COLLISION_DATA(snowball_collision),
+    SET_FLOAT(oCollisionDistance, 500),
+    CALL_NATIVE(bhv_init_room),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_large_bomp_loop),
+        CALL_NATIVE(load_object_collision_model),
+    END_LOOP(),
+    BREAK(),
+};

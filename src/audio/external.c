@@ -97,17 +97,17 @@ s32 sGameLoopTicked = 0;
 
 u8 sDialogSpeaker[] = {
     //       0      1      2      3      4      5      6      7      8      9
-    /* 0*/ _,     BOMB,  BOMB,  BOMB,  BOMB,  KOOPA, KOOPA, KOOPA, _,     KOOPA,
+    /* 0*/ _,     _,     _,     _,     _,  KOOPA, KOOPA, KOOPA,    _,     KOOPA,
     /* 1*/ _,     _,     _,     _,     _,     _,     _,     KBOMB, _,     _,
     /* 2*/ _,     BOWS1, BOWS1, BOWS1, BOWS1, BOWS1, BOWS1, BOWS1, BOWS1, BOWS1,
     /* 3*/ _,     _,     _,     _,     _,     _,     _,     DIFF,  _,     _,
-    /* 4*/ _,     KOOPA, _,     _,     _,     _,     _,     BOMB,  _,     _,
+    /* 4*/ _,     KOOPA, _,     _,     _,     _,     _,     _,  _,     _,
     /* 5*/ _,     _,     _,     _,     _,     TUXIE, TUXIE, TUXIE, TUXIE, TUXIE,
     /* 6*/ _,     _,     _,     _,     _,     _,     _,     BOWS2, _,     _,
     /* 7*/ _,     _,     _,     _,     _,     _,     _,     _,     _,     UKIKI,
     /* 8*/ UKIKI, _,     _,     _,     _,     BOO,   _,     _,     _,     _,
     /* 9*/ BOWS2, _,     BOWS2, BOWS2, _,     _,     _,     _,     BOO,   BOO,
-    /*10*/ UKIKI, UKIKI, _,     _,     _,     BOMB,  BOMB,  BOO,   BOO,   _,
+    /*10*/ UKIKI, UKIKI, _,     _,     _,     _,  _,  BOO,   BOO,   _,
     /*11*/ _,     _,     _,     _,     GRUNT, GRUNT, KBOMB, GRUNT, GRUNT, _,
     /*12*/ _,     _,     _,     _,     _,     _,     _,     _,     KBOMB, _,
     /*13*/ _,     _,     TUXIE, _,     _,     _,     _,     _,     _,     _,
@@ -170,22 +170,10 @@ s16 sDynBbh[] = {
     SEQ_LEVEL_SPOOKY, DYN1(MARIO_IS_IN_ROOM, BBH_OUTSIDE_ROOM, 6),
     DYN1(MARIO_IS_IN_ROOM, BBH_NEAR_MERRY_GO_ROUND_ROOM, 6), 5,
 };
-s16 sDynDdd[] = {
-    SEQ_LEVEL_WATER,
-    DYN2(MARIO_X_LT, -800, MARIO_IS_IN_AREA, AREA_DDD_WHIRLPOOL & 0xf, 0),
-    DYN3(MARIO_Y_GE, -2000, MARIO_X_LT, 470, MARIO_IS_IN_AREA, AREA_DDD_WHIRLPOOL & 0xf, 0),
-    DYN2(MARIO_Y_GE, 100, MARIO_IS_IN_AREA, AREA_DDD_SUB & 0xf, 2),
-    1,
-};
-s16 sDynJrb[] = {
-    SEQ_LEVEL_WATER,
-    DYN2(MARIO_Y_GE, 945, MARIO_X_LT, -5260, 0),
-    DYN1(MARIO_IS_IN_AREA, AREA_JRB_SHIP & 0xf, 0),
-    DYN1(MARIO_Y_GE, 1000, 0),
-    DYN2(MARIO_Y_GE, -3100, MARIO_Z_LT, -900, 2),
-    1,
-    5, // bogus entry, ignored (was JRB originally intended to have spooky music?)
-};
+//Those create weird shit
+s16 sDynDdd[] = {};
+s16 sDynJrb[] = {};
+
 s16 sDynWdw[] = {
     SEQ_LEVEL_UNDERGROUND, DYN2(MARIO_Y_LT, -670, MARIO_IS_IN_AREA, AREA_WDW_MAIN & 0xf, 4),
     DYN1(MARIO_IS_IN_AREA, AREA_WDW_TOWN & 0xf, 4), 3,
@@ -228,9 +216,6 @@ struct MusicDynamic {
 }; // size = 0xC
 
 struct MusicDynamic sMusicDynamics[8] = {
-    { 0x0000, 127, 100, 0x0e43, 0, 100 }, // SEQ_LEVEL_WATER
-    { 0x0003, 127, 100, 0x0e40, 0, 100 }, // SEQ_LEVEL_WATER
-    { 0x0e43, 127, 200, 0x0000, 0, 200 }, // SEQ_LEVEL_WATER
     { 0x02ff, 127, 100, 0x0100, 0, 100 }, // SEQ_LEVEL_UNDERGROUND
     { 0x03f7, 127, 100, 0x0008, 0, 100 }, // SEQ_LEVEL_UNDERGROUND
     { 0x0070, 127, 10, 0x0000, 0, 100 },  // SEQ_LEVEL_SPOOKY
@@ -280,12 +265,12 @@ u8 sBackgroundMusicDefaultVolume[] = {
     127, // SEQ_SOUND_PLAYER
     80,  // SEQ_EVENT_CUTSCENE_COLLECT_STAR
     80,  // SEQ_MENU_TITLE_SCREEN
-    75,  // SEQ_LEVEL_GRASS
+    45,  // SEQ_LEVEL_GRASS
     70,  // SEQ_LEVEL_INSIDE_CASTLE
-    75,  // SEQ_LEVEL_WATER
+    127, // SEQ_LEVEL_WATER
     75,  // SEQ_LEVEL_HOT
     75,  // SEQ_LEVEL_BOSS_KOOPA
-    70,  // SEQ_LEVEL_SNOW
+    25,  // SEQ_LEVEL_SNOW
     65,  // SEQ_LEVEL_SLIDE
     80,  // SEQ_LEVEL_SPOOKY
     65,  // SEQ_EVENT_PIRANHA_PLANT
@@ -311,7 +296,7 @@ u8 sBackgroundMusicDefaultVolume[] = {
     80,  // SEQ_EVENT_CUTSCENE_VICTORY
     70,  // SEQ_EVENT_CUTSCENE_ENDING
     65,  // SEQ_MENU_FILE_SELECT
-    0,   // SEQ_EVENT_CUTSCENE_LAKITU (not in JP)
+    127,   // SEQ_EVENT_CUTSCENE_LAKITU (not in JP)
 };
 
 STATIC_ASSERT(ARRAY_COUNT(sBackgroundMusicDefaultVolume) == SEQ_COUNT,

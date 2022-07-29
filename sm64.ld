@@ -1,8 +1,8 @@
 OUTPUT_ARCH (mips)
 
-/* include/segments.h defines SEG_POOL_START, SEG_POOL_END, SEG_BUFFERS,
- * SEG_GODDARD, SEG_MAIN, SEG_ENGINE, SEG_FRAMEBUFFERS */
+#define LINKER /* Removes externs from preprocessed script */
 #include "segments.h"
+#undef LINKER
 #include "config.h"
 
 #define BEGIN_SEG(name, addr) \
@@ -47,10 +47,16 @@ OUTPUT_ARCH (mips)
    END_SEG(name##_segment_7) \
    BEGIN_SEG(name, 0x0E000000) \
    { \
-      BUILD_DIR/levels/name/script.o(.data); \
+      BUILD_DIR/levels/name/script.o(.*data*); \
+      BUILD_DIR/levels/name/script.o(.text); \
       BUILD_DIR/levels/name/geo.o(.data); \
    } \
-   END_SEG(name)
+   END_SEG(name) \
+   BEGIN_NOLOAD(name) \
+   { \
+      BUILD_DIR/levels/name/script.o(.bss*); \
+   } \
+   END_NOLOAD(name)
 
 #define STANDARD_OBJECTS(name, segAddr, geoAddr) \
    BEGIN_SEG(name##_mio0, segAddr) \
@@ -61,9 +67,15 @@ OUTPUT_ARCH (mips)
    END_SEG(name##_mio0) \
    BEGIN_SEG(name##_geo, geoAddr) \
    { \
-      BUILD_DIR/actors/name##_geo.o(.data); \
+      BUILD_DIR/actors/name##_geo.o(.*data*); \
+      BUILD_DIR/actors/name##_geo.o(.text); \
    } \
-   END_SEG(name##_geo)
+   END_SEG(name##_geo) \
+   BEGIN_NOLOAD(name##_geo) \
+   { \
+      BUILD_DIR/actors/name##_geo.o(.bss*); \
+   } \
+   END_NOLOAD(name##_geo)
 
 SECTIONS
 {
@@ -80,7 +92,31 @@ SECTIONS
    BEGIN_NOLOAD(zbuffer) {
       BUILD_DIR/src/buffers/zbuffer.o(.bss*);
    }
+   END_NOLOAD(zbuffer)
+ 
+   . = _zbufferSegmentNoloadEnd;
+   BEGIN_NOLOAD(buffers)
+   {
+      BUILD_DIR/src/buffers/buffers.o(.bss*);
+      BUILD_DIR/src/audio/globals_start.o(.bss*);
+      BUILD_DIR/src/audio/synthesis.o(.bss*);
+      BUILD_DIR/src/audio/heap.o(.bss*);
+      BUILD_DIR/src/audio/load.o(.bss*);
+      BUILD_DIR/src/audio/data.o(.bss*);
+      BUILD_DIR/src/audio*.o(.bss*);
 
+#ifdef VERSION_EU
+      . = ALIGN(0x200);
+#else
+      . = ALIGN(0x1000);
+#endif
+      BUILD_DIR/src/buffers/gfx_output_buffer.o(.bss*);
+   }
+   END_NOLOAD(buffers)
+
+   /*ASSERT((. <= SEG_MAIN), "Error: buffers segment extended into main")*/
+
+   . = _buffersSegmentNoloadEnd;
    /* lib/src/__osDevMgrMain.c and lib/src/osCreateViManager.c contain infinite
     * loops compiled without -g, which cause the return statements and the .o
     * files themselves to be aligned to 32-byte boundaries. But the linker
@@ -88,7 +124,7 @@ SECTIONS
     * only to 16 bytes, in some cases misaligning them. We force the same to
     * happen using the SUBALIGN directive. This is harmless; the alignment is
     * just an optimization. */
-   BEGIN_SEG(main, SEG_MAIN) SUBALIGN(16)
+   BEGIN_SEG(main, .) SUBALIGN(16)
    {
       BUILD_DIR/asm/entry.o(.text);
       BUILD_DIR/src/game/crash_screen.o(.text);
@@ -117,6 +153,7 @@ SECTIONS
       BUILD_DIR/src/game/rendering_graph_node.o(.text);
       BUILD_DIR/src/game/profiler.o(.text);
       BUILD_DIR/asm/decompress.o(.text);
+      BUILD_DIR/asm/crash.o(.text);
       BUILD_DIR/src/game/camera.o(.text);
       BUILD_DIR/src/game/debug_course.o(.text);
       BUILD_DIR/src/game/object_list_processor.o(.text);
@@ -778,9 +815,11 @@ SECTIONS
    _mainSegmentNoloadSizeLo = SIZEOF (.main.noload) & 0xffff;
    _mainSegmentNoloadSizeHi = SIZEOF (.main.noload) >> 16;
 
-   ASSERT((. <= SEG_ENGINE), "Error: main segment extended into engine.")
+   /*ASSERT((. <= SEG_ENGINE), "Error: main segment extended into engine.")*/
 
-   BEGIN_SEG(engine, SEG_ENGINE)
+   . = _mainSegmentNoloadEnd;
+
+   BEGIN_SEG(engine, .)
    {
       BUILD_DIR/src/engine/math_util.o(.text);
       BUILD_DIR/src/engine/graph_node.o(.text);
@@ -836,17 +875,21 @@ SECTIONS
       BUILD_DIR/src/game/object_helpers.o(.bss*);
 #endif
       BUILD_DIR/src/engine*.o(.bss*);
+      . = ALIGN(0x40);
    }
    END_NOLOAD(engine)
 
-   ASSERT((. <= SEG_FRAMEBUFFERS), "Error: engine segment extended into framebuffers.")
+   /*ASSERT((. <= SEG_FRAMEBUFFERS), "Error: engine segment extended into framebuffers.")*/
 
-   . = SEG_FRAMEBUFFERS;
+   . = _engineSegmentNoloadEnd;
    BEGIN_NOLOAD(framebuffers)
    {
       BUILD_DIR/src/buffers/framebuffers.o(.bss*);
    }
    END_NOLOAD(framebuffers)
+
+   __mainPoolStart = .;
+   __mainPoolSize = RAM_END - .;
 
    __expansionRamStart = 0x80400000;
    ASSERT((. <= __expansionRamStart), "Error: RDRAM expanded into Expansion RAM, despite Expansion RAM not being defined.")
@@ -983,50 +1026,29 @@ SECTIONS
    }
    END_NOLOAD(goddard)
 
-   ASSERT((. <= SEG_POOL_END), "Error: extended past pool end.")
-
-   . = SEG_BUFFERS;
-   BEGIN_NOLOAD(buffers)
-   {
-      BUILD_DIR/src/buffers/buffers.o(.bss*);
-      BUILD_DIR/src/audio/globals_start.o(.bss*);
-#ifdef VERSION_SH
-      BUILD_DIR/src/audio/port_sh.o(.bss*);
-#else
-      BUILD_DIR/src/audio/synthesis.o(.bss*);
-      BUILD_DIR/src/audio/heap.o(.bss*);
-      BUILD_DIR/src/audio/load.o(.bss*);
-      BUILD_DIR/src/audio/data.o(.bss*);
-#endif
-      BUILD_DIR/src/audio*.o(.bss*);
-
-#ifdef VERSION_EU
-      . = ALIGN(0x200);
-#else
-      . = ALIGN(0x1000);
-#endif
-#ifdef VERSION_SH
-      . += 0xB000;
-#endif
-      BUILD_DIR/src/buffers/gfx_output_buffer.o(.bss*);
-   }
-   END_NOLOAD(buffers)
-
-   ASSERT((. <= SEG_MAIN), "Error: buffers segment extended into main")
+   ASSERT((. <= (SEG_POOL_START + POOL_SIZE)), "Error: extended past pool end.")
 
    /* 0x268020 0x268020-0 [0] */
    BEGIN_SEG(intro, 0x14000000)
    {
-      BUILD_DIR/levels/intro/script.o(.data);
+      BUILD_DIR/levels/intro/script.o(.*data);
+      BUILD_DIR/levels/intro/script.o(.text);
       BUILD_DIR/levels/intro/geo.o(.data);
    }
    END_SEG(intro)
+   BEGIN_NOLOAD(intro)
+   {
+      BUILD_DIR/levels/intro/script.o(.bss*);
+   }
+   END_NOLOAD(intro)
    BEGIN_SEG(intro_segment_7, 0x07000000)
    {
       BUILD_DIR/levels/intro/leveldata.mio0.o(.data);
       . = ALIGN(0x10);
    }
    END_SEG(intro_segment_7)
+
+
 
    MIO0_SEG(debug_level_select, 0x07000000)
    MIO0_SEG(title_screen_bg, 0x0A000000)

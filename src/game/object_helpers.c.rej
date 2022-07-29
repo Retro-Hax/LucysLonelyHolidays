@@ -1,0 +1,23 @@
+--- src/game/object_helpers.c
++++ src/game/object_helpers.c
+@@ -176,14 +176,19 @@ Gfx *geo_switch_area(s32 callContext, struct GraphNode *node) {
+     UNUSED struct Object *sp1C =
+         (struct Object *) gCurGraphNodeObject; // TODO: change global type to Object pointer
+     struct GraphNodeSwitchCase *switchCase = (struct GraphNodeSwitchCase *) node;
++    struct Object *roomFocusObj = gIsGameCutsceneActive ? gCutsceneFocus : gMarioObject;
+ 
+     if (callContext == GEO_CONTEXT_RENDER) {
+         if (gMarioObject == NULL) {
+             switchCase->selectedCase = 0;
+         } else {
++            // Find static floors first
+             gFindFloorIncludeSurfaceIntangible = TRUE;
++            find_static_floor(roomFocusObj->oPosX, roomFocusObj->oPosY, roomFocusObj->oPosZ, &sp20);
+ 
+-            find_floor(gMarioObject->oPosX, gMarioObject->oPosY, gMarioObject->oPosZ, &sp20);
++            if (sp20 == NULL) {
++                find_dynamic_floor(roomFocusObj->oPosX, roomFocusObj->oPosY, roomFocusObj->oPosZ, &sp20);
++            }
+ 
+             if (sp20) {
+                 gMarioCurrentRoom = sp20->room;

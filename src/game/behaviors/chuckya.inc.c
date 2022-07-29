@@ -49,37 +49,6 @@ void bhv_chuckya_anchor_mario_loop(void) {
     common_anchor_mario_behavior(40.0f, 40.0f, INT_STATUS_MARIO_UNK6);
 }
 
-s32 unknown_chuckya_function(s32 sp20, f32 sp24, f32 sp28, s16 sp2C) {
-    s32 sp1C = 0;
-
-    if (o->oChuckyaUnkF8 != 4) {
-        if (sp24 < cur_obj_lateral_dist_from_mario_to_home()) {
-            if (cur_obj_lateral_dist_to_home() < 200.0f) {
-                sp1C = 0;
-            } else {
-                sp1C = 1;
-                o->oAngleToMario = cur_obj_angle_to_home();
-            }
-        } else if (o->oDistanceToMario > sp28) {
-            if (gGlobalTimer % sp2C == 0) {
-                o->oAngleToMario = obj_angle_to_object(o, gMarioObject);
-            }
-            sp1C = 2;
-        } else {
-            sp1C = 3;
-        }
-
-        if (sp20 && update_angle_from_move_flags(&o->oAngleToMario)) {
-            sp1C = 4;
-            o->oChuckyaUnkF8 = 4;
-        }
-    } else {
-        sp1C = 4;
-    }
-
-    return sp1C;
-}
-
 s32 approach_forward_vel(f32 *forwardVel, f32 spC, f32 sp10) {
     s32 sp4 = 0;
 

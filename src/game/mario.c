@@ -521,7 +521,10 @@ u32 mario_get_terrain_sound_addend(struct MarioState *m) {
 struct Surface *resolve_and_return_wall_collisions(Vec3f pos, f32 offset, f32 radius) {
     struct WallCollisionData collisionData;
     struct Surface *wall = NULL;
-
+    u8 i = 0;
+    s16 v = 0;
+    s16 best = 0xffff;
+    s16 d = 0;
     collisionData.x = pos[0];
     collisionData.y = pos[1];
     collisionData.z = pos[2];
@@ -529,15 +532,26 @@ struct Surface *resolve_and_return_wall_collisions(Vec3f pos, f32 offset, f32 ra
     collisionData.offsetY = offset;
 
     if (find_wall_collisions(&collisionData)) {
-        wall = collisionData.walls[collisionData.numWalls - 1];
+        for (i = 0; i < collisionData.numWalls; i++) {
+            v = atan2s(collisionData.walls[i]->normal.z, collisionData.walls[i]->normal.x);
+            d = absi((((s16)(gCurrentObject->oMoveAngleYaw) - (v + 0x8000)) << 0x10) / 0x10000);
+            if (i == 0) {
+                wall = collisionData.walls[0];
+                best = d;
+            } else {
+                if (d < best) {
+                    wall = collisionData.walls[i];
+                    best = d;
+                }
+            }
+        }
     }
 
     pos[0] = collisionData.x;
     pos[1] = collisionData.y;
     pos[2] = collisionData.z;
 
-    // This only returns the most recent wall and can also return NULL
-    // there are no wall collisions.
+    // returns the wall the actor is closest to facing
     return wall;
 }
 
@@ -547,7 +561,7 @@ struct Surface *resolve_and_return_wall_collisions(Vec3f pos, f32 offset, f32 ra
 f32 vec3f_find_ceil(Vec3f pos, f32 height, struct Surface **ceil) {
     UNUSED u8 filler[4];
 
-    return find_ceil(pos[0], height + 80.0f, pos[2], ceil);
+    return find_ceil(pos[0], height + 3.0f, pos[2], ceil);
 }
 
 /**
@@ -728,10 +742,8 @@ void update_mario_sound_and_camera(struct MarioState *m) {
         raise_background_noise(2);
     }
 
-    if (!(action & (ACT_FLAG_SWIMMING | ACT_FLAG_METAL_WATER))) {
-        if (camPreset == CAMERA_MODE_BEHIND_MARIO || camPreset == CAMERA_MODE_WATER_SURFACE) {
-            set_camera_mode(m->area->camera, m->area->camera->defMode, 1);
-        }
+    if (!(action & (ACT_FLAG_SWIMMING | ACT_FLAG_METAL_WATER)) && (camPreset == DEEP_WATER_CAMERA_MODE || camPreset == WATER_SURFACE_CAMERA_MODE)) {
+        set_camera_mode(m->area->camera, m->area->camera->defMode, 1);
     }
 }
 
@@ -1329,7 +1341,7 @@ void update_mario_geometry_inputs(struct MarioState *m) {
         m->floorHeight = find_floor(m->pos[0], m->pos[1], m->pos[2], &m->floor);
     }
 
-    m->ceilHeight = vec3f_find_ceil(&m->pos[0], m->floorHeight, &m->ceil);
+    m->ceilHeight = vec3f_find_ceil(&m->pos[0], m->pos[1], &m->ceil);
     gasLevel = find_poison_gas_level(m->pos[0], m->pos[2]);
     m->waterLevel = find_water_level(m->pos[0], m->pos[2]);
 
@@ -1425,16 +1437,23 @@ void set_submerged_cam_preset_and_spawn_bubbles(struct MarioState *m) {
         camPreset = m->area->camera->mode;
 
         if (m->action & ACT_FLAG_METAL_WATER) {
+#ifdef USE_COURSE_DEFAULT_MODE
+            // Being metal and in the water uses the default camera mode
+            if (camPreset != m->area->camera->defMode) {
+                set_camera_mode(m->area->camera, m->area->camera->defMode, 1);
+            }
+#else
             if (camPreset != CAMERA_MODE_CLOSE) {
                 set_camera_mode(m->area->camera, CAMERA_MODE_CLOSE, 1);
             }
+#endif
         } else {
-            if ((heightBelowWater > 800.0f) && (camPreset != CAMERA_MODE_BEHIND_MARIO)) {
-                set_camera_mode(m->area->camera, CAMERA_MODE_BEHIND_MARIO, 1);
+            if ((heightBelowWater > 800.0f) && (camPreset != DEEP_WATER_CAMERA_MODE)) {
+                set_camera_mode(m->area->camera, DEEP_WATER_CAMERA_MODE, 1);
             }
 
-            if ((heightBelowWater < 400.0f) && (camPreset != CAMERA_MODE_WATER_SURFACE)) {
-                set_camera_mode(m->area->camera, CAMERA_MODE_WATER_SURFACE, 1);
+            if ((heightBelowWater < 400.0f) && (camPreset != WATER_SURFACE_CAMERA_MODE)) {
+                set_camera_mode(m->area->camera, WATER_SURFACE_CAMERA_MODE, 1);
             }
 
             // As long as Mario isn't drowning or at the top
@@ -1468,7 +1487,7 @@ void update_mario_health(struct MarioState *m) {
                     // When Mario is near the water surface, recover health (unless in snow),
                     // when in snow terrains lose 3 health.
                     // If using the debug level select, do not lose any HP to water.
-                    if ((m->pos[1] >= (m->waterLevel - 140)) && !terrainIsSnow) {
+                    if ((m->pos[1] >= (m->waterLevel - 999)) && !terrainIsSnow) {
                         m->health += 0x1A;
                     } else if (!gDebugLevelSelect) {
                         m->health -= (terrainIsSnow ? 3 : 1);
@@ -1486,8 +1505,8 @@ void update_mario_health(struct MarioState *m) {
             m->hurtCounter--;
         }
 
-        if (m->health > 0x880) {
-            m->health = 0x880;
+        if (m->health > 0x550) {
+            m->health = 0x550;
         }
         if (m->health < 0x100) {
             m->health = 0xFF;

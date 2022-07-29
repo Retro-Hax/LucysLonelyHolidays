@@ -338,9 +338,12 @@ void render_init(void) {
     end_master_display_list();
     exec_display_list(&gGfxPool->spTask);
 
-    sRenderingFramebuffer++;
-    gGlobalTimer++;
-}
+    // Skip incrementing the initial framebuffer index on emulators so that they display immediately as the Gfx task finishes
+    if ((*(volatile u32 *)0xA4100010) != 0) { // Read RDP Clock Register, has a value of zero on emulators
+        sRenderingFramebuffer++;
+    }
+     gGlobalTimer++;
+ }
 
 /**
  * Selects the location of the F3D output buffer (gDisplayListHead).
@@ -373,11 +376,15 @@ void display_and_vsync(void) {
     osViSwapBuffer((void *) PHYSICAL_TO_VIRTUAL(gPhysicalFramebuffers[sRenderedFramebuffer]));
     profiler_log_thread5_time(THREAD5_END);
     osRecvMesg(&gGameVblankQueue, &gMainReceivedMesg, OS_MESG_BLOCK);
-    if (++sRenderedFramebuffer == 3) {
-        sRenderedFramebuffer = 0;
-    }
-    if (++sRenderingFramebuffer == 3) {
-        sRenderingFramebuffer = 0;
+ 
+    // Skip swapping buffers on emulator so that they display immediately as the Gfx task finishes
+    if ((*(volatile u32 *)0xA4100010) != 0) { // Read RDP Clock Register, has a value of zero on emulators
+        if (++sRenderedFramebuffer == 3) {
+            sRenderedFramebuffer = 0;
+        }
+        if (++sRenderingFramebuffer == 3) {
+            sRenderingFramebuffer = 0;
+        }
     }
     gGlobalTimer++;
 }
@@ -632,7 +639,7 @@ void setup_game_memory(void) {
     set_segment_base_addr(24, (void *) gDemoInputsMemAlloc);
     setup_dma_table_list(&gDemoInputsBuf, gDemoInputs, gDemoInputsMemAlloc);
     // Setup Level Script Entry
-    load_segment(0x10, _entrySegmentRomStart, _entrySegmentRomEnd, MEMORY_POOL_LEFT);
+    load_segment(0x10, _entrySegmentRomStart, _entrySegmentRomEnd, MEMORY_POOL_LEFT, NULL, NULL);
     // Setup Segment 2 (Fonts, Text, etc)
     load_segment_decompress(2, _segment2_mio0SegmentRomStart, _segment2_mio0SegmentRomEnd);
 }

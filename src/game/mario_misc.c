@@ -25,18 +25,6 @@
 #include "skybox.h"
 #include "sound_init.h"
 
-#define TOAD_STAR_1_REQUIREMENT 12
-#define TOAD_STAR_2_REQUIREMENT 25
-#define TOAD_STAR_3_REQUIREMENT 35
-
-#define TOAD_STAR_1_DIALOG DIALOG_082
-#define TOAD_STAR_2_DIALOG DIALOG_076
-#define TOAD_STAR_3_DIALOG DIALOG_083
-
-#define TOAD_STAR_1_DIALOG_AFTER DIALOG_154
-#define TOAD_STAR_2_DIALOG_AFTER DIALOG_155
-#define TOAD_STAR_3_DIALOG_AFTER DIALOG_156
-
 enum ToadMessageStates {
     TOAD_MESSAGE_FADED,
     TOAD_MESSAGE_OPAQUE,
@@ -44,6 +32,7 @@ enum ToadMessageStates {
     TOAD_MESSAGE_FADING,
     TOAD_MESSAGE_TALKING
 };
+
 
 enum UnlockDoorStarStates {
     UNLOCK_DOOR_STAR_RISING,
@@ -122,23 +111,86 @@ static void toad_message_opaque(void) {
     }
 }
 
+#define SPRITZIE_STAR_REQUIREMENT 41
+#define SPRITZIE_STAR_FINAL_STAR_REQUIREMENT 49
+
+#define SPRITZIE_STAR_DIALOG DIALOG_105
+#define SPRITZIE_FINAL_STAR_DIALOG DIALOG_106
+
+#define SPRITZIE_STAR_DIALOG_AFTER DIALOG_107
+#define SPRITZIE_FINAL_STAR_DIALOG_AFTER DIALOG_108
+
+#define SAVE_FLAG_COLLECTED_SPRITZIE_STAR_1  /* 0x00000000 */ (1 << 24)
+#define SAVE_FLAG_COLLECTED_SPRITZIE_STAR_2  /* 0x01000000 */ (1 << 25)
+#define SAVE_FLAG_COLLECTED_SPRITZIE_STAR_3  /* 0x02000000 */ (1 << 26)
+#define SAVE_FLAG_COLLECTED_SPRITZIE_STAR_4  /* 0x03000000 */ (1 << 27)
+#define SAVE_FLAG_COLLECTED_SPRITZIE_STAR_5  /* 0x04000000 */ (1 << 28)
+#define SAVE_FLAG_COLLECTED_SPRITZIE_STAR_6  /* 0x05000000 */ (1 << 29)
+#define SAVE_FLAG_COLLECTED_SPRITZIE_STAR_7  /* 0x06000000 */ (1 << 30)
+#define SAVE_FLAG_COLLECTED_SPRITZIE_STAR_8  /* 0x07000000 */ (1 << 31)
+#define SAVE_FLAG_COLLECTED_SPRITZIE_FINAL_STAR  /* 0x08000000 */ (1 << 32)
+
 static void toad_message_talking(void) {
     if (cur_obj_update_dialog_with_cutscene(MARIO_DIALOG_LOOK_DOWN, 
         DIALOG_FLAG_TURN_TO_MARIO, CUTSCENE_DIALOG, gCurrentObject->oToadMessageDialogId)) {
         gCurrentObject->oToadMessageRecentlyTalked = TRUE;
         gCurrentObject->oToadMessageState = TOAD_MESSAGE_FADING;
         switch (gCurrentObject->oToadMessageDialogId) {
-            case TOAD_STAR_1_DIALOG:
-                gCurrentObject->oToadMessageDialogId = TOAD_STAR_1_DIALOG_AFTER;
-                bhv_spawn_star_no_level_exit(0);
+            case SPRITZIE_STAR_DIALOG:
+                gCurrentObject->oToadMessageDialogId = SPRITZIE_STAR_DIALOG_AFTER;
+    // The only Stage hiding also Warp Actors
+    // COURSE_NONE is all Hubworlds Combined aka Castle Grounds, Castle Courtyard and Inside Castle
+    if (gCurrCourseNum == COURSE_NONE) {
+    struct Object *warppipe = spawn_object(warppipe, MODEL_CASTLE_GROUNDS_WARP_PIPE,  bhvWarpPipe); //0x00AB0000
+    warppipe->oPosX= -3988;
+    warppipe->oPosY= -191;
+    warppipe->oPosZ= -4578;
+    struct Object *warp = spawn_object(warp, MODEL_NONE, bhvWarp); //0x00AF0000
+    gCurrentObject->oBehParams2ndByte = 0xAF << 24;
+    warp->oPosX= -7275;
+    warp->oPosY= -1340;
+    warp->oPosZ= -6301;
+
+    warppipe->activeFlags = ACTIVE_FLAG_ACTIVE;
+    warp->activeFlags = ACTIVE_FLAG_ACTIVE;
+
+    struct Object *star = spawn_object(star, MODEL_STAR, bhvStar); //0x00000000
+    star->oPosX= -3796;
+    star->oPosY= 37;
+    star->oPosZ= -4293;
+
+    star->activeFlags = ACTIVE_FLAG_ACTIVE;
+
+    struct Object *star2 = spawn_object(star2, MODEL_STAR, bhvStar); //0x00010000
+    star2->oPosX= -5545;
+    star2->oPosY= -683;
+    star2->oPosZ= 174;
+
+    star2->activeFlags = ACTIVE_FLAG_ACTIVE;
+
+}
+
+    //if (gCurrCourseNum == COURSE_BOB) 
+
+    if (gCurrCourseNum == COURSE_WF & gCurrAreaIndex == 0x01) {
+    struct Object *star = spawn_object(star, MODEL_STAR, bhvStar);
+    star->oPosX= -47;
+    star->oPosY= -332;
+    star->oPosZ= 5326;
+    
+    star->activeFlags = ACTIVE_FLAG_ACTIVE & ACTIVE_FLAG_IN_DIFFERENT_ROOM;
+    } else if (gCurrCourseNum == COURSE_WF & gCurrAreaIndex == 0x02) {
+	struct Object *star = spawn_object(star, MODEL_STAR, bhvStar);
+    star->oPosX= -308;
+    star->oPosY= 235;
+    star->oPosZ= 3929;
+
+    star->activeFlags = ACTIVE_FLAG_ACTIVE & ACTIVE_FLAG_IN_DIFFERENT_ROOM;
+    }
                 break;
-            case TOAD_STAR_2_DIALOG:
-                gCurrentObject->oToadMessageDialogId = TOAD_STAR_2_DIALOG_AFTER;
+            case SPRITZIE_FINAL_STAR_DIALOG:
+                gCurrentObject->oToadMessageDialogId = SPRITZIE_FINAL_STAR_DIALOG_AFTER;
                 bhv_spawn_star_no_level_exit(1);
-                break;
-            case TOAD_STAR_3_DIALOG:
-                gCurrentObject->oToadMessageDialogId = TOAD_STAR_3_DIALOG_AFTER;
-                bhv_spawn_star_no_level_exit(2);
                 break;
         }
     }
@@ -186,22 +238,40 @@ void bhv_toad_message_init(void) {
     s32 enoughStars = TRUE;
 
     switch (dialogId) {
-        case TOAD_STAR_1_DIALOG:
-            enoughStars = (starCount >= TOAD_STAR_1_REQUIREMENT);
-            if (saveFlags & SAVE_FLAG_COLLECTED_TOAD_STAR_1) {
-                dialogId = TOAD_STAR_1_DIALOG_AFTER;
+        case SPRITZIE_STAR_DIALOG:
+            enoughStars = (starCount >= SPRITZIE_STAR_REQUIREMENT);
+            if (saveFlags & SAVE_FLAG_COLLECTED_SPRITZIE_STAR_1) {
+                dialogId = SPRITZIE_STAR_DIALOG_AFTER;
+            }
+            if (saveFlags & SAVE_FLAG_COLLECTED_SPRITZIE_STAR_2) {
+                dialogId = SPRITZIE_STAR_DIALOG_AFTER;
+            }
+            if (saveFlags & SAVE_FLAG_COLLECTED_SPRITZIE_STAR_3) {
+                dialogId = SPRITZIE_STAR_DIALOG_AFTER;
+            }
+            if (saveFlags & SAVE_FLAG_COLLECTED_SPRITZIE_STAR_4) {
+                dialogId = SPRITZIE_STAR_DIALOG_AFTER;
+            }
+            if (saveFlags & SAVE_FLAG_COLLECTED_SPRITZIE_STAR_5) {
+                dialogId = SPRITZIE_STAR_DIALOG_AFTER;
+            }
+            if (saveFlags & SAVE_FLAG_COLLECTED_SPRITZIE_STAR_5) {
+                dialogId = SPRITZIE_STAR_DIALOG_AFTER;
+            }
+            if (saveFlags & SAVE_FLAG_COLLECTED_SPRITZIE_STAR_6) {
+                dialogId = SPRITZIE_STAR_DIALOG_AFTER;
+            }
+            if (saveFlags & SAVE_FLAG_COLLECTED_SPRITZIE_STAR_7) {
+                dialogId = SPRITZIE_STAR_DIALOG_AFTER;
+            }
+            if (saveFlags & SAVE_FLAG_COLLECTED_SPRITZIE_STAR_8) {
+                dialogId = SPRITZIE_STAR_DIALOG_AFTER;
             }
             break;
-        case TOAD_STAR_2_DIALOG:
-            enoughStars = (starCount >= TOAD_STAR_2_REQUIREMENT);
-            if (saveFlags & SAVE_FLAG_COLLECTED_TOAD_STAR_2) {
-                dialogId = TOAD_STAR_2_DIALOG_AFTER;
-            }
-            break;
-        case TOAD_STAR_3_DIALOG:
-            enoughStars = (starCount >= TOAD_STAR_3_REQUIREMENT);
-            if (saveFlags & SAVE_FLAG_COLLECTED_TOAD_STAR_3) {
-                dialogId = TOAD_STAR_3_DIALOG_AFTER;
+        case SAVE_FLAG_COLLECTED_SPRITZIE_FINAL_STAR:
+            enoughStars = (starCount >= SPRITZIE_FINAL_STAR_DIALOG);
+            if (saveFlags & SAVE_FLAG_COLLECTED_SPRITZIE_FINAL_STAR) {
+                dialogId = SPRITZIE_FINAL_STAR_DIALOG_AFTER;
             }
             break;
     }
@@ -209,7 +279,6 @@ void bhv_toad_message_init(void) {
         gCurrentObject->oToadMessageDialogId = dialogId;
         gCurrentObject->oToadMessageRecentlyTalked = FALSE;
         gCurrentObject->oToadMessageState = TOAD_MESSAGE_FADED;
-        gCurrentObject->oOpacity = 81;
     } else {
         obj_mark_for_deletion(gCurrentObject);
     }

@@ -1,3 +1,4 @@
+#include "texscroll.h"
 #include <ultra64.h>
 
 #include "sm64.h"
@@ -293,17 +294,17 @@ void set_mario_initial_cap_powerup(struct MarioState *m) {
 
     switch (capCourseIndex) {
         case COURSE_COTMC - COURSE_CAP_COURSES:
-            m->flags |= MARIO_METAL_CAP | MARIO_CAP_ON_HEAD;
+            //m->flags |= MARIO_METAL_CAP | MARIO_CAP_ON_HEAD;
             m->capTimer = 600;
             break;
 
         case COURSE_TOTWC - COURSE_CAP_COURSES:
-            m->flags |= MARIO_WING_CAP | MARIO_CAP_ON_HEAD;
+            //m->flags |= MARIO_WING_CAP | MARIO_CAP_ON_HEAD;
             m->capTimer = 1200;
             break;
 
         case COURSE_VCUTM - COURSE_CAP_COURSES:
-            m->flags |= MARIO_VANISH_CAP | MARIO_CAP_ON_HEAD;
+            //m->flags |= MARIO_VANISH_CAP | MARIO_CAP_ON_HEAD;
             m->capTimer = 600;
             break;
     }
@@ -438,24 +439,18 @@ void init_mario_after_warp(void) {
             play_cap_music(SEQUENCE_ARGS(4, SEQ_EVENT_POWERUP));
         }
 
-#if BUGFIX_KOOPA_RACE_MUSIC
+#ifdef ENABLE_VANILLA_LEVEL_SPECIFIC_CHECKS
         if (gCurrLevelNum == LEVEL_BOB
             && get_current_background_music() != SEQUENCE_ARGS(4, SEQ_LEVEL_SLIDE) && sTimerRunning) {
             play_music(SEQ_PLAYER_LEVEL, SEQUENCE_ARGS(4, SEQ_LEVEL_SLIDE), 0);
         }
-#endif
 
         if (sWarpDest.levelNum == LEVEL_CASTLE && sWarpDest.areaIdx == 1
-#ifndef VERSION_JP
             && (sWarpDest.nodeId == 31 || sWarpDest.nodeId == 32)
-#else
-            && sWarpDest.nodeId == 31
-#endif
         ) {
             play_sound(SOUND_MENU_MARIO_CASTLE_WARP, gGlobalSoundSource);
         }
 
-#ifndef VERSION_JP
         if (sWarpDest.levelNum == LEVEL_CASTLE_GROUNDS && sWarpDest.areaIdx == 1
             && (sWarpDest.nodeId == 7 || sWarpDest.nodeId == 10 || sWarpDest.nodeId == 20
                 || sWarpDest.nodeId == 30)) {
@@ -537,10 +532,12 @@ void check_instant_warp(void) {
     s16 cameraAngle;
     struct Surface *floor;
 
+#ifdef ENABLE_VANILLA_LEVEL_SPECIFIC_CHECKS
     if (gCurrLevelNum == LEVEL_CASTLE
         && save_file_get_total_star_count(gCurrSaveFileNum - 1, COURSE_MIN - 1, COURSE_MAX - 1) >= 70) {
         return;
     }
+#endif // ENABLE_VANILLA_LEVEL_SPECIFIC_CHECKS
 
     if ((floor = gMarioState->floor) != NULL) {
         s32 index = floor->type - SURFACE_INSTANT_WARP_1B;
@@ -1025,7 +1022,7 @@ s32 play_mode_paused(void) {
         if (gDebugLevelSelect) {
             fade_into_special_warp(-9, 1);
         } else {
-            initiate_warp(LEVEL_CASTLE, 1, 0x1F, 0);
+            initiate_warp(LEVEL_CASTLE_GROUNDS, 1, 0x1F, 0);
             fade_into_special_warp(0, 0);
             gSavedCourseNum = COURSE_NONE;
         }
@@ -1134,7 +1131,7 @@ s32 update_level(void) {
 
     switch (sCurrPlayMode) {
         case PLAY_MODE_NORMAL:
-            changeLevel = play_mode_normal();
+            changeLevel = play_mode_normal(); scroll_textures();
             break;
         case PLAY_MODE_PAUSED:
             changeLevel = play_mode_paused();
@@ -1189,7 +1186,15 @@ s32 init_level(void) {
 
         if (gCurrentArea != NULL) {
             reset_camera(gCurrentArea->camera);
-
+#ifdef PEACH_SKIP
+            if (gCurrDemoInput != NULL) {
+                set_mario_action(gMarioState, ACT_IDLE, 0);
+            } else if (!gDebugLevelSelect) {
+                if (gMarioState->action != ACT_UNINITIALIZED) {
+                    set_mario_action(gMarioState, ACT_IDLE, 0);
+                }
+            }
+#else
             if (gCurrDemoInput != NULL) {
                 set_mario_action(gMarioState, ACT_IDLE, 0);
             } else if (!gDebugLevelSelect) {
@@ -1202,6 +1207,7 @@ s32 init_level(void) {
                     }
                 }
             }
+#endif
         }
 
         if (val4) {
@@ -1265,7 +1271,12 @@ s32 lvl_init_from_save_file(UNUSED s16 arg0, s32 levelNum) {
 #endif
     sWarpDest.type = WARP_TYPE_NOT_WARPING;
     sDelayedWarpOp = WARP_OP_NONE;
-    gNeverEnteredCastle = !save_file_exists(gCurrSaveFileNum - 1);
+#ifdef CASTLE_MUSIC_FIX
+    gNeverEnteredCastle = 0;
+#else
+     gNeverEnteredCastle = !save_file_exists(gCurrSaveFileNum - 1);
+#endif
+
 
     gCurrLevelNum = levelNum;
     gCurrCourseNum = COURSE_NONE;
@@ -1288,6 +1299,8 @@ s32 lvl_set_current_level(UNUSED s16 arg0, s32 levelNum) {
     sWarpCheckpointActive = FALSE;
     gCurrLevelNum = levelNum;
     gCurrCourseNum = gLevelToCourseNumTable[levelNum - 1];
+	if (gCurrLevelNum == LEVEL_COTMC) return 0;
+	if (gCurrLevelNum == LEVEL_CASTLE_GROUNDS) return 0;
 
     if (gCurrDemoInput != NULL || gCurrCreditsEntry != NULL || gCurrCourseNum == COURSE_NONE) {
         return 0;

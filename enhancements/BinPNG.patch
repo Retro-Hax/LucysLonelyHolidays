@@ -1,0 +1,81 @@
+diff --git a/Makefile b/Makefile
+index 5373691..a8870ae 100644
+--- a/Makefile
++++ b/Makefile
+@@ -366,6 +366,7 @@ MIO0TOOL              := $(TOOLS_DIR)/mio0
+ N64CKSUM              := $(TOOLS_DIR)/n64cksum
+ N64GRAPHICS           := $(TOOLS_DIR)/n64graphics
+ N64GRAPHICS_CI        := $(TOOLS_DIR)/n64graphics_ci
++BINPNG                := $(TOOLS_DIR)/BinPNG.py #pip install pypng bitstring 
+ TEXTCONV              := $(TOOLS_DIR)/textconv
+ AIFF_EXTRACT_CODEBOOK := $(TOOLS_DIR)/aiff_extract_codebook
+ VADPCM_ENC            := $(TOOLS_DIR)/vadpcm_enc
+@@ -495,14 +496,14 @@ $(BUILD_DIR)/%.inc.c: %.png
+ 	$(V)$(N64GRAPHICS) -s $(TEXTURE_ENCODING) -i $@ -g $< -f $(lastword ,$(subst ., ,$(basename $<)))
+ 
+ # Color Index CI8
+-$(BUILD_DIR)/%.ci8: %.ci8.png
+-	$(call print,Converting:,$<,$@)
+-	$(V)$(N64GRAPHICS_CI) -i $@ -g $< -f ci8
++$(BUILD_DIR)/%.ci8.inc.c: %.ci8.png
++	$(call print,Converting CI:,$<,$@)
++	$(V)$(BINPNG) $< $@ 8
+ 
+ # Color Index CI4
+-$(BUILD_DIR)/%.ci4: %.ci4.png
+-	$(call print,Converting:,$<,$@)
+-	$(V)$(N64GRAPHICS_CI) -i $@ -g $< -f ci4
++$(BUILD_DIR)/%.ci4.inc.c: %.ci4.png
++	$(call print,Converting CI:,$<,$@)
++	$(V)$(BINPNG) $< $@ 4
+ 
+ 
+ #==============================================================================#
+diff --git a/tools/BinPNG.py b/tools/BinPNG.py
+new file mode 100755
+index 0000000..6f9c95c
+--- /dev/null
++++ b/tools/BinPNG.py
+@@ -0,0 +1,41 @@
++#!/usr/bin/env python3
++import struct
++import png
++import math
++from bitstring import *
++import sys
++#convert png to bin
++
++def MakeCI(file,Bpp):
++    r = png.Reader(file)
++    re = r.read()
++    Pal = re[3]['palette']
++    Pbin = []
++    shifts = [3,3,3,7]
++    for p in Pal:
++        b = [a>>s for a,s in zip(p,shifts)]
++        if len(p)==4:
++            b = pack('3*uint:5,uint:1',*b)
++        else:
++            b = pack('3*uint:5,uint:1',*b,1)
++        Pbin.append(b.bytes)
++    bin = []
++    for p in re[2]:
++        for w in range(0,re[0],(8//Bpp)):
++            b = p[w:w+(8//Bpp)]
++            b = pack('%d*uint:%d'%((8//Bpp),Bpp),*b)
++            bin.append(b.bytes)
++    return [bin,Pbin]
++
++if __name__=='__main__':
++	[texture,palette] = MakeCI(sys.argv[1],int(sys.argv[3]))
++	pname = sys.argv[2].split('.')
++	pname.insert(2,'pal')
++	pname = pname[:3]
++	pname = '.'.join(pname)
++	p = open(pname,'w')
++	t = open(sys.argv[2],'w')
++	[t.write('0x{:02X},'.format(tex[0])) for tex in texture]
++	[p.write('0x{:02X},0x{:02X},'.format(pal[0],pal[1])) for pal in palette]
++	t.close()
++	p.close()
+\ No newline at end of file

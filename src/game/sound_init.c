@@ -30,7 +30,9 @@ static u8 sBgMusicDisabled = FALSE;
 static u16 sCurrentMusic = MUSIC_NONE;
 static u16 sCurrentShellMusic = MUSIC_NONE;
 static u16 sCurrentCapMusic = MUSIC_NONE;
+#ifdef ENABLE_VANILLA_LEVEL_SPECIFIC_CHECKS
 static u8 sPlayingInfiniteStairs = FALSE;
+#endif
 UNUSED static u8 unused8032C6D8[16] = { 0 };
 static s16 sSoundMenuModeToSoundMode[] = { SOUND_MODE_STEREO, SOUND_MODE_MONO, SOUND_MODE_HEADSET };
 // Only the 20th array element is used.
@@ -200,6 +202,7 @@ void play_painting_eject_sound(void) {
  * Called from threads: thread5_game_loop
  */
 void play_infinite_stairs_music(void) {
+#ifdef ENABLE_VANILLA_LEVEL_SPECIFIC_CHECKS
     u8 shouldPlay = FALSE;
 
     /* Infinite stairs? */
@@ -219,6 +222,7 @@ void play_infinite_stairs_music(void) {
             func_80321080(500);
         }
     }
+#endif
 }
 
 /**
@@ -231,6 +235,10 @@ void set_background_music(u16 a, u16 seqArgs, s16 fadeTimer) {
         } else {
             sound_reset(a);
         }
+
+#ifdef ENABLE_VANILLA_LEVEL_SPECIFIC_CHECKS
+        if (!gNeverEnteredCastle || seqArgs != SEQ_LEVEL_INSIDE_CASTLE)
+#endif
 
         if (!gNeverEnteredCastle || seqArgs != SEQ_LEVEL_INSIDE_CASTLE) {
             play_music(SEQ_PLAYER_LEVEL, seqArgs, fadeTimer);
@@ -271,8 +279,8 @@ void play_cutscene_music(u16 seqArgs) {
  * Called from threads: thread5_game_loop
  */
 void play_shell_music(void) {
-    play_music(SEQ_PLAYER_LEVEL, SEQUENCE_ARGS(4, SEQ_EVENT_POWERUP | SEQ_VARIATION), 0);
-    sCurrentShellMusic = SEQUENCE_ARGS(4, SEQ_EVENT_POWERUP | SEQ_VARIATION);
+    //play_music(SEQ_PLAYER_LEVEL, SEQUENCE_ARGS(4, SEQ_EVENT_POWERUP | SEQ_VARIATION), 0);
+    //sCurrentShellMusic = SEQUENCE_ARGS(4, SEQ_EVENT_POWERUP | SEQ_VARIATION);
 }
 
 /**

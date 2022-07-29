@@ -1,5 +1,7 @@
 #include <PR/ultratypes.h>
 
+#include "prevent_bss_reordering.h"
+
 #include "sm64.h"
 #include "game/ingame_menu.h"
 #include "graph_node.h"
@@ -12,8 +14,6 @@
 #include "game/mario.h"
 #include "game/object_list_processor.h"
 #include "surface_load.h"
-
-s32 unused8038BE90;
 
 /**
  * Partitions for course and object surfaces. The arrays represent
@@ -33,22 +33,28 @@ struct Surface *sSurfacePool;
  */
 s16 sSurfacePoolSize;
 
-u8 unused8038EEA8[0x30];
+u8 gSurfacePoolError;
 
 /**
  * Allocate the part of the surface node pool to contain a surface node.
  */
 static struct SurfaceNode *alloc_surface_node(void) {
+#ifdef USE_SYSTEM_MALLOC
+    struct AllocOnlyPool *pool = !sStaticSurfaceLoadComplete ?
+                                 sStaticSurfaceNodePool : sDynamicSurfaceNodePool;
+    struct SurfaceNode *node = alloc_only_pool_alloc(pool, sizeof(struct SurfaceNode));
+#else
     struct SurfaceNode *node = &sSurfaceNodePool[gSurfaceNodesAllocated];
+#endif
     gSurfaceNodesAllocated++;
 
     node->next = NULL;
 
-    //! A bounds check! If there's more surface nodes than 7000 allowed,
-    //  we, um...
-    // Perhaps originally just debug feedback?
-    if (gSurfaceNodesAllocated >= 7000) {
+#ifndef USE_SYSTEM_MALLOC
+    if (gSurfaceNodesAllocated >= SURFACE_NODE_POOL_SIZE) {
+        gSurfacePoolError |= NOT_ENOUGH_ROOM_FOR_NODES;
     }
+#endif
 
     return node;
 }
@@ -58,15 +64,20 @@ static struct SurfaceNode *alloc_surface_node(void) {
  * initialize the surface.
  */
 static struct Surface *alloc_surface(void) {
-
+#ifdef USE_SYSTEM_MALLOC
+    struct AllocOnlyPool *pool = !sStaticSurfaceLoadComplete ?
+                                 sStaticSurfacePool : sDynamicSurfacePool;
+    struct Surface *surface = alloc_only_pool_alloc(pool, sizeof(struct Surface));
+#else
     struct Surface *surface = &sSurfacePool[gSurfacesAllocated];
+#endif
     gSurfacesAllocated++;
 
-    //! A bounds check! If there's more surfaces than the 2300 allowed,
-    //  we, um...
-    // Perhaps originally just debug feedback?
+#ifndef USE_SYSTEM_MALLOC
     if (gSurfacesAllocated >= sSurfacePoolSize) {
+        gSurfacePoolError |= NOT_ENOUGH_ROOM_FOR_SURFACES;
     }
+#endif
 
     surface->type = 0;
     surface->force = 0;
@@ -99,8 +110,7 @@ static void clear_static_surfaces(void) {
     clear_spatial_partition(&gStaticSurfacePartition[0][0]);
 }
 
-/**
- * Add a surface to the correct cell list of surfaces.
+/** * Add a surface to the correct cell list of surfaces.
  * @param dynamic Determines whether the surface is static or dynamic
  * @param cellX The X position of the cell in which the surface resides
  * @param cellZ The Z position of the cell in which the surface resides
@@ -114,10 +124,10 @@ static void add_surface_to_cell(s16 dynamic, s16 cellX, s16 cellZ, struct Surfac
     s16 sortDir;
     s16 listIndex;
 
-    if (surface->normal.y > 0.01) {
+    if (surface->normal.y > 0.08) {
         listIndex = SPATIAL_PARTITION_FLOORS;
         sortDir = 1; // highest to lowest, then insertion order
-    } else if (surface->normal.y < -0.01) {
+    } else if (surface->normal.y < -0.08) {
         listIndex = SPATIAL_PARTITION_CEILS;
         sortDir = -1; // lowest to highest, then insertion order
     } else {
@@ -195,7 +205,7 @@ static s16 max_3(s16 a0, s16 a1, s16 a2) {
  * time). This function determines the lower cell for a given x/z position.
  * @param coord The coordinate to test
  */
-static s16 lower_cell_index(s16 coord) {
+static s16 lower_cell_index(s32 coord) {
     s16 index;
 
     // Move from range [-0x2000, 0x2000) to [0, 0x4000)
@@ -227,7 +237,7 @@ static s16 lower_cell_index(s16 coord) {
  * time). This function determines the upper cell for a given x/z position.
  * @param coord The coordinate to test
  */
-static s16 upper_cell_index(s16 coord) {
+static s16 upper_cell_index(s32 coord) {
     s16 index;
 
     // Move from range [-0x2000, 0x2000) to [0, 0x4000)
@@ -521,8 +531,8 @@ static void load_environmental_regions(s16 **data) {
  * Allocate some of the main pool for surfaces (2300 surf) and for surface nodes (7000 nodes).
  */
 void alloc_surface_pools(void) {
-    sSurfacePoolSize = 2300;
-    sSurfaceNodePool = main_pool_alloc(7000 * sizeof(struct SurfaceNode), MEMORY_POOL_LEFT);
+    sSurfacePoolSize = SURFACE_POOL_SIZE;
+    sSurfaceNodePool = main_pool_alloc(SURFACE_NODE_POOL_SIZE * sizeof(struct SurfaceNode), MEMORY_POOL_LEFT);
     sSurfacePool = main_pool_alloc(sSurfacePoolSize * sizeof(struct Surface), MEMORY_POOL_LEFT);
 
     gCCMEnteredSlide = 0;
@@ -591,7 +601,6 @@ void load_area_terrain(s16 index, s16 *data, s8 *surfaceRooms, s16 *macroObjects
 
     // Initialize the data for this.
     gEnvironmentRegions = NULL;
-    unused8038BE90 = 0;
     gSurfaceNodesAllocated = 0;
     gSurfacesAllocated = 0;
 

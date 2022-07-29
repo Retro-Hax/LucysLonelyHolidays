@@ -1,0 +1,42 @@
+diff --git a/include/PatchConfig/config_QoL.h b/include/PatchConfig/config_QoL.h
+new file mode 100644
+index 0000000..abe0d96
+--- /dev/null
++++ b/include/PatchConfig/config_QoL.h
+@@ -0,0 +1,6 @@
++ /***************************
++ * QUALITY OF LIFE SETTINGS *
++ ***************************/
++
++// Toggles if the Castle Music Fix shall be enabled or disabled (If disabled the Music Inside the Castle may randomly cut off or simply not play)
++#define CASTLE_MUSIC_FIX
+diff --git a/include/config.h b/include/config.h
+index 044b069..f64d510 100644
+--- a/include/config.h
++++ b/include/config.h
+@@ -50,4 +50,8 @@
+ #define BORDER_HEIGHT 0
+ #endif
+ 
++//My Patches are now inside a Folder called PatchConfig so they dont cause issues with the
++//Vanilla Decomp Config File and also to make it look more clean
++#include "PatchConfig/config_QoL.h"
++
+ #endif // CONFIG_H
+diff --git a/src/game/level_update.c b/src/game/level_update.c
+index 03d4407..8db8064 100644
+--- a/src/game/level_update.c
++++ b/src/game/level_update.c
+@@ -1265,7 +1265,12 @@ s32 lvl_init_from_save_file(UNUSED s16 arg0, s32 levelNum) {
+ #endif
+     sWarpDest.type = WARP_TYPE_NOT_WARPING;
+     sDelayedWarpOp = WARP_OP_NONE;
++
++#ifdef CASTLE_MUSIC_FIX
++    gNeverEnteredCastle = 0;
++#else
+     gNeverEnteredCastle = !save_file_exists(gCurrSaveFileNum - 1);
++#endif
+ 
+     gCurrLevelNum = levelNum;
+     gCurrCourseNum = COURSE_NONE;

@@ -1,0 +1,5 @@
+extern void scroll_castle_grounds_dl_Circle_001_mesh_layer_1_vtx_0();
+extern void scroll_castle_grounds_dl_Gift_mesh_layer_1_vtx_0();
+extern void scroll_castle_grounds_dl_NurbsPath_mesh_layer_1_vtx_0();
+extern void scroll_castle_grounds_dl_Water_mesh_layer_5_vtx_0();
+extern void scroll_castle_grounds();

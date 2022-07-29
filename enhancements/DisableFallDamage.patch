@@ -1,0 +1,52 @@
+diff --git a/include/PatchConfig/config_QoL.h b/include/PatchConfig/config_QoL.h
+new file mode 100644
+index 0000000..6cd1a03
+--- /dev/null
++++ b/include/PatchConfig/config_QoL.h
+@@ -0,0 +1,9 @@
++ /***************************
++ * QUALITY OF LIFE SETTINGS *
++ ***************************/
++
++// Disables fall damage
++// #define NO_FALL_DAMAGE
++
++// Disables the scream that mario makes when falling off a great height (this is separate from actual fall damage)
++// #define NO_FALL_DAMAGE_SOUND
+diff --git a/include/config.h b/include/config.h
+index 044b069..f64d510 100644
+--- a/include/config.h
++++ b/include/config.h
+@@ -50,4 +50,8 @@
+ #define BORDER_HEIGHT 0
+ #endif
+ 
++//My Patches are now inside a Folder called PatchConfig so they dont cause issues with the
++//Vanilla Decomp Config File and also to make it look more clean
++#include "PatchConfig/config_QoL.h"
++
+ #endif // CONFIG_H
+diff --git a/src/game/mario_actions_airborne.c b/src/game/mario_actions_airborne.c
+index 60c7c09..18bf1c0 100644
+--- a/src/game/mario_actions_airborne.c
++++ b/src/game/mario_actions_airborne.c
+@@ -59,6 +59,9 @@ s32 lava_boost_on_wall(struct MarioState *m) {
+ }
+ 
+ s32 check_fall_damage(struct MarioState *m, u32 hardFallAction) {
++#ifdef NO_FALL_DAMAGE
++    return FALSE;
++#endif
+     f32 fallHeight;
+     f32 damageHeight;
+ 
+@@ -2067,7 +2070,9 @@ s32 mario_execute_airborne_action(struct MarioState *m) {
+         return TRUE;
+     }
+ 
++#ifndef NO_FALL_DAMAGE_SOUND
+     play_far_fall_sound(m);
++#endif
+ 
+     /* clang-format off */
+     switch (m->action) {

@@ -1,0 +1,48 @@
+diff --git a/include/PatchConfig/config_QoL.h b/include/PatchConfig/config_QoL.h
+new file mode 100644
+index 0000000..f57de35
+--- /dev/null
++++ b/include/PatchConfig/config_QoL.h
+@@ -0,0 +1,6 @@
++ /***************************
++ * QUALITY OF LIFE SETTINGS *
++ ***************************/
++
++// Disables Mario getting stuck in snow and sand when falling
++// #define NO_GETTING_BURIED
+diff --git a/include/config.h b/include/config.h
+index 044b069..f64d510 100644
+--- a/include/config.h
++++ b/include/config.h
+@@ -50,4 +50,8 @@
+ #define BORDER_HEIGHT 0
+ #endif
+ 
++//My Patches are now inside a Folder called PatchConfig so they dont cause issues with the
++//Vanilla Decomp Config File and also to make it look more clean
++#include "PatchConfig/config_QoL.h"
++
+ #endif // CONFIG_H
+diff --git a/src/game/mario_actions_airborne.c b/src/game/mario_actions_airborne.c
+index 60c7c09..393b901 100644
+--- a/src/game/mario_actions_airborne.c
++++ b/src/game/mario_actions_airborne.c
+@@ -113,6 +113,10 @@ s32 check_kick_or_dive_in_air(struct MarioState *m) {
+ }
+ 
+ s32 should_get_stuck_in_ground(struct MarioState *m) {
++#ifdef NO_GETTING_BURIED
++    return FALSE;
++#else
++
+     u32 terrainType = m->area->terrainType & TERRAIN_MASK;
+     struct Surface *floor = m->floor;
+     s32 flags = floor->flags;
+@@ -126,6 +130,7 @@ s32 should_get_stuck_in_ground(struct MarioState *m) {
+     }
+ 
+     return FALSE;
++#endif
+ }
+ 
+ s32 check_fall_damage_or_get_stuck(struct MarioState *m, u32 hardFallAction) {

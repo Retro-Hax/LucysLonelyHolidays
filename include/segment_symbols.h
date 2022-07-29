@@ -5,13 +5,19 @@
 #define DECLARE_SEGMENT(name) \
     extern u8 _##name##SegmentRomStart[]; \
     extern u8 _##name##SegmentRomEnd[];
+    
+#define DECLARE_NOLOAD(name) \
+    extern u8 _##name##SegmentNoloadStart[]; \
+    extern u8 _##name##SegmentNoloadEnd[];
 
 #define DECLARE_ACTOR_SEGMENT(name) \
     DECLARE_SEGMENT(name##_mio0) \
-    DECLARE_SEGMENT(name##_geo)
+    DECLARE_SEGMENT(name##_geo) \
+    DECLARE_NOLOAD(name##_geo)
 
 #define DECLARE_LEVEL_SEGMENT(name) \
     DECLARE_SEGMENT(name) \
+    DECLARE_NOLOAD(name) \
     DECLARE_SEGMENT(name##_segment_7)
 
 DECLARE_ACTOR_SEGMENT(common0)
@@ -40,7 +46,12 @@ DECLARE_SEGMENT(engine)
 DECLARE_SEGMENT(behavior)
 DECLARE_SEGMENT(scripts)
 DECLARE_SEGMENT(goddard)
+DECLARE_SEGMENT(framebuffers)
 extern u8 _goddardSegmentStart[];
+extern u8 _engineSegmentStart[];
+extern u8 _engineSegmentNoloadEnd[];
+extern u8 _engineSegmentEnd[];
+extern u8 _framebuffersSegmentNoloadEnd[];
 
 DECLARE_LEVEL_SEGMENT(menu)
 DECLARE_LEVEL_SEGMENT(intro)

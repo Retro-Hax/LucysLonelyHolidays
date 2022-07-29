@@ -17,45 +17,50 @@
 #endif
 
 DEFINE_DIALOG(DIALOG_000, 1, 6, 30, 200, _("\
-Wow! You're smack in the\n\
-middle of the battlefield.\n\
-You'll find the Power\n\
-Stars that Bowser stole\n\
-inside the painting\n\
-worlds.\n\
-First, talk to the\n\
-Bob-omb Buddy. (Press [B]\n\
-to talk.) He'll certainly\n\
-help you out, and so will\n\
-his " COMRADES " in other\n\
-areas.\n\
-To read signs, stop, face\n\
-them and press [B]. Press [A]\n\
-or [B] to scroll ahead. You\n\
-can talk to some other\n\
-characters by facing them\n\
-and pressing [B]."))
+July 10, 1987\n\
+Adventure Guy\n\
+\n\
+I finnaly climbed this\n\
+Mountain\n\
+after struggling to do so\n\
+for 3 Days\n\
+I will plan to build a\n\
+little Stone House\n\
+near the edge of this\n\
+Mountain tho\n\
+there also seems to be a\n\
+Castle near by...\n\
+i wonder if theres some\n\
+way to get there... \n\
+\n\
+\n\
+\n\
+The Rest of this Sign is\n\
+Unreadable to you"))
 
 DEFINE_DIALOG(DIALOG_001, 1, 4, 95, 200, _("\
-Watch out! If you wander\n\
-around here, you're liable\n\
-to be " PLASTERED " by a\n\
-water bomb!\n\
-Those enemy Bob-ombs love\n\
-to fight, and they're\n\
-always finding ways to\n\
-attack.\n\
-This meadow has become\n\
-a battlefield ever since\n\
-the Big Bob-omb got his\n\
-paws on the Power Star.\n\
-Can you recover the Star\n\
-for us? Cross the bridge\n\
-and go left up the path\n\
-to find the Big Bob-omb.\n\
-Please come back to see\n\
-me after you've retrieved\n\
-the Power Star!"))
+July 15, 1987\n\
+Adventure Guy\n\
+\n\
+They said i was gonna\n\
+explore this Paradise\n\
+and that it would\n\
+be without any risk.\n\
+I got no idea\n\
+how long i got til they\n\
+find me they think i am\n\
+the reason there have\n\
+been so many Enemies\n\
+lately not only\n\
+attacking the Island\n\
+but also the Kingdom\n\
+i remember there being\n\
+a Pipe in the Cave\n\
+i may hide in this\n\
+place where the pipe\n\
+leads me maybe it even\n\
+brings me out of this\n\
+hell hole...."))
 
 DEFINE_DIALOG(DIALOG_002, 1, 4, 95, 200, _("\
 Hey, you! It's dangerous\n\
@@ -76,31 +81,37 @@ You can talk to us\n\
 whenever you'd like to!"))
 
 DEFINE_DIALOG(DIALOG_003, 1, 5, 95, 200, _("\
-Thank you, Mario! The Big\n\
-Bob-omb is nothing but a\n\
-big dud now! But the\n\
-battle for the castle has\n\
-just begun.\n\
-Other enemies are holding\n\
-the other Power Stars. If\n\
-you recover more Stars,\n\
-you can open new doors\n\
-that lead to new worlds!\n\
-My Bob-omb Buddies are\n\
-waiting for you. Be sure\n\
-to talk to them--they'll\n\
-set up cannons for you."))
+Thank you, Mario! for \n\
+coming here. The Pimp \n\
+is back! (There was \n\
+supposed to be a Custom \n\
+Boss but we ran out of \n\
+Budget Sorry :( ) \n\
+He kicked King bob Omb \n\
+off his own Resort!\n\
+I know you two had \n\
+your differences \n\
+and both of their \n\
+residents are turning \n\
+into a Twitter War and \n\
+attacking each other \n\
+so please help us! \n\
+If you do i gladly \n\
+open you the Pipe for \n\
+the Castle Ruins"))
 
 DEFINE_DIALOG(DIALOG_004, 1, 3, 95, 200, _("\
-We're peace-loving\n\
-Bob-ombs, so we don't use\n\
-cannons.\n\
-But if you'd like\n\
-to blast off, we don't\n\
-mind. Help yourself.\n\
-We'll prepare all of the\n\
-cannons in this course for\n\
-you to use. Bon Voyage!"))
+Welcome to the CastleRuins\n\
+Those Rooms include lotsof\n\
+Rich Treasures like Coins\n\
+and Stars which we've\n\
+hidden ofc since we arent\n\
+dumb after all i wish you\n\
+luck finding them since\n\
+this Place is super\n\
+fallen down you can keep\n\
+anything you find in\n\
+this place"))
 
 DEFINE_DIALOG(DIALOG_005, 1, 3, 30, 200, _("\
 Hey, Mario! Is it true\n\
@@ -123,12 +134,7 @@ Ready....\n\
 //Go!////Don't Go"))
 
 DEFINE_DIALOG(DIALOG_006, 1, 3, 30, 200, _("\
-Hey!!! Don't try to " SCAM_ME
-"You've gotta run\n\
-the whole course.\n\
-Later. Look me up when\n\
-you want to race for\n\
-real."))
+Unused Text LMAO"))
 
 DEFINE_DIALOG(DIALOG_007, 1, 5, 30, 200, _("\
 Hufff...fff...pufff...\n\
@@ -138,18 +144,21 @@ Here you go--you've won\n\
 it, fair and square!"))
 
 DEFINE_DIALOG(DIALOG_008, 1, 4, 30, 200, _("\
-BEWARE OF CHAIN CHOMP\n\
-Extreme Danger!\n\
-Get close and press [C]^\n\
-for a better look.\n\
-Scary, huh?\n\
-See the Red Coin on top\n\
-of the stake?\n\
-\n\
-When you collect eight of\n\
-them, a Power Star will\n\
-appear in the meadow\n\
-across the bridge."))
+Boo I'm a Ghost\n\
+haunting the\n\
+Castle Ruins and\n\
+since you found me\n\
+i guess i can tell\n\
+you the Secret of\n\
+the Treasure Chests\n\
+Order so you dont\n\
+get shocked and die\n\
+Keep this Order in\n\
+Mind:\n\
+1.Down Left\n\
+2.Down Right\n\
+3.Up Right\n\
+4.Up Left"))
 
 DEFINE_DIALOG(DIALOG_009, 1, 5, 30, 200, _("\
 Long time, no see! Wow,\n\
@@ -337,29 +346,10 @@ Stars.\n\
 Bwa ha ha!"))
 
 DEFINE_DIALOG(DIALOG_030, 1, 6, 30, 200, _("\
-Hello! The Lakitu Bros.,\n\
-cutting in with a live\n\
-update on Mario's\n\
-progress. He's about to\n\
-learn a technique for\n\
-sneaking up on enemies.\n\
-The trick is this: He has\n\
-to walk very slowly in\n\
-order to walk quietly.\n\
-\n\
-\n\
-\n\
-And wrapping up filming\n\
-techniques reported on\n\
-earlier, you can take a\n\
-look around using [C]> and\n\
-[C]<. Press [C]| to view the\n\
-action from a distance.\n\
-When you can't move the\n\
-camera any farther, the\n\
-buzzer will sound. This is\n\
-the Lakitu Bros.,\n\
-signing off."))
+Some say praying to the\n\
+Shy Guy Statue gets\n\
+you in a World outside\n\
+your Mind"))
 
 DEFINE_DIALOG(DIALOG_031, 1, 5, 30, 200, _("\
 No way! You beat me...\n\
@@ -1280,23 +1270,44 @@ Marker.』 When you collect\n\
 all 8 Red Coins, the Star\n\
 will appear here."))
 
-DEFINE_DIALOG(DIALOG_105, 1, 3, 95, 200, _("\
-Ready for blastoff! Come\n\
-on, hop into the cannon!\n\
-\n\
-You can reach the Star on\n\
-the floating island by\n\
-using the four cannons.\n\
-Use the Control Stick to\n\
-aim, then press [A] to fire.\n\
-\n\
-If you're handy, you can\n\
-grab on to trees or poles\n\
-to land."))
+DEFINE_DIALOG(DIALOG_105, 1, 4, 95, 200, _("\
+Oh Geez! I hope im not\n\
+too late to the Party\n\
+anyways uh so basically\n\
+if you wanna test your\n\
+Super Mario 64 Skills\n\
+then well the Game isnt\n\
+over as i've hid 2 Stars\n\
+in several levels which\n\
+make up a total of\n\
+8 stars while i will not\n\
+tell you where they are\n\
+here are the level\n\
+locations atleast:\n\
+This Hubworld,\n\
+Fly Guys Kingdom,\n\
+Tropical Resort,\n\
+If you get all of them\n\
+i'll even give you\n\
+a Special Surpise!"))
 
-DEFINE_DIALOG(DIALOG_106, 1, 2, 95, 200, _("\
-Ready for blastoff! Come\n\
-on, hop into the cannon!"))
+DEFINE_DIALOG(DIALOG_106, 1, 3, 95, 200, _("\
+I Hope you enjoyed this\n\
+Hack of Super Mario 64!\n\
+Since you now completed\n\
+the Game and got nothing\n\
+more to do i suggest just\n\
+simply turning off the\n\
+Console and relax after\n\
+all you deserve it\n\
+For all the Hard Work\n\
+you do even outside of\n\
+your YT Videos you give\n\
+people smiles on their\n\
+Faces with this said\n\
+Goodbye, and\n\
+Thanks for Playing\n\
+Lucys Lonely Holidays!"))
 
 DEFINE_DIALOG(DIALOG_107, 1, 3, 95, 200, _("\
 Ghosts...\n\

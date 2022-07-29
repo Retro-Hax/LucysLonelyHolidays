@@ -44,14 +44,14 @@ static const LevelScript script_exec_level_table[2
 #undef DEFINE_LEVEL
 #undef STUB_LEVEL
 
-static const LevelScript script_L1[4];
-static const LevelScript script_L2[4];
-static const LevelScript goto_mario_head_regular[4];
-static const LevelScript goto_mario_head_dizzy[4];
-static const LevelScript script_L5[4];
+static const LevelScript script_L1[6];
+static const LevelScript script_L2[6];
+static const LevelScript goto_mario_head_regular[6];
+static const LevelScript goto_mario_head_dizzy[6];
+static const LevelScript script_L5[6];
 
 #define STUB_LEVEL(_0, _1, _2, _3, _4, _5, _6, _7, _8)
-#define DEFINE_LEVEL(_0, _1, _2, folder, _4, _5, _6, _7, _8, _9, _10) static const LevelScript script_exec_ ## folder [4 + 1];
+#define DEFINE_LEVEL(_0, _1, _2, folder, _4, _5, _6, _7, _8, _9, _10) static const LevelScript script_exec_ ## folder [6 + 1];
 
 #include "level_defines.h"
 
@@ -121,29 +121,29 @@ const LevelScript level_main_scripts_entry[] = {
     LOOP_UNTIL(/*op*/ OP_LT, /*arg*/ 0),
     JUMP_IF(/*op*/ OP_EQ, /*arg*/ -1, script_L2),
     JUMP_IF(/*op*/ OP_EQ, /*arg*/ -2, goto_mario_head_regular),
-    JUMP_IF(/*op*/ OP_EQ, /*arg*/ -3, goto_mario_head_dizzy),
+    JUMP_IF(/*op*/ OP_EQ, /*arg*/ -3, script_L2), // Since the Game Crashes as it cant load the GAMEOVER Screen lets just simply load the End CAke Screen Level and turn it into a Crash Screen
     JUMP_IF(/*op*/ OP_EQ, /*arg*/ -8, script_L1),
     JUMP_IF(/*op*/ OP_EQ, /*arg*/ -9, script_L5),
 };
 
 static const LevelScript script_L1[] = {
-    EXIT_AND_EXECUTE(/*seg*/ 0x14, _introSegmentRomStart, _introSegmentRomEnd, level_intro_splash_screen),
+    EXIT_AND_EXECUTE_WITH_CODE(/*seg*/ 0x14, _introSegmentRomStart, _introSegmentRomEnd, level_intro_splash_screen, _introSegmentNoloadStart, _introSegmentNoloadEnd),
 };
 
 static const LevelScript script_L2[] = {
-    EXIT_AND_EXECUTE(/*seg*/ 0x0E, _endingSegmentRomStart, _endingSegmentRomEnd, level_ending_entry),
+    EXIT_AND_EXECUTE_WITH_CODE(/*seg*/ 0x0E, _endingSegmentRomStart, _endingSegmentRomEnd, level_ending_entry, _endingSegmentNoloadStart, _endingSegmentNoloadEnd),
 };
 
 static const LevelScript goto_mario_head_regular[] = {
-    EXIT_AND_EXECUTE(/*seg*/ 0x14, _introSegmentRomStart, _introSegmentRomEnd, level_intro_mario_head_regular),
+    EXIT_AND_EXECUTE_WITH_CODE(/*seg*/ 0x14, _introSegmentRomStart, _introSegmentRomEnd, level_intro_mario_head_regular, _introSegmentNoloadStart, _introSegmentNoloadEnd),
 };
 
 static const LevelScript goto_mario_head_dizzy[] = {
-    EXIT_AND_EXECUTE(/*seg*/ 0x14, _introSegmentRomStart, _introSegmentRomEnd, level_intro_mario_head_dizzy),
+    EXIT_AND_EXECUTE_WITH_CODE(/*seg*/ 0x14, _introSegmentRomStart, _introSegmentRomEnd, level_intro_mario_head_dizzy, _introSegmentNoloadStart, _introSegmentNoloadEnd),
 };
 
 static const LevelScript script_L5[] = {
-    EXIT_AND_EXECUTE(/*seg*/ 0x14, _introSegmentRomStart, _introSegmentRomEnd, level_intro_entry_4),
+    EXIT_AND_EXECUTE_WITH_CODE(/*seg*/ 0x14, _introSegmentRomStart, _introSegmentRomEnd, level_intro_entry_4, _introSegmentNoloadStart, _introSegmentNoloadEnd),
 };
 
 // Include the level jumptable.
@@ -161,7 +161,7 @@ static const LevelScript script_exec_level_table[] = {
 
 #define DEFINE_LEVEL(_0, _1, _2, folder, _4, _5, _6, _7, _8, _9, _10) \
 static const LevelScript script_exec_ ## folder [] = { \
-    EXECUTE(0x0E, _ ## folder ## SegmentRomStart, _ ## folder ## SegmentRomEnd, level_ ## folder ## _entry), \
+    EXECUTE_WITH_CODE(0x0E, _ ## folder ## SegmentRomStart, _ ## folder ## SegmentRomEnd, level_ ## folder ## _entry, _ ## folder ## SegmentNoloadStart, _ ## folder ## SegmentNoloadEnd), \
     RETURN(), \
 };
 
@@ -208,8 +208,6 @@ const LevelScript script_func_global_2[] = {
 
 const LevelScript script_func_global_3[] = {
     LOAD_MODEL_FROM_GEO(MODEL_BLARGG,                  blargg_geo),
-    LOAD_MODEL_FROM_GEO(MODEL_BULLY,                   bully_geo),
-    LOAD_MODEL_FROM_GEO(MODEL_BULLY_BOSS,              bully_boss_geo),
     RETURN(),
 };
 
@@ -252,6 +250,7 @@ const LevelScript script_func_global_8[] = {
     LOAD_MODEL_FROM_GEO(MODEL_MR_BLIZZARD_HIDDEN,      mr_blizzard_hidden_geo),
     LOAD_MODEL_FROM_GEO(MODEL_MR_BLIZZARD,             mr_blizzard_geo),
     LOAD_MODEL_FROM_GEO(MODEL_PENGUIN,                 penguin_geo),
+    LOAD_MODEL_FROM_GEO(MODEL_SNOWBALL,                 snowball_geo),
     RETURN(),
 };
 
@@ -303,8 +302,6 @@ const LevelScript script_func_global_13[] = {
 
 const LevelScript script_func_global_14[] = {
     LOAD_MODEL_FROM_GEO(MODEL_BUB,                     bub_geo),
-    LOAD_MODEL_FROM_GEO(MODEL_TREASURE_CHEST_BASE,     treasure_chest_base_geo),
-    LOAD_MODEL_FROM_GEO(MODEL_TREASURE_CHEST_LID,      treasure_chest_lid_geo),
     LOAD_MODEL_FROM_GEO(MODEL_CYAN_FISH,               cyan_fish_geo),
     LOAD_MODEL_FROM_GEO(MODEL_WATER_RING,              water_ring_geo),
     LOAD_MODEL_FROM_GEO(MODEL_WATER_MINE,              water_mine_geo),
@@ -314,6 +311,8 @@ const LevelScript script_func_global_14[] = {
 };
 
 const LevelScript script_func_global_15[] = {
+    LOAD_MODEL_FROM_GEO(MODEL_BULLY,                   bully_geo),
+    LOAD_MODEL_FROM_GEO(MODEL_BULLY_BOSS,              bully_boss_geo),
     LOAD_MODEL_FROM_GEO(MODEL_PIRANHA_PLANT,           piranha_plant_geo),
     LOAD_MODEL_FROM_GEO(MODEL_WHOMP,                   whomp_geo),
     LOAD_MODEL_FROM_GEO(MODEL_KOOPA_WITH_SHELL,        koopa_with_shell_geo),
@@ -322,6 +321,8 @@ const LevelScript script_func_global_15[] = {
     LOAD_MODEL_FROM_GEO(MODEL_CHAIN_CHOMP,             chain_chomp_geo),
     LOAD_MODEL_FROM_GEO(MODEL_KOOPA_FLAG,              koopa_flag_geo),
     LOAD_MODEL_FROM_GEO(MODEL_WOODEN_POST,             wooden_post_geo),
+    LOAD_MODEL_FROM_GEO(MODEL_TREASURE_CHEST_BASE,     treasure_chest_base_geo),
+    LOAD_MODEL_FROM_GEO(MODEL_TREASURE_CHEST_LID,      treasure_chest_lid_geo),
     RETURN(),
 };
 

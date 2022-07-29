@@ -30,7 +30,7 @@ void king_bobomb_act_0(void) {
         gSecondCameraFocus = o;
         cur_obj_init_animation_with_sound(5);
         cur_obj_set_pos_to_home();
-        o->oHealth = 3;
+        o->oHealth = 5;
 
         if (cur_obj_can_mario_activate_textbox_2(500.0f, 100.0f)) {
             o->oSubAction++;
@@ -61,7 +61,7 @@ void king_bobomb_act_2(void) {
 
     if (o->oKingBobombUnk100 == 0) {
         if (cur_obj_check_anim_frame(15)) {
-            cur_obj_shake_screen(SHAKE_POS_SMALL);
+            cur_obj_shake_screen(SHAKE_POS_BOWLING_BALL);
         }
 
         if (cur_obj_init_animation_and_check_if_near_end(4)) {
@@ -167,8 +167,11 @@ void king_bobomb_act_6(void) {
 
             cur_obj_play_sound_2(SOUND_OBJ_KING_BOBOMB);
             cur_obj_play_sound_2(SOUND_OBJ2_KING_BOBOMB_DAMAGE);
-            cur_obj_shake_screen(SHAKE_POS_SMALL);
+            cur_obj_shake_screen(SHAKE_FALL_DAMAGE);
             spawn_mist_particles_variable(0, 0, 100.0f);
+
+        struct Object *wave = spawn_object(o, MODEL_NONE, bhvBowserShockWave);
+        wave->oPosY = o->oFloorHeight;
 
             o->oInteractType = INTERACT_DAMAGE;
 
@@ -211,12 +214,8 @@ void king_bobomb_act_7(void) {
         spawn_triangle_break_particles(20, MODEL_DIRT_ANIMATION, 3.0f, 4);
         cur_obj_shake_screen(SHAKE_POS_SMALL);
 
-#ifndef VERSION_JP
-        cur_obj_spawn_star_at_y_offset(2000.0f, 4500.0f, -4500.0f, 200.0f);
-#else
         o->oPosY += 100.0f;
-        spawn_default_star(2000.0f, 4500.0f, -4500.0f);
-#endif
+        spawn_default_star(-822, 5121, 3);
 
         o->oAction = 8;
     }

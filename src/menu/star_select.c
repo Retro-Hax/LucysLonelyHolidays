@@ -1,3 +1,4 @@
+#include "src/game/texscroll.h"
 #include <PR/ultratypes.h>
 
 #include "audio/external.h"
@@ -209,11 +210,24 @@ void print_course_number(s16 language) {
 void print_course_number(void) {
 #endif
     u8 courseNum[4];
+    Gfx *textureLvl;
 
     create_dl_translation_matrix(MENU_MTX_PUSH, 158.0f, 81.0f, 0.0f);
 
+    switch (gCurrCourseNum) {
+        case COURSE_WF: // Level 2
+            textureLvl = dl_menu_rgba16_wood_level2;
+            break;
+        case COURSE_JRB: // Level 3
+            textureLvl = dl_menu_rgba16_wood_level3;
+            break;
+        default: // any level
+            textureLvl = dl_menu_rgba16_wood_course;
+            break;
+    }
+
     // Full wood texture in JP & US, lower part of it on EU
-    gSPDisplayList(gDisplayListHead++, dl_menu_rgba16_wood_course);
+    gSPDisplayList(gDisplayListHead++, textureLvl);
 
 #ifdef VERSION_EU
     // Change upper part of the wood texture depending of the language defined
@@ -329,14 +343,14 @@ void print_act_selector_strings(void) {
     print_course_number();
 #endif
 
-    gSPDisplayList(gDisplayListHead++, dl_menu_ia8_text_begin);
+    gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);
     gDPSetEnvColor(gDisplayListHead++, 0, 0, 0, 255);
     // Print the name of the selected act.
     if (sVisibleStars != 0) {
         selectedActName = segmented_to_virtual(actNameTbl[COURSE_NUM_TO_INDEX(gCurrCourseNum) * 6 + sSelectedActIndex]);
 
         actNameX = get_str_x_pos_from_center(ACT_NAME_X, selectedActName, 8.0f);
-        print_menu_generic_string(actNameX, 81, selectedActName);
+        print_generic_string(actNameX, 144, selectedActName);
     }
 
     // Print the numbers above each star.
@@ -345,11 +359,11 @@ void print_act_selector_strings(void) {
 #ifdef VERSION_EU
         print_menu_generic_string(143 - sVisibleStars * 15 + i * 30, 38, starNumbers);
 #else
-        print_menu_generic_string(139 - sVisibleStars * 17 + i * 34, 38, starNumbers);
+        print_generic_string(139 - sVisibleStars * 17 + i * 34, 194, starNumbers);
 #endif
     }
 
-    gSPDisplayList(gDisplayListHead++, dl_menu_ia8_text_end);
+    gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
  }
 
 /**
@@ -424,7 +438,7 @@ s32 lvl_update_obj_and_load_act_button_actions(UNUSED s32 arg, UNUSED s32 unused
         }
     }
 
-    area_update_objects();
+    area_update_objects(); scroll_textures();
     sActSelectorMenuTimer++;
     return sLoadedActNum;
 }

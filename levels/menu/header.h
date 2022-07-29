@@ -35,6 +35,10 @@ extern const u8 *const menu_font_lut[];
 extern const Gfx dl_menu_ia8_text_begin[];
 extern const Gfx dl_menu_ia8_text_end[];
 extern const Gfx dl_menu_rgba16_wood_course[];
+
+extern const Gfx dl_menu_rgba16_wood_level2[];
+extern const Gfx dl_menu_rgba16_wood_level3[];
+
 extern const Gfx dl_menu_texture_course_upper[];
 extern const Gfx dl_menu_texture_niveau_upper[];
 extern const Gfx dl_menu_texture_kurs_upper[];

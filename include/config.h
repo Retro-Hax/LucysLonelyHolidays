@@ -13,8 +13,6 @@
 #define BUGFIX_MAX_LIVES (0 || VERSION_US || VERSION_EU || VERSION_SH)
 /// Fixes bug where the Boss music won't fade out after defeating King Bob-omb
 #define BUGFIX_KING_BOB_OMB_FADE_MUSIC (0 || VERSION_US || VERSION_EU || VERSION_SH)
-/// Fixes bug in Bob-Omb Battlefield where entering a warp stops the Koopa race music
-#define BUGFIX_KOOPA_RACE_MUSIC (0 || VERSION_US || VERSION_EU || VERSION_SH)
 /// Fixes bug where Piranha Plants do not reset their action state when the
 /// player exits their activation radius.
 #define BUGFIX_PIRANHA_PLANT_STATE_RESET (0 || VERSION_US || VERSION_EU || VERSION_SH)
@@ -49,5 +47,12 @@
 // What's the point of having a border?
 #define BORDER_HEIGHT 0
 #endif
+
+//My Patches are now inside a Folder called PatchConfig so they dont cause issues with the
+//Vanilla Decomp Config File and also to make it look more clean
+#include "PatchConfig/config_ParallelLakituCam.h"
+#include "PatchConfig/config_Safeguards.h"
+#include "PatchConfig/config_QoL.h"
+#include "PatchConfig/config_Graphics.h"
 
 #endif // CONFIG_H

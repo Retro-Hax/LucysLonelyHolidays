@@ -138,17 +138,9 @@ void bhv_coin_formation_spawn_loop(void) {
         cur_obj_set_behavior(bhvYellowCoin);
         obj_set_hitbox(o, &sYellowCoinHitbox);
         bhv_init_room();
-
-        if (o->oCoinUnkF8) {
-            o->oPosY += 300.0f;
-            cur_obj_update_floor_height();
-
-            if (o->oPosY < o->oFloorHeight || o->oFloorHeight < FLOOR_LOWER_LIMIT_MISC) {
-                obj_mark_for_deletion(o);
-            } else {
-                o->oPosY = o->oFloorHeight;
-            }
-        } else {
+        // I have no idea if i could've deleted less but
+        //hey atleast the Coins can now spawn in the air :D
+        {
             cur_obj_update_floor_height();
 
             if (absf(o->oPosY - o->oFloorHeight) > 250.0f) {

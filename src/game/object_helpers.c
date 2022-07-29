@@ -165,33 +165,32 @@ Gfx *geo_switch_anim_state(s32 callContext, struct GraphNode *node) {
     return NULL;
 }
 
-//! @bug Same issue as geo_switch_anim_state.
-#ifdef AVOID_UB
 Gfx *geo_switch_area(s32 callContext, struct GraphNode *node, UNUSED void *context) {
-#else
-Gfx *geo_switch_area(s32 callContext, struct GraphNode *node) {
-#endif
-    s16 sp26;
-    struct Surface *sp20;
-    UNUSED struct Object *sp1C =
-        (struct Object *) gCurGraphNodeObject; // TODO: change global type to Object pointer
+    struct Surface *floor;
     struct GraphNodeSwitchCase *switchCase = (struct GraphNodeSwitchCase *) node;
 
     if (callContext == GEO_CONTEXT_RENDER) {
         if (gMarioObject == NULL) {
             switchCase->selectedCase = 0;
         } else {
-            gFindFloorIncludeSurfaceIntangible = TRUE;
+#ifdef ENABLE_VANILLA_LEVEL_SPECIFIC_CHECKS
+            if (gCurrLevelNum == LEVEL_BBH) {
+                // In BBH, check for a floor manually, since there is an intangible floor. In custom hacks this can be removed.
+                find_room_floor(gMarioObject->oPosX, gMarioObject->oPosY, gMarioObject->oPosZ, &floor);
+            } else {
+                // Since no intangible floors are nearby, use Mario's floor instead.
+                floor = gMarioState->floor;
+            }
+#else
+            floor = gMarioState->floor;
+#endif
+            if (floor) {
+                gMarioCurrentRoom = floor->room;
+                s16 roomCase = floor->room - 1;
+                print_debug_top_down_objectinfo("areainfo %d", floor->room);
 
-            find_floor(gMarioObject->oPosX, gMarioObject->oPosY, gMarioObject->oPosZ, &sp20);
-
-            if (sp20) {
-                gMarioCurrentRoom = sp20->room;
-                sp26 = sp20->room - 1;
-                print_debug_top_down_objectinfo("areainfo %d", sp20->room);
-
-                if (sp26 >= 0) {
-                    switchCase->selectedCase = sp26;
+                if (roomCase >= 0) {
+                    switchCase->selectedCase = roomCase;
                 }
             }
         }
@@ -1825,29 +1824,11 @@ void cur_obj_move_standard(s16 steepSlopeAngleDegrees) {
     }
 }
 
-static s32 cur_obj_within_12k_bounds(void) {
-    if (o->oPosX < -12000.0f || 12000.0f < o->oPosX) {
-        return FALSE;
-    }
-
-    if (o->oPosY < -12000.0f || 12000.0f < o->oPosY) {
-        return FALSE;
-    }
-
-    if (o->oPosZ < -12000.0f || 12000.0f < o->oPosZ) {
-        return FALSE;
-    }
-
-    return TRUE;
-}
-
 void cur_obj_move_using_vel_and_gravity(void) {
-    if (cur_obj_within_12k_bounds()) {
         o->oPosX += o->oVelX;
         o->oPosZ += o->oVelZ;
         o->oVelY += o->oGravity; //! No terminal velocity
         o->oPosY += o->oVelY;
-    }
 }
 
 void cur_obj_move_using_fvel_and_gravity(void) {
@@ -2417,9 +2398,11 @@ void cur_obj_enable_rendering_if_mario_in_room(void) {
     if (o->oRoom != -1 && gMarioCurrentRoom != 0) {
         if (gMarioCurrentRoom == o->oRoom) {
             marioInRoom = TRUE;
-        } else if (gDoorAdjacentRooms[gMarioCurrentRoom][0] == o->oRoom) {
-            marioInRoom = TRUE;
         } else if (gDoorAdjacentRooms[gMarioCurrentRoom][1] == o->oRoom) {
+            marioInRoom = TRUE;
+        } else if (gDoorAdjacentRooms[o->oRoom][0] == gMarioCurrentRoom) {
+            marioInRoom = TRUE;
+        } else if (gDoorAdjacentRooms[o->oRoom][1] == gMarioCurrentRoom) {
             marioInRoom = TRUE;
         } else {
             marioInRoom = FALSE;

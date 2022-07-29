@@ -4,6 +4,7 @@
 #include "area.h"
 #include "audio/external.h"
 #include "camera.h"
+#include "engine/extended_bounds.h"
 #include "engine/graph_node.h"
 #include "engine/math_util.h"
 #include "game_init.h"
@@ -59,6 +60,9 @@ s32 lava_boost_on_wall(struct MarioState *m) {
 }
 
 s32 check_fall_damage(struct MarioState *m, u32 hardFallAction) {
+#ifdef NO_FALL_DAMAGE
+    return FALSE;
+#endif
     f32 fallHeight;
     f32 damageHeight;
 
@@ -113,6 +117,10 @@ s32 check_kick_or_dive_in_air(struct MarioState *m) {
 }
 
 s32 should_get_stuck_in_ground(struct MarioState *m) {
+#ifdef NO_GETTING_BURIED
+    return FALSE;
+#else
+
     u32 terrainType = m->area->terrainType & TERRAIN_MASK;
     struct Surface *floor = m->floor;
     s32 flags = floor->flags;
@@ -126,6 +134,7 @@ s32 should_get_stuck_in_ground(struct MarioState *m) {
     }
 
     return FALSE;
+#endif
 }
 
 s32 check_fall_damage_or_get_stuck(struct MarioState *m, u32 hardFallAction) {
@@ -1727,21 +1736,21 @@ s32 act_flying(struct MarioState *m) {
     s16 startPitch = m->faceAngle[0];
 
     if (m->input & INPUT_Z_PRESSED) {
-        if (m->area->camera->mode == CAMERA_MODE_BEHIND_MARIO) {
+        if (m->area->camera->mode == FLYING_CAMERA_MODE) {
             set_camera_mode(m->area->camera, m->area->camera->defMode, 1);
         }
         return set_mario_action(m, ACT_GROUND_POUND, 1);
     }
 
     if (!(m->flags & MARIO_WING_CAP)) {
-        if (m->area->camera->mode == CAMERA_MODE_BEHIND_MARIO) {
+        if (m->area->camera->mode == FLYING_CAMERA_MODE) {
             set_camera_mode(m->area->camera, m->area->camera->defMode, 1);
         }
         return set_mario_action(m, ACT_FREEFALL, 0);
     }
 
-    if (m->area->camera->mode != CAMERA_MODE_BEHIND_MARIO) {
-        set_camera_mode(m->area->camera, CAMERA_MODE_BEHIND_MARIO, 1);
+    if (m->area->camera->mode != FLYING_CAMERA_MODE) {
+        set_camera_mode(m->area->camera, FLYING_CAMERA_MODE, 1);
     }
 
     if (m->actionState == 0) {
@@ -1880,9 +1889,8 @@ s32 act_riding_hoot(struct MarioState *m) {
 }
 
 s32 act_flying_triple_jump(struct MarioState *m) {
-#ifndef VERSION_JP
     if (m->input & (INPUT_B_PRESSED | INPUT_Z_PRESSED)) {
-        if (m->area->camera->mode == CAMERA_MODE_BEHIND_MARIO) {
+        if (m->area->camera->mode == FLYING_CAMERA_MODE) {
             set_camera_mode(m->area->camera, m->area->camera->defMode, 1);
         }
         if (m->input & INPUT_B_PRESSED) {
@@ -1891,15 +1899,6 @@ s32 act_flying_triple_jump(struct MarioState *m) {
             return set_mario_action(m, ACT_GROUND_POUND, 0);
         }
     }
-#else
-    if (m->input & INPUT_B_PRESSED) {
-        return set_mario_action(m, ACT_DIVE, 0);
-    }
-
-    if (m->input & INPUT_Z_PRESSED) {
-        return set_mario_action(m, ACT_GROUND_POUND, 0);
-    }
-#endif
 
     play_mario_sound(m, SOUND_ACTION_TERRAIN_JUMP, SOUND_MARIO_YAHOO);
     if (m->actionState == 0) {
@@ -1923,8 +1922,8 @@ s32 act_flying_triple_jump(struct MarioState *m) {
     }
 
     if (m->vel[1] < 4.0f) {
-        if (m->area->camera->mode != CAMERA_MODE_BEHIND_MARIO) {
-            set_camera_mode(m->area->camera, CAMERA_MODE_BEHIND_MARIO, 1);
+        if (m->area->camera->mode != FLYING_CAMERA_MODE) {
+            set_camera_mode(m->area->camera, FLYING_CAMERA_MODE, 1);
         }
 
         if (m->forwardVel < 32.0f) {
@@ -1934,8 +1933,8 @@ s32 act_flying_triple_jump(struct MarioState *m) {
         set_mario_action(m, ACT_FLYING, 1);
     }
 
-    if (m->actionTimer++ == 10 && m->area->camera->mode != CAMERA_MODE_BEHIND_MARIO) {
-        set_camera_mode(m->area->camera, CAMERA_MODE_BEHIND_MARIO, 1);
+    if (m->actionTimer++ == 10 && m->area->camera->mode != FLYING_CAMERA_MODE) {
+        set_camera_mode(m->area->camera, FLYING_CAMERA_MODE, 1);
     }
 
     update_air_without_turn(m);
@@ -2067,7 +2066,9 @@ s32 mario_execute_airborne_action(struct MarioState *m) {
         return TRUE;
     }
 
+#ifndef NO_FALL_DAMAGE_SOUND
     play_far_fall_sound(m);
+#endif
 
     /* clang-format off */
     switch (m->action) {

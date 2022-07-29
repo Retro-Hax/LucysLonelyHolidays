@@ -250,16 +250,11 @@ void handle_save_menu(struct MarioState *m) {
     // wait for the menu to show up
     if (is_anim_past_end(m) && gSaveOptSelectIndex != MENU_OPT_NONE) {
         // save and continue / save and quit
-        if (gSaveOptSelectIndex == MENU_OPT_SAVE_AND_CONTINUE || gSaveOptSelectIndex == MENU_OPT_SAVE_AND_QUIT) {
+        if (gSaveOptSelectIndex == MENU_OPT_SAVE_AND_CONTINUE) {
             save_file_do_save(gCurrSaveFileNum - 1);
-
-            if (gSaveOptSelectIndex == MENU_OPT_SAVE_AND_QUIT) {
-                fade_into_special_warp(-2, 0); // reset game
-            }
         }
 
         // not quitting
-        if (gSaveOptSelectIndex != MENU_OPT_SAVE_AND_QUIT) {
             disable_time_stop();
             m->faceAngle[1] += 0x8000;
             // figure out what dialog to show, if we should
@@ -271,7 +266,6 @@ void handle_save_menu(struct MarioState *m) {
             } else {
                 set_mario_action(m, ACT_IDLE, 0);
             }
-        }
     }
 }
 
@@ -957,11 +951,15 @@ s32 act_warp_door_spawn(struct MarioState *m) {
             m->usedObj->oInteractStatus = INT_STATUS_UNK19;
         }
     } else if (m->usedObj->oAction == 0) {
-        if (gNeverEnteredCastle == TRUE && gCurrLevelNum == LEVEL_CASTLE) {
+#ifdef ENABLE_VANILLA_LEVEL_SPECIFIC_CHECKS
+        if (gNeverEnteredCastle && gCurrLevelNum == LEVEL_CASTLE) {
             set_mario_action(m, ACT_READING_AUTOMATIC_DIALOG, DIALOG_021);
         } else {
             set_mario_action(m, ACT_IDLE, 0);
         }
+#else
+        set_mario_action(m, ACT_IDLE, 0);
+#endif
     }
     set_mario_animation(m, MARIO_ANIM_FIRST_PERSON);
     stop_and_set_height_to_floor(m);
@@ -980,6 +978,7 @@ s32 act_emerge_from_pipe(struct MarioState *m) {
 
     play_sound_if_no_flag(m, SOUND_MARIO_YAHOO, MARIO_MARIO_SOUND_PLAYED);
 
+#ifdef ENABLE_VANILLA_LEVEL_SPECIFIC_CHECKS
     if (gCurrLevelNum == LEVEL_THI) {
         if (gCurrAreaIndex == 2) {
             play_sound_if_no_flag(m, SOUND_MENU_EXIT_PIPE, MARIO_ACTION_SOUND_PLAYED);
@@ -987,6 +986,7 @@ s32 act_emerge_from_pipe(struct MarioState *m) {
             play_sound_if_no_flag(m, SOUND_MENU_ENTER_PIPE, MARIO_ACTION_SOUND_PLAYED);
         }
     }
+#endif
 
     if (launch_mario_until_land(m, ACT_JUMP_LAND_STOP, MARIO_ANIM_SINGLE_JUMP, 8.0f)) {
         mario_set_forward_vel(m, 0.0f);
@@ -1100,26 +1100,12 @@ s32 act_exit_land_save_dialog(struct MarioState *m) {
             break;
         // key exit
         case 1:
-            animFrame = set_mario_animation(m, MARIO_ANIM_THROW_CATCH_KEY);
-            switch (animFrame) {
-                case -1:
-                    spawn_obj_at_mario_rel_yaw(m, MODEL_BOWSER_KEY_CUTSCENE, bhvBowserKeyCourseExit, -32768);
-                    //! fallthrough
-                case 67:
-                    play_sound(SOUND_ACTION_KEY_SWISH, m->marioObj->header.gfx.cameraToObject);
-                    //! fallthrough
-                case 83:
-                    play_sound(SOUND_ACTION_PAT_BACK, m->marioObj->header.gfx.cameraToObject);
-                    //! fallthrough
-                case 111:
-                    play_sound(SOUND_ACTION_UNKNOWN45C, m->marioObj->header.gfx.cameraToObject);
-                    // no break
-            }
+            animFrame = set_mario_animation(m, MARIO_ANIM_STAR_DANCE);
             handle_save_menu(m);
             break;
         // exit without cap
         case 2:
-            animFrame = set_mario_animation(m, MARIO_ANIM_MISSING_CAP);
+            animFrame = set_mario_animation(m, MARIO_ANIM_STAR_DANCE);
             if ((animFrame >= 18 && animFrame < 55) || (animFrame >= 112 && animFrame < 134)) {
                 m->marioBodyState->handState = MARIO_HAND_OPEN;
             }
@@ -1131,11 +1117,8 @@ s32 act_exit_land_save_dialog(struct MarioState *m) {
             break;
         // exit with cap
         case 3:
-            animFrame = set_mario_animation(m, MARIO_ANIM_TAKE_CAP_OFF_THEN_ON);
+            animFrame = set_mario_animation(m, MARIO_ANIM_STAR_DANCE);
             switch (animFrame) {
-                case 12:
-                    cutscene_take_cap_off(m);
-                    break;
                 case 37:
                 // fallthrough
                 case 53:

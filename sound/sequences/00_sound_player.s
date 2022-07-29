@@ -4148,7 +4148,7 @@ layer_note1 31, 0x14, 127
 layer_end
 
 .sound_general_red_coin:
-#ifdef VERSION_JP
+#ifndef VERSION_JP
   chan_setbank 9
   chan_setinstr 3
   chan_setlayer 0, .layer_1909

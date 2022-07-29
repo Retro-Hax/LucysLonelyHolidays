@@ -49,6 +49,8 @@
 #define LAYER_TRANSPARENT_DECAL 6
 #define LAYER_TRANSPARENT_INTER 7
 
+#define LAYER_FIRST                         LAYER_FORCE
+
 #define INPUT_NONZERO_ANALOG         0x0001
 #define INPUT_A_PRESSED              0x0002
 #define INPUT_OFF_FLOOR              0x0004

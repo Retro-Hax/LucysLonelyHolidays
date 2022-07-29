@@ -133,4 +133,36 @@ extern const Gfx whomp_seg6_dl_06020038[];
 extern const struct Animation *const whomp_seg6_anims_06020A04[];
 extern const Collision whomp_seg6_collision_06020A0C[];
 
+// bully
+extern const GeoLayout bully_geo[];
+extern const GeoLayout bully_boss_geo[];
+extern const Gfx bully_seg5_dl_050002E0[];
+extern const Gfx bully_seg5_dl_05000398[];
+extern const Gfx bully_seg5_dl_05003708[];
+extern const Gfx bully_seg5_dl_050037A0[];
+extern const Gfx bully_seg5_dl_05003838[];
+extern const Gfx bully_seg5_dl_05003878[];
+extern const Gfx bully_seg5_dl_05003CD0[];
+extern const Gfx bully_seg5_dl_05003D08[];
+extern const Gfx bully_seg5_dl_05003D40[];
+extern const Gfx bully_seg5_dl_05003E38[];
+extern const Gfx bully_seg5_dl_05003E70[];
+extern const Gfx bully_seg5_dl_05003EA8[];
+extern const Gfx bully_seg5_dl_05003F80[];
+extern const Gfx bully_seg5_dl_05003FC8[];
+extern const struct Animation *const bully_seg5_anims_0500470C[];
+
+// treasure_chest
+extern const GeoLayout treasure_chest_base_geo[];
+extern const GeoLayout treasure_chest_lid_geo[];
+extern const Gfx treasure_chest_seg6_dl_06016D58[];
+extern const Gfx treasure_chest_seg6_dl_06016DA0[];
+extern const Gfx treasure_chest_seg6_dl_06016E18[];
+extern const Gfx treasure_chest_seg6_dl_06016EE0[];
+extern const Gfx treasure_chest_seg6_dl_06016F90[];
+extern const Gfx treasure_chest_seg6_dl_06017680[];
+extern const Gfx treasure_chest_seg6_dl_06017790[];
+extern const Gfx treasure_chest_seg6_dl_06017810[];
+extern const Gfx treasure_chest_seg6_dl_060178C0[];
+
 #endif

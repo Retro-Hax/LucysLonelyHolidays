@@ -1,0 +1,54 @@
+diff --git a/include/PatchConfig/config_QoL.h b/include/PatchConfig/config_QoL.h
+new file mode 100644
+index 0000000..34ddaa3
+--- /dev/null
++++ b/include/PatchConfig/config_QoL.h
+@@ -0,0 +1,6 @@
++ /***************************
++ * QUALITY OF LIFE SETTINGS *
++ ***************************/
++
++// Skip Peach letter Cutscene
++#define PEACH_SKIP
+diff --git a/include/config.h b/include/config.h
+index 044b069..f64d510 100644
+--- a/include/config.h
++++ b/include/config.h
+@@ -50,4 +50,8 @@
+ #define BORDER_HEIGHT 0
+ #endif
+ 
++//My Patches are now inside a Folder called PatchConfig so they dont cause issues with the
++//Vanilla Decomp Config File and also to make it look more clean
++#include "PatchConfig/config_QoL.h"
++
+ #endif // CONFIG_H
+diff --git a/src/game/level_update.c b/src/game/level_update.c
+index 03d4407..fe15261 100644
+--- a/src/game/level_update.c
++++ b/src/game/level_update.c
+@@ -1189,7 +1189,15 @@ s32 init_level(void) {
+ 
+         if (gCurrentArea != NULL) {
+             reset_camera(gCurrentArea->camera);
+-
++#ifdef PEACH_SKIP
++            if (gCurrDemoInput != NULL) {
++                set_mario_action(gMarioState, ACT_IDLE, 0);
++            } else if (!gDebugLevelSelect) {
++                if (gMarioState->action != ACT_UNINITIALIZED) {
++                    set_mario_action(gMarioState, ACT_IDLE, 0);
++                }
++            }
++#else
+             if (gCurrDemoInput != NULL) {
+                 set_mario_action(gMarioState, ACT_IDLE, 0);
+             } else if (!gDebugLevelSelect) {
+@@ -1202,6 +1210,7 @@ s32 init_level(void) {
+                     }
+                 }
+             }
++#endif
+         }
+ 
+         if (val4) {

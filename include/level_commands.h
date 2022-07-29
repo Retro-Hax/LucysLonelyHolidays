@@ -36,28 +36,68 @@
 
 #ifdef NO_SEGMENTED_MEMORY
 #define EXECUTE(seg, script, scriptEnd, entry) \
-    CMD_BBH(0x00, 0x10, 0x0000), \
+    CMD_BBH(0x00, 0x18, 0x0000), \
     CMD_PTR(NULL), \
     CMD_PTR(NULL), \
-    CMD_PTR(entry)
+    CMD_PTR(entry), \
+    CMD_PTR(NULL), \
+    CMD_PTR(NULL)
 
 #define EXIT_AND_EXECUTE(seg, script, scriptEnd, entry) \
-    CMD_BBH(0x01, 0x10, 0x0000), \
+    CMD_BBH(0x01, 0x18, 0x0000), \
     CMD_PTR(NULL), \
     CMD_PTR(NULL), \
-    CMD_PTR(entry)
+    CMD_PTR(entry), \
+    CMD_PTR(NULL), \
+    CMD_PTR(NULL)
+
+#define EXECUTE_WITH_CODE(seg, script, scriptEnd, entry, bssStart, bssEnd) \
+    CMD_BBH(0x00, 0x18, 0x0000), \
+    CMD_PTR(NULL), \
+    CMD_PTR(NULL), \
+    CMD_PTR(entry), \
+    CMD_PTR(NULL), \
+    CMD_PTR(NULL)
+
+#define EXIT_AND_EXECUTE_WITH_CODE(seg, script, scriptEnd, entry, bssStart, bssEnd) \
+    CMD_BBH(0x01, 0x18, 0x0000), \
+    CMD_PTR(NULL), \
+    CMD_PTR(NULL), \
+    CMD_PTR(entry), \
+    CMD_PTR(NULL), \
+    CMD_PTR(NULL)
 #else
 #define EXECUTE(seg, script, scriptEnd, entry) \
-    CMD_BBH(0x00, 0x10, seg), \
+    CMD_BBH(0x00, 0x18, seg), \
     CMD_PTR(script), \
     CMD_PTR(scriptEnd), \
-    CMD_PTR(entry)
+    CMD_PTR(entry), \
+    CMD_PTR(NULL), \
+    CMD_PTR(NULL)
 
 #define EXIT_AND_EXECUTE(seg, script, scriptEnd, entry) \
-    CMD_BBH(0x01, 0x10, seg), \
+    CMD_BBH(0x01, 0x18, seg), \
     CMD_PTR(script), \
     CMD_PTR(scriptEnd), \
-    CMD_PTR(entry)
+    CMD_PTR(entry), \
+    CMD_PTR(NULL), \
+    CMD_PTR(NULL)
+
+#define EXECUTE_WITH_CODE(seg, script, scriptEnd, entry, bssStart, bssEnd) \
+    CMD_BBH(0x00, 0x18, seg), \
+    CMD_PTR(script), \
+    CMD_PTR(scriptEnd), \
+    CMD_PTR(entry), \
+    CMD_PTR(bssStart), \
+    CMD_PTR(bssEnd)
+
+#define EXIT_AND_EXECUTE_WITH_CODE(seg, script, scriptEnd, entry, bssStart, bssEnd) \
+    CMD_BBH(0x01, 0x18, seg), \
+    CMD_PTR(script), \
+    CMD_PTR(scriptEnd), \
+    CMD_PTR(entry), \
+    CMD_PTR(bssStart), \
+    CMD_PTR(bssEnd)
 #endif
 
 #define EXIT() \
@@ -140,7 +180,16 @@
     CMD_PTR(NULL)
 
 #define LOAD_RAW(seg, romStart, romEnd) \
-    CMD_BBH(0x17, 0x0C, 0x0000), \
+    CMD_BBH(0x17, 0x14, 0x0000), \
+    CMD_PTR(NULL), \
+    CMD_PTR(NULL), \
+    CMD_PTR(NULL), \
+    CMD_PTR(NULL)
+
+#define LOAD_RAW_WITH_CODE(seg, romStart, romEnd, bssStart, bssEnd) \
+    CMD_BBH(0x17, 0x14, 0x0000), \
+    CMD_PTR(NULL), \
+    CMD_PTR(NULL), \
     CMD_PTR(NULL), \
     CMD_PTR(NULL)
 
@@ -156,9 +205,18 @@
     CMD_PTR(romEnd)
 
 #define LOAD_RAW(seg, romStart, romEnd) \
-    CMD_BBH(0x17, 0x0C, seg), \
+    CMD_BBH(0x17, 0x14, seg), \
     CMD_PTR(romStart), \
-    CMD_PTR(romEnd)
+    CMD_PTR(romEnd), \
+    CMD_PTR(0), \
+    CMD_PTR(0)
+
+#define LOAD_RAW_WITH_CODE(seg, romStart, romEnd, bssStart, bssEnd) \
+    CMD_BBH(0x17, 0x14, seg), \
+    CMD_PTR(romStart), \
+    CMD_PTR(romEnd), \
+    CMD_PTR(bssStart), \
+    CMD_PTR(bssEnd)
 
 #define LOAD_MIO0(seg, romStart, romEnd) \
     CMD_BBH(0x18, 0x0C, seg), \

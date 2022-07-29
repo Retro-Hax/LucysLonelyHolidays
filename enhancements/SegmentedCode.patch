@@ -1,0 +1,664 @@
+diff --git a/Makefile b/Makefile
+index 5373691..f8bcfe3 100644
+--- a/Makefile
++++ b/Makefile
+@@ -290,7 +290,9 @@ endif
+ 
+ AS        := $(CROSS)as
+ ifeq ($(COMPILER),gcc)
+-  CC      := $(CROSS)gcc
++  CC      := $(CROSS)gcc 
++  $(BUILD_DIR)/actors/%.o:           OPT_FLAGS := -O2 -mlong-calls
++  $(BUILD_DIR)/levels/%.o:           OPT_FLAGS := -O2 -mlong-calls
+ else
+   ifeq ($(USE_QEMU_IRIX),1)
+     IRIX_ROOT := $(TOOLS_DIR)/ido5.3_compiler
+diff --git a/include/farcall.h b/include/farcall.h
+new file mode 100644
+index 0000000..e8be2ae
+--- /dev/null
++++ b/include/farcall.h
+@@ -0,0 +1,61 @@
++#ifndef __FARCALL_H__
++#define __FARCALL_H__
++
++#ifdef __GNUC__
++#define farcall(x) x
++#define far __attribute__(( long_call ))
++#pragma GCC diagnostic ignored "-Wattributes" // Workaround for a bug that produces errant warnings in gcc
++#define near __attribute(( near ))
++#else
++#define farcall(x) (*(&(x)))
++#define far
++#define near
++#endif
++
++#endif
++
++/*
++How to use:
++
++Simply place any code you want in any groupX_geo.c or any level's script.c (see the first note for a potential gotcha when using code in level script segments).
++
++To call segment code from normal code or vice versa (or segment code from other segmented code)
++ - Add `#include "farcall.h"` to the given file
++ - Declare any functions that are not in that file like so (with far)
++    `far void print_text(s32, s32, const char*);`
++ - Call any functions that are not in the file like so:
++    `farcall(print_text)(10, 10 "test");`
++
++If you forget any of the above 3 steps, you will get an error during linking your ROM that looks something like:
++`script.c:(.text+0x24): relocation truncated to fit: R_MIPS_26 against ...`
++So if you see that error, make sure you've followed the above three steps.
++
++If you're using gcc, you don't need to use farcall to call far functions, as declaring a function as far is enough.
++
++Additionally if using gcc, you don't need to declare any functions as far in segmented code due to a change in the makefile.
++  Instead, you can declare local functions as `near` to optimize local calls, but this is not required.
++
++If you have code in a groupX_geo.c file, you must load it in level scripts by doing LOAD_RAW_WITH_CODE instead of the normal LOAD_RAW.
++  This has two extra arguments, which should be passed as `_groupX_geoSegmentNoloadStart` and `_groupX_geoSegmentNoloadEnd`.
++  For example, if you added code to group3's geo segment:
++
++LOAD_RAW_WITH_CODE(0x0C, _group3_geoSegmentRomStart,  _group3_geoSegmentRomEnd, _group3_geoSegmentNoloadStart, _group3_geoSegmentNoloadEnd),
++
++For convenience, included is a new header: src/game/obj_behaviors_2_nonstatic.h. In addition to effectively removing
++  the static keyword from object_behaviors_2.c, this header defines prototypes for all functions in that file. This
++  allows you to reference those functions elsewhere, which is convenient for segmented behavior callbacks.
++
++Notes:
++ - As of right now, Fast64 will not retain LOAD_RAW_WITH_CODE commands in the level script.
++     This means that you will have to readd those on each export, but this may change in a future Fast64 version.
++     The same is true for any code in the level file, so I suggest making a code.inc.c file in the level's folder
++       and adding an `#include "levels/x/code.inc.c"` into the level script file.
++     That include will also be wiped on each export, but is easy enough to add after an export.
++ - Variables in segments will get reset to their defaults every time a segment is loaded.
++     Use variables declared in normal code and extern them if this isn't desirable.
++ - Because of the limited number of TLB entries, at most 256kB of segmented memory can be mapped with this patch.
++     If you want to be sure that everything is being mapped, use the TLB entries view in PJ64 2.4's debugger.
++ - TLB mapping requires at least 4kB alignment, so memory allocations for segments with code are automatically padded to meet this alignment.
++     This means that potentially up to 4kB of RAM can be wasted when a given segment with code is loaded.
++     This should be far less than the potential savings from using this patch, but is something that should be kept in mind.
++*/
+diff --git a/include/level_commands.h b/include/level_commands.h
+index f2490fe..98cff22 100644
+--- a/include/level_commands.h
++++ b/include/level_commands.h
+@@ -36,28 +36,68 @@
+ 
+ #ifdef NO_SEGMENTED_MEMORY
+ #define EXECUTE(seg, script, scriptEnd, entry) \
+-    CMD_BBH(0x00, 0x10, 0x0000), \
++    CMD_BBH(0x00, 0x18, 0x0000), \
+     CMD_PTR(NULL), \
+     CMD_PTR(NULL), \
+-    CMD_PTR(entry)
++    CMD_PTR(entry), \
++    CMD_PTR(NULL), \
++    CMD_PTR(NULL)
+ 
+ #define EXIT_AND_EXECUTE(seg, script, scriptEnd, entry) \
+-    CMD_BBH(0x01, 0x10, 0x0000), \
++    CMD_BBH(0x01, 0x18, 0x0000), \
++    CMD_PTR(NULL), \
+     CMD_PTR(NULL), \
++    CMD_PTR(entry), \
+     CMD_PTR(NULL), \
+-    CMD_PTR(entry)
++    CMD_PTR(NULL)
++
++#define EXECUTE_WITH_CODE(seg, script, scriptEnd, entry, bssStart, bssEnd) \
++    CMD_BBH(0x00, 0x18, 0x0000), \
++    CMD_PTR(NULL), \
++    CMD_PTR(NULL), \
++    CMD_PTR(entry), \
++    CMD_PTR(NULL), \
++    CMD_PTR(NULL)
++
++#define EXIT_AND_EXECUTE_WITH_CODE(seg, script, scriptEnd, entry, bssStart, bssEnd) \
++    CMD_BBH(0x01, 0x18, 0x0000), \
++    CMD_PTR(NULL), \
++    CMD_PTR(NULL), \
++    CMD_PTR(entry), \
++    CMD_PTR(NULL), \
++    CMD_PTR(NULL)
+ #else
+ #define EXECUTE(seg, script, scriptEnd, entry) \
+-    CMD_BBH(0x00, 0x10, seg), \
++    CMD_BBH(0x00, 0x18, seg), \
+     CMD_PTR(script), \
+     CMD_PTR(scriptEnd), \
+-    CMD_PTR(entry)
++    CMD_PTR(entry), \
++    CMD_PTR(NULL), \
++    CMD_PTR(NULL)
+ 
+ #define EXIT_AND_EXECUTE(seg, script, scriptEnd, entry) \
+-    CMD_BBH(0x01, 0x10, seg), \
++    CMD_BBH(0x01, 0x18, seg), \
++    CMD_PTR(script), \
++    CMD_PTR(scriptEnd), \
++    CMD_PTR(entry), \
++    CMD_PTR(NULL), \
++    CMD_PTR(NULL)
++
++#define EXECUTE_WITH_CODE(seg, script, scriptEnd, entry, bssStart, bssEnd) \
++    CMD_BBH(0x00, 0x18, seg), \
+     CMD_PTR(script), \
+     CMD_PTR(scriptEnd), \
+-    CMD_PTR(entry)
++    CMD_PTR(entry), \
++    CMD_PTR(bssStart), \
++    CMD_PTR(bssEnd)
++
++#define EXIT_AND_EXECUTE_WITH_CODE(seg, script, scriptEnd, entry, bssStart, bssEnd) \
++    CMD_BBH(0x01, 0x18, seg), \
++    CMD_PTR(script), \
++    CMD_PTR(scriptEnd), \
++    CMD_PTR(entry), \
++    CMD_PTR(bssStart), \
++    CMD_PTR(bssEnd)
+ #endif
+ 
+ #define EXIT() \
+@@ -140,7 +180,16 @@
+     CMD_PTR(NULL)
+ 
+ #define LOAD_RAW(seg, romStart, romEnd) \
+-    CMD_BBH(0x17, 0x0C, 0x0000), \
++    CMD_BBH(0x17, 0x14, 0x0000), \
++    CMD_PTR(NULL), \
++    CMD_PTR(NULL), \
++    CMD_PTR(NULL), \
++    CMD_PTR(NULL)
++
++#define LOAD_RAW_WITH_CODE(seg, romStart, romEnd, bssStart, bssEnd) \
++    CMD_BBH(0x17, 0x14, 0x0000), \
++    CMD_PTR(NULL), \
++    CMD_PTR(NULL), \
+     CMD_PTR(NULL), \
+     CMD_PTR(NULL)
+ 
+@@ -156,9 +205,18 @@
+     CMD_PTR(romEnd)
+ 
+ #define LOAD_RAW(seg, romStart, romEnd) \
+-    CMD_BBH(0x17, 0x0C, seg), \
++    CMD_BBH(0x17, 0x14, seg), \
+     CMD_PTR(romStart), \
+-    CMD_PTR(romEnd)
++    CMD_PTR(romEnd), \
++    CMD_PTR(0), \
++    CMD_PTR(0)
++
++#define LOAD_RAW_WITH_CODE(seg, romStart, romEnd, bssStart, bssEnd) \
++    CMD_BBH(0x17, 0x14, seg), \
++    CMD_PTR(romStart), \
++    CMD_PTR(romEnd), \
++    CMD_PTR(bssStart), \
++    CMD_PTR(bssEnd)
+ 
+ #define LOAD_MIO0(seg, romStart, romEnd) \
+     CMD_BBH(0x18, 0x0C, seg), \
+diff --git a/include/segment_symbols.h b/include/segment_symbols.h
+index 22b3713..e38da43 100644
+--- a/include/segment_symbols.h
++++ b/include/segment_symbols.h
+@@ -5,13 +5,19 @@
+ #define DECLARE_SEGMENT(name) \
+     extern u8 _##name##SegmentRomStart[]; \
+     extern u8 _##name##SegmentRomEnd[];
++    
++#define DECLARE_NOLOAD(name) \
++    extern u8 _##name##SegmentNoloadStart[]; \
++    extern u8 _##name##SegmentNoloadEnd[];
+ 
+ #define DECLARE_ACTOR_SEGMENT(name) \
+     DECLARE_SEGMENT(name##_mio0) \
+-    DECLARE_SEGMENT(name##_geo)
++    DECLARE_SEGMENT(name##_geo) \
++    DECLARE_NOLOAD(name##_geo)
+ 
+ #define DECLARE_LEVEL_SEGMENT(name) \
+     DECLARE_SEGMENT(name) \
++    DECLARE_NOLOAD(name) \
+     DECLARE_SEGMENT(name##_segment_7)
+ 
+ DECLARE_ACTOR_SEGMENT(common0)
+diff --git a/levels/entry.c b/levels/entry.c
+index 17c773e..65a271a 100644
+--- a/levels/entry.c
++++ b/levels/entry.c
+@@ -12,6 +12,6 @@ const LevelScript level_script_entry[] = {
+     SLEEP(/*frames*/ 2),
+     BLACKOUT(/*active*/ FALSE),
+     SET_REG(/*value*/ 0),
+-    EXECUTE(/*seg*/ 0x14, /*script*/ _introSegmentRomStart, /*scriptEnd*/ _introSegmentRomEnd, /*entry*/ level_intro_splash_screen),
++    EXECUTE_WITH_CODE(/*seg*/ 0x14, /*script*/ _introSegmentRomStart, /*scriptEnd*/ _introSegmentRomEnd, /*entry*/ level_intro_splash_screen, _introSegmentNoloadStart, _introSegmentNoloadEnd),
+     JUMP(/*target*/ level_script_entry),
+ };
+diff --git a/levels/intro/script.c b/levels/intro/script.c
+index 04b8fc4..35b144a 100644
+--- a/levels/intro/script.c
++++ b/levels/intro/script.c
+@@ -40,7 +40,7 @@ const LevelScript level_intro_splash_screen[] = {
+     CMD2A(/*unk2*/ 1),
+     CLEAR_LEVEL(),
+     SLEEP(/*frames*/ 2),
+-    EXIT_AND_EXECUTE(/*seg*/ 0x14, _introSegmentRomStart, _introSegmentRomEnd, level_intro_mario_head_regular),
++    EXIT_AND_EXECUTE_WITH_CODE(/*seg*/ 0x14, _introSegmentRomStart, _introSegmentRomEnd, level_intro_mario_head_regular, _introSegmentNoloadStart, _introSegmentNoloadEnd),
+ };
+ 
+ const LevelScript level_intro_mario_head_regular[] = {
+@@ -131,7 +131,7 @@ const LevelScript script_intro_L2[] = {
+     SLEEP(/*frames*/ 16),
+     CLEAR_LEVEL(),
+     SLEEP(/*frames*/ 2),
+-    EXIT_AND_EXECUTE(/*seg*/ 0x14, _introSegmentRomStart, _introSegmentRomEnd, level_intro_entry_4),
++    EXIT_AND_EXECUTE_WITH_CODE(/*seg*/ 0x14, _introSegmentRomStart, _introSegmentRomEnd, level_intro_entry_4, _introSegmentNoloadStart, _introSegmentNoloadEnd),
+ };
+ 
+ const LevelScript script_intro_L3[] = {
+@@ -157,5 +157,5 @@ const LevelScript script_intro_L5[] = {
+     SLEEP(/*frames*/ 16),
+     CLEAR_LEVEL(),
+     SLEEP(/*frames*/ 2),
+-    EXIT_AND_EXECUTE(/*seg*/ 0x14, _introSegmentRomStart, _introSegmentRomEnd, level_intro_splash_screen),
++    EXIT_AND_EXECUTE_WITH_CODE(/*seg*/ 0x14, _introSegmentRomStart, _introSegmentRomEnd, level_intro_splash_screen, _introSegmentNoloadStart, _introSegmentNoloadEnd),
+ };
+diff --git a/levels/scripts.c b/levels/scripts.c
+index 248fb83..f6b7703 100644
+--- a/levels/scripts.c
++++ b/levels/scripts.c
+@@ -44,14 +44,14 @@ static const LevelScript script_exec_level_table[2
+ #undef DEFINE_LEVEL
+ #undef STUB_LEVEL
+ 
+-static const LevelScript script_L1[4];
+-static const LevelScript script_L2[4];
+-static const LevelScript goto_mario_head_regular[4];
+-static const LevelScript goto_mario_head_dizzy[4];
+-static const LevelScript script_L5[4];
++static const LevelScript script_L1[6];
++static const LevelScript script_L2[6];
++static const LevelScript goto_mario_head_regular[6];
++static const LevelScript goto_mario_head_dizzy[6];
++static const LevelScript script_L5[6];
+ 
+ #define STUB_LEVEL(_0, _1, _2, _3, _4, _5, _6, _7, _8)
+-#define DEFINE_LEVEL(_0, _1, _2, folder, _4, _5, _6, _7, _8, _9, _10) static const LevelScript script_exec_ ## folder [4 + 1];
++#define DEFINE_LEVEL(_0, _1, _2, folder, _4, _5, _6, _7, _8, _9, _10) static const LevelScript script_exec_ ## folder [6 + 1];
+ 
+ #include "level_defines.h"
+ 
+@@ -127,23 +127,23 @@ const LevelScript level_main_scripts_entry[] = {
+ };
+ 
+ static const LevelScript script_L1[] = {
+-    EXIT_AND_EXECUTE(/*seg*/ 0x14, _introSegmentRomStart, _introSegmentRomEnd, level_intro_splash_screen),
++    EXIT_AND_EXECUTE_WITH_CODE(/*seg*/ 0x14, _introSegmentRomStart, _introSegmentRomEnd, level_intro_splash_screen, _introSegmentNoloadStart, _introSegmentNoloadEnd),
+ };
+ 
+ static const LevelScript script_L2[] = {
+-    EXIT_AND_EXECUTE(/*seg*/ 0x0E, _endingSegmentRomStart, _endingSegmentRomEnd, level_ending_entry),
++    EXIT_AND_EXECUTE_WITH_CODE(/*seg*/ 0x0E, _endingSegmentRomStart, _endingSegmentRomEnd, level_ending_entry, _endingSegmentNoloadStart, _endingSegmentNoloadEnd),
+ };
+ 
+ static const LevelScript goto_mario_head_regular[] = {
+-    EXIT_AND_EXECUTE(/*seg*/ 0x14, _introSegmentRomStart, _introSegmentRomEnd, level_intro_mario_head_regular),
++    EXIT_AND_EXECUTE_WITH_CODE(/*seg*/ 0x14, _introSegmentRomStart, _introSegmentRomEnd, level_intro_mario_head_regular, _introSegmentNoloadStart, _introSegmentNoloadEnd),
+ };
+ 
+ static const LevelScript goto_mario_head_dizzy[] = {
+-    EXIT_AND_EXECUTE(/*seg*/ 0x14, _introSegmentRomStart, _introSegmentRomEnd, level_intro_mario_head_dizzy),
++    EXIT_AND_EXECUTE_WITH_CODE(/*seg*/ 0x14, _introSegmentRomStart, _introSegmentRomEnd, level_intro_mario_head_dizzy, _introSegmentNoloadStart, _introSegmentNoloadEnd),
+ };
+ 
+ static const LevelScript script_L5[] = {
+-    EXIT_AND_EXECUTE(/*seg*/ 0x14, _introSegmentRomStart, _introSegmentRomEnd, level_intro_entry_4),
++    EXIT_AND_EXECUTE_WITH_CODE(/*seg*/ 0x14, _introSegmentRomStart, _introSegmentRomEnd, level_intro_entry_4, _introSegmentNoloadStart, _introSegmentNoloadEnd),
+ };
+ 
+ // Include the level jumptable.
+@@ -161,7 +161,7 @@ static const LevelScript script_exec_level_table[] = {
+ 
+ #define DEFINE_LEVEL(_0, _1, _2, folder, _4, _5, _6, _7, _8, _9, _10) \
+ static const LevelScript script_exec_ ## folder [] = { \
+-    EXECUTE(0x0E, _ ## folder ## SegmentRomStart, _ ## folder ## SegmentRomEnd, level_ ## folder ## _entry), \
++    EXECUTE_WITH_CODE(0x0E, _ ## folder ## SegmentRomStart, _ ## folder ## SegmentRomEnd, level_ ## folder ## _entry, _ ## folder ## SegmentNoloadStart, _ ## folder ## SegmentNoloadEnd), \
+     RETURN(), \
+ };
+ 
+diff --git a/sm64.ld b/sm64.ld
+index 250de7a..e6fbb52 100755
+--- a/sm64.ld
++++ b/sm64.ld
+@@ -47,10 +47,16 @@ OUTPUT_ARCH (mips)
+    END_SEG(name##_segment_7) \
+    BEGIN_SEG(name, 0x0E000000) \
+    { \
+-      BUILD_DIR/levels/name/script.o(.data); \
++      BUILD_DIR/levels/name/script.o(.*data*); \
++      BUILD_DIR/levels/name/script.o(.text); \
+       BUILD_DIR/levels/name/geo.o(.data); \
+    } \
+-   END_SEG(name)
++   END_SEG(name) \
++   BEGIN_NOLOAD(name) \
++   { \
++      BUILD_DIR/levels/name/script.o(.bss*); \
++   } \
++   END_NOLOAD(name)
+ 
+ #define STANDARD_OBJECTS(name, segAddr, geoAddr) \
+    BEGIN_SEG(name##_mio0, segAddr) \
+@@ -61,9 +67,15 @@ OUTPUT_ARCH (mips)
+    END_SEG(name##_mio0) \
+    BEGIN_SEG(name##_geo, geoAddr) \
+    { \
+-      BUILD_DIR/actors/name##_geo.o(.data); \
++      BUILD_DIR/actors/name##_geo.o(.*data*); \
++      BUILD_DIR/actors/name##_geo.o(.text); \
++   } \
++   END_SEG(name##_geo) \
++   BEGIN_NOLOAD(name##_geo) \
++   { \
++      BUILD_DIR/actors/name##_geo.o(.bss*); \
+    } \
+-   END_SEG(name##_geo)
++   END_NOLOAD(name##_geo)
+ 
+ SECTIONS
+ {
+@@ -1017,10 +1029,16 @@ SECTIONS
+    /* 0x268020 0x268020-0 [0] */
+    BEGIN_SEG(intro, 0x14000000)
+    {
+-      BUILD_DIR/levels/intro/script.o(.data);
++      BUILD_DIR/levels/intro/script.o(.*data);
++      BUILD_DIR/levels/intro/script.o(.text);
+       BUILD_DIR/levels/intro/geo.o(.data);
+    }
+    END_SEG(intro)
++   BEGIN_NOLOAD(intro)
++   {
++      BUILD_DIR/levels/intro/script.o(.bss*);
++   }
++   END_NOLOAD(intro)
+    BEGIN_SEG(intro_segment_7, 0x07000000)
+    {
+       BUILD_DIR/levels/intro/leveldata.mio0.o(.data);
+@@ -1028,6 +1046,8 @@ SECTIONS
+    }
+    END_SEG(intro_segment_7)
+ 
++
++
+    MIO0_SEG(debug_level_select, 0x07000000)
+    MIO0_SEG(title_screen_bg, 0x0A000000)
+ 
+diff --git a/src/engine/level_script.c b/src/engine/level_script.c
+index b046339..9f2a962 100644
+--- a/src/engine/level_script.c
++++ b/src/engine/level_script.c
+@@ -90,7 +90,7 @@ static s32 eval_script_op(s8 op, s32 arg) {
+ 
+ static void level_cmd_load_and_execute(void) {
+     main_pool_push_state();
+-    load_segment(CMD_GET(s16, 2), CMD_GET(void *, 4), CMD_GET(void *, 8), MEMORY_POOL_LEFT);
++    load_segment(CMD_GET(s16, 2), CMD_GET(void *, 4), CMD_GET(void *, 8), MEMORY_POOL_LEFT, CMD_GET(void *, 16), CMD_GET(void *, 20));
+ 
+     *sStackTop++ = (uintptr_t) NEXT_CMD;
+     *sStackTop++ = (uintptr_t) sStackBase;
+@@ -106,7 +106,7 @@ static void level_cmd_exit_and_execute(void) {
+     main_pool_push_state();
+ 
+     load_segment(CMD_GET(s16, 2), CMD_GET(void *, 4), CMD_GET(void *, 8),
+-            MEMORY_POOL_LEFT);
++            MEMORY_POOL_LEFT, CMD_GET(void *, 16), CMD_GET(void *, 20));
+ 
+     sStackTop = sStackBase;
+     sCurrentCmd = segmented_to_virtual(targetAddr);
+@@ -271,7 +271,7 @@ static void level_cmd_load_to_fixed_address(void) {
+ 
+ static void level_cmd_load_raw(void) {
+     load_segment(CMD_GET(s16, 2), CMD_GET(void *, 4), CMD_GET(void *, 8),
+-            MEMORY_POOL_LEFT);
++            MEMORY_POOL_LEFT, CMD_GET(void *, 12), CMD_GET(void *, 16));
+     sCurrentCmd = CMD_NEXT;
+ }
+ 
+@@ -309,11 +309,15 @@ static void level_cmd_init_level(void) {
+     sCurrentCmd = CMD_NEXT;
+ }
+ 
++extern s32 gTlbEntries;
++
+ static void level_cmd_clear_level(void) {
+     clear_objects();
+     clear_area_graph_nodes();
+     clear_areas();
+     main_pool_pop_state();
++    gTlbEntries = 0;
++    osUnmapTLBAll();
+ 
+     sCurrentCmd = CMD_NEXT;
+ }
+diff --git a/src/game/game_init.c b/src/game/game_init.c
+index 4be1c7b..0c4c9f3 100644
+--- a/src/game/game_init.c
++++ b/src/game/game_init.c
+@@ -632,7 +632,7 @@ void setup_game_memory(void) {
+     set_segment_base_addr(24, (void *) gDemoInputsMemAlloc);
+     setup_dma_table_list(&gDemoInputsBuf, gDemoInputs, gDemoInputsMemAlloc);
+     // Setup Level Script Entry
+-    load_segment(0x10, _entrySegmentRomStart, _entrySegmentRomEnd, MEMORY_POOL_LEFT);
++    load_segment(0x10, _entrySegmentRomStart, _entrySegmentRomEnd, MEMORY_POOL_LEFT, NULL, NULL);
+     // Setup Segment 2 (Fonts, Text, etc)
+     load_segment_decompress(2, _segment2_mio0SegmentRomStart, _segment2_mio0SegmentRomEnd);
+ }
+diff --git a/src/game/memory.c b/src/game/memory.c
+index dcc9223..b6ef586 100644
+--- a/src/game/memory.c
++++ b/src/game/memory.c
+@@ -16,6 +16,7 @@
+ #define ALIGN4(val) (((val) + 0x3) & ~0x3)
+ #define ALIGN8(val) (((val) + 0x7) & ~0x7)
+ #define ALIGN16(val) (((val) + 0xF) & ~0xF)
++#define ALIGN(val, alignment) (((val) + ((alignment) - 1)) & ~((alignment) - 1))
+ 
+ struct MainPoolState {
+     u32 freeSpace;
+@@ -264,28 +265,78 @@ static void dma_read(u8 *dest, u8 *srcStart, u8 *srcEnd) {
+  * Perform a DMA read from ROM, allocating space in the memory pool to write to.
+  * Return the destination address.
+  */
+-static void *dynamic_dma_read(u8 *srcStart, u8 *srcEnd, u32 side) {
++static void *dynamic_dma_read(u8 *srcStart, u8 *srcEnd, u32 side, u32 alignment, u32 bssLength) {
+     void *dest;
+     u32 size = ALIGN16(srcEnd - srcStart);
++    u32 offset = 0;
+ 
+-    dest = main_pool_alloc(size, side);
++    if (alignment && side == MEMORY_POOL_LEFT)
++    {
++        offset = ALIGN((uintptr_t)sPoolListHeadL + 16, alignment) - ((uintptr_t)sPoolListHeadL + 16);
++    }
++
++    dest = main_pool_alloc(offset + size + bssLength, side);
+     if (dest != NULL) {
+-        dma_read(dest, srcStart, srcEnd);
++        dma_read((u8 *)dest + offset, srcStart, srcEnd);
++        if (bssLength)
++        {
++            bzero((u8 *)dest + offset + size, bssLength);
++        }
+     }
+     return dest;
+ }
+ 
+ #ifndef NO_SEGMENTED_MEMORY
++
++#define TLB_PAGE_SIZE 4096
++
++s32 gTlbEntries = 0;
++
++void mapTLBPages(uintptr_t virtualAddress, uintptr_t physicalAddress, s32 length)
++{
++    while (length > 0)
++    {
++        if (length > TLB_PAGE_SIZE)
++        {
++            osMapTLB(gTlbEntries++, OS_PM_4K, (void *)virtualAddress, physicalAddress, physicalAddress + TLB_PAGE_SIZE, -1);
++            virtualAddress += TLB_PAGE_SIZE;
++            physicalAddress += TLB_PAGE_SIZE;
++            length -= TLB_PAGE_SIZE;
++        }
++        else
++        {
++            osMapTLB(gTlbEntries++, OS_PM_4K, (void *)virtualAddress, physicalAddress, -1, -1);
++        }
++        virtualAddress += TLB_PAGE_SIZE;
++        physicalAddress += TLB_PAGE_SIZE;
++        length -= TLB_PAGE_SIZE;
++    }
++}
++
+ /**
+  * Load data from ROM into a newly allocated block, and set the segment base
+  * address to this block.
+  */
+-void *load_segment(s32 segment, u8 *srcStart, u8 *srcEnd, u32 side) {
+-    void *addr = dynamic_dma_read(srcStart, srcEnd, side);
+-
+-    if (addr != NULL) {
+-        set_segment_base_addr(segment, addr);
++void *load_segment(s32 segment, u8 *srcStart, u8 *srcEnd, u32 side, u8 *bssStart, u8 *bssEnd) {
++    void *addr;
++    
++    if (bssStart != NULL && side == MEMORY_POOL_LEFT)
++    {
++        addr = dynamic_dma_read(srcStart, srcEnd, side, TLB_PAGE_SIZE, (uintptr_t)bssEnd - (uintptr_t)bssStart);
++        if (addr != NULL) {
++            u8 *realAddr = (u8 *)ALIGN((uintptr_t)addr, TLB_PAGE_SIZE);
++            set_segment_base_addr(segment, realAddr);
++            mapTLBPages(segment << 24, VIRTUAL_TO_PHYSICAL(realAddr), (srcEnd - srcStart) + ((uintptr_t)bssEnd - (uintptr_t)bssStart));
++        }
++    }
++    else
++    {
++        addr = dynamic_dma_read(srcStart, srcEnd, side, 0, 0);
++        if (addr != NULL) {
++            set_segment_base_addr(segment, addr);
++        }
+     }
++
+     return addr;
+ }
+ 
+@@ -534,12 +585,12 @@ void *alloc_display_list(u32 size) {
+ 
+ static struct DmaTable *load_dma_table_address(u8 *srcAddr) {
+     struct DmaTable *table = dynamic_dma_read(srcAddr, srcAddr + sizeof(u32),
+-                                                             MEMORY_POOL_LEFT);
++                                                            MEMORY_POOL_LEFT, 0, 0);
+     u32 size = table->count * sizeof(struct OffsetSizePair) + 
+         sizeof(struct DmaTable) - sizeof(struct OffsetSizePair);
+     main_pool_free(table);
+ 
+-    table = dynamic_dma_read(srcAddr, srcAddr + size, MEMORY_POOL_LEFT);
++    table = dynamic_dma_read(srcAddr, srcAddr + size, MEMORY_POOL_LEFT, 0, 0);
+     table->srcAddr = srcAddr;
+     return table;
+ }
+diff --git a/src/game/memory.h b/src/game/memory.h
+index 0d958b8..5f8a9a0 100644
+--- a/src/game/memory.h
++++ b/src/game/memory.h
+@@ -56,7 +56,7 @@ u32 main_pool_push_state(void);
+ u32 main_pool_pop_state(void);
+ 
+ #ifndef NO_SEGMENTED_MEMORY
+-void *load_segment(s32 segment, u8 *srcStart, u8 *srcEnd, u32 side);
++void *load_segment(s32 segment, u8 *srcStart, u8 *srcEnd, u32 side, u8 *bssStart, u8 *bssEnd);
+ void *load_to_fixed_pool_addr(u8 *destAddr, u8 *srcStart, u8 *srcEnd);
+ void *load_segment_decompress(s32 segment, u8 *srcStart, u8 *srcEnd);
+ void *load_segment_decompress_heap(u32 segment, u8 *srcStart, u8 *srcEnd);
+diff --git a/src/game/obj_behaviors_2.c b/src/game/obj_behaviors_2.c
+index 3715a13..4c04133 100644
+--- a/src/game/obj_behaviors_2.c
++++ b/src/game/obj_behaviors_2.c
+@@ -46,6 +46,8 @@
+ #include "seq_ids.h"
+ #include "spawn_sound.h"
+ 
++#define static
++
+ #define POS_OP_SAVE_POSITION 0
+ #define POS_OP_COMPUTE_VELOCITY 1
+ #define POS_OP_RESTORE_POSITION 2
+diff --git a/src/game/obj_behaviors_2_nonstatic.h b/src/game/obj_behaviors_2_nonstatic.h
+new file mode 100644
+index 0000000..a5ba0df
+--- /dev/null
++++ b/src/game/obj_behaviors_2_nonstatic.h
+@@ -0,0 +1,58 @@
++#ifndef OBJ_BEHAVIORS_2_NONSTATIC_H
++#define OBJ_BEHAVIORS_2_NONSTATIC_H
++
++s32 obj_is_rendering_enabled(void);
++s16 obj_get_pitch_from_vel(void);
++s32 obj_update_race_proposition_dialog(s16 dialogID);
++void obj_set_dist_from_home(f32 distFromHome);
++s32 obj_is_near_to_and_facing_mario(f32 maxDist, s16 maxAngleDiff);
++void obj_perform_position_op(s32 op);
++void platform_on_track_update_pos_or_spawn_ball(s32 ballIndex, f32 x, f32 y, f32 z);
++void cur_obj_spin_all_dimensions(f32 arg0, f32 arg1);
++void obj_rotate_yaw_and_bounce_off_walls(s16 targetYaw, s16 turnAmount);
++s16 obj_get_pitch_to_home(f32 latDistToHome);
++void obj_compute_vel_from_move_pitch(f32 speed);
++s32 clamp_s16(s16 *value, s16 minimum, s16 maximum);
++s32 clamp_f32(f32 *value, f32 minimum, f32 maximum);
++void cur_obj_init_anim_extend(s32 arg0);
++s32 cur_obj_init_anim_and_check_if_end(s32 arg0);
++s32 cur_obj_init_anim_check_frame(s32 arg0, s32 arg1);
++s32 cur_obj_set_anim_if_at_end(s32 arg0);
++s32 cur_obj_play_sound_at_anim_range(s8 arg0, s8 arg1, u32 sound);
++s16 obj_turn_pitch_toward_mario(f32 targetOffsetY, s16 turnAmount);
++s32 approach_f32_ptr(f32 *px, f32 target, f32 delta);
++s32 obj_forward_vel_approach(f32 target, f32 delta);
++s32 obj_y_vel_approach(f32 target, f32 delta);
++s32 obj_move_pitch_approach(s16 target, s16 delta);
++s32 obj_face_pitch_approach(s16 targetPitch, s16 deltaPitch);
++s32 obj_face_yaw_approach(s16 targetYaw, s16 deltaYaw);
++s32 obj_face_roll_approach(s16 targetRoll, s16 deltaRoll);
++s32 obj_smooth_turn(s16 *angleVel, s32 *angle, s16 targetAngle, f32 targetSpeedProportion,
++                           s16 accel, s16 minSpeed, s16 maxSpeed);
++void obj_roll_to_match_yaw_turn(s16 targetYaw, s16 maxRoll, s16 rollSpeed);
++s16 random_linear_offset(s16 base, s16 range);
++s16 random_mod_offset(s16 base, s16 step, s16 mod);
++s16 obj_random_fixed_turn(s16 delta);
++s32 obj_grow_then_shrink(f32 *scaleVel, f32 shootFireScale, f32 endScale);
++s32 oscillate_toward(s32 *value, f32 *vel, s32 target, f32 velCloseToZero, f32 accel,
++                            f32 slowdown);
++void obj_update_blinking(s32 *blinkTimer, s16 baseCycleLength, s16 cycleLengthRange,
++                                s16 blinkLength);
++s32 obj_resolve_object_collisions(s32 *targetYaw);
++s32 obj_bounce_off_walls_edges_objects(s32 *targetYaw);
++s32 obj_resolve_collisions_and_turn(s16 targetYaw, s16 turnSpeed);
++void obj_die_if_health_non_positive(void);
++void obj_unused_die(void);
++void obj_set_knockback_action(s32 attackType);
++void obj_set_squished_action(void);
++s32 obj_die_if_above_lava_and_health_non_positive(void);
++s32 obj_handle_attacks(struct ObjectHitbox *hitbox, s32 attackedMarioAction,
++                              u8 *attackHandlers);
++void obj_act_knockback(UNUSED f32 baseScale);
++void obj_act_squished(f32 baseScale);
++s32 obj_update_standard_actions(f32 scale);
++s32 obj_check_attacks(struct ObjectHitbox *hitbox, s32 attackedMarioAction);
++s32 obj_move_for_one_second(s32 endAction);
++void treat_far_home_as_mario(f32 threshold);
++
++#endif
+\ No newline at end of file

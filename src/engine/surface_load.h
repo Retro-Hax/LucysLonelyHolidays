@@ -3,11 +3,10 @@
 
 #include <PR/ultratypes.h>
 
-#include "surface_collision.h"
+#include "extended_bounds.h"
 #include "types.h"
 
-#define NUM_CELLS       (2 * LEVEL_BOUNDARY_MAX / CELL_SIZE)
-#define NUM_CELLS_INDEX (NUM_CELLS - 1)
+extern u8 gSurfacePoolError;
 
 struct SurfaceNode {
     struct SurfaceNode *next;
@@ -23,7 +22,6 @@ enum {
 typedef struct SurfaceNode SpatialPartitionCell[3];
 
 // Needed for bs bss reordering memes.
-extern s32 unused8038BE90;
 
 extern SpatialPartitionCell gStaticSurfacePartition[NUM_CELLS][NUM_CELLS];
 extern SpatialPartitionCell gDynamicSurfacePartition[NUM_CELLS][NUM_CELLS];

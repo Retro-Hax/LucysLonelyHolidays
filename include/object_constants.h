@@ -191,6 +191,23 @@
     #define BOBOMB_BUDDY_HAS_NOT_TALKED 0
     #define BOBOMB_BUDDY_HAS_TALKED     2
 
+/* Spritzie */
+
+    /* oAction */
+    #define SPRITZIE_ACT_IDLE         0
+    #define SPRITZIE_ACT_TURN_TO_TALK 2
+    #define SPRITZIE_ACT_TALK         3
+
+    /* oSpritzeStarStatus */
+    #define SPRITZIE_HIDE_SECRET_STARS      0
+    #define SPRITZIE_SPAWN_SECRET_STARS     1
+    #define SPRITZIE_SPAWNED_SECRET_STARS   2
+    #define SPRITZIE_SPAWN_50_STAR          4
+
+    /* oSpritzieHasTalkedToLucy */
+    #define SPRITZIE_HAS_NOT_TALKED 0
+    #define SPRITZIE_HAS_TALKED     2
+
 /* Bowser */
     /* Tail oAction */
     #define BOWSER_ACT_TAIL_DEFAULT         0

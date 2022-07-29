@@ -1,0 +1,81 @@
+diff --git a/include/PatchConfig/config_QoL.h b/include/PatchConfig/config_QoL.h
+new file mode 100644
+index 0000000..f338fc3
+--- /dev/null
++++ b/include/PatchConfig/config_QoL.h
+@@ -0,0 +1,6 @@
++ /***************************
++ * QUALITY OF LIFE SETTINGS *
++ ***************************/
++
++// Prevents infinite death loops by always restoring Mario's health when he's warped to any kind of warp while dead.
++#define PREVENT_DEATH_LOOP
+diff --git a/include/config.h b/include/config.h
+index 044b069..f64d510 100644
+--- a/include/config.h
++++ b/include/config.h
+@@ -50,4 +50,8 @@
+ #define BORDER_HEIGHT 0
+ #endif
+ 
++//My Patches are now inside a Folder called PatchConfig so they dont cause issues with the
++//Vanilla Decomp Config File and also to make it look more clean
++#include "PatchConfig/config_QoL.h"
++
+ #endif // CONFIG_H
+diff --git a/include/types.h b/include/types.h
+index 150de57..4a25010 100644
+--- a/include/types.h
++++ b/include/types.h
+@@ -310,6 +310,9 @@ struct MarioState {
+     /*0xBC*/ f32 peakHeight;
+     /*0xC0*/ f32 quicksandDepth;
+     /*0xC4*/ f32 unkC4;
++#ifdef PREVENT_DEATH_LOOP
++             u8  isDead : 1;
++#endif
+ };
+ 
+ #endif // TYPES_H
+diff --git a/src/game/level_update.c b/src/game/level_update.c
+index 03d4407..5c3d4c6 100644
+--- a/src/game/level_update.c
++++ b/src/game/level_update.c
+@@ -367,6 +367,13 @@ void set_mario_initial_action(struct MarioState *m, u32 spawnType, u32 actionArg
+             break;
+     }
+ 
++#ifdef PREVENT_DEATH_LOOP
++    if (m->isDead) {
++        m->health = 0x880;
++        m->isDead = FALSE;
++    }
++#endif
++
+     set_mario_initial_cap_powerup(m);
+ }
+ 
+@@ -742,6 +749,9 @@ s16 level_trigger_warp(struct MarioState *m, s32 warpOp) {
+                 sSourceWarpNodeId = WARP_NODE_DEATH;
+                 play_transition(WARP_TRANSITION_FADE_INTO_BOWSER, 0x30, 0x00, 0x00, 0x00);
+                 play_sound(SOUND_MENU_BOWSER_LAUGH, gGlobalSoundSource);
++#ifdef PREVENT_DEATH_LOOP
++                m->isDead = TRUE;
++#endif
+                 break;
+ 
+             case WARP_OP_WARP_FLOOR:
+diff --git a/src/game/mario_actions_cutscene.c b/src/game/mario_actions_cutscene.c
+index ab79740..9e7901d 100644
+--- a/src/game/mario_actions_cutscene.c
++++ b/src/game/mario_actions_cutscene.c
+@@ -684,6 +684,9 @@ s32 common_death_handler(struct MarioState *m, s32 animation, s32 frameToDeathWa
+     }
+     m->marioBodyState->eyeState = MARIO_EYES_DEAD;
+     stop_and_set_height_to_floor(m);
++#ifdef PREVENT_DEATH_LOOP
++    m->isDead = TRUE;
++#endif
+     return animFrame;
+ }
+ 

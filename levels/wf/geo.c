@@ -27,8 +27,6 @@
 #include "levels/wf/areas/1/17/geo.inc.c"
 #include "levels/wf/areas/1/18/geo.inc.c"
 #include "levels/wf/areas/1/19/geo.inc.c"
-#include "levels/wf/small_bomp/geo.inc.c"
-#include "levels/wf/large_bomp/geo.inc.c"
 #include "levels/wf/rotating_wooden_platform/geo.inc.c"
 #include "levels/wf/sliding_platform/geo.inc.c"
 #include "levels/wf/tumbling_bridge_near/geo.inc.c"
@@ -41,3 +39,5 @@
 #include "levels/wf/kickable_board/geo.inc.c"
 #include "levels/wf/tower_door/geo.inc.c"
 #include "levels/wf/areas/1/geo.inc.c"
+
+#include "levels/wf/geo.inc.c"

@@ -1,18 +1,18 @@
-COURSE_ACTS(COURSE_BOB, _(" 1 BOB-OMB BATTLEFIELD"),
-       _("BIG BOB-OMB ON THE SUMMIT")     , _("FOOTRACE WITH KOOPA THE QUICK") , _("SHOOT TO THE ISLAND IN THE SKY"),
-       _("FIND THE 8 RED COINS")          , _("MARIO WINGS TO THE SKY")        , _("BEHIND CHAIN CHOMP'S GATE"))
+COURSE_ACTS(COURSE_BOB, _(" 1 Fly Guy Kingdom"),
+       _("Star ontop of the Castle")     , _("Enter the Cave") , _("Fire Piranhas Hidden in the Cave"),
+       _("Stuck in the Mud")          , _("Scattered Red Coins")        , _("The Gardens Secret"))
 
-COURSE_ACTS(COURSE_WF, _(" 2 WHOMP'S FORTRESS"),
-       _("CHIP OFF WHOMP'S BLOCK")        , _("TO THE TOP OF THE FORTRESS")    , _("SHOOT INTO THE WILD BLUE"),
-       _("RED COINS ON THE FLOATING ISLE"), _("FALL ONTO THE CAGED ISLAND")    , _("BLAST AWAY THE WALL"))
+COURSE_ACTS(COURSE_WF, _(" 2 Tropical Resort"),
+       _("Defeat King Pimp Omb")        , _("Ship Jumping for 5 Blue Coins")    , _("Hidden behind the Waterfall"),
+       _("Red Coins of the Castle Ruins"), _("The Ruins Secret Treasure")    , _("The Power Stars Edge Case"))
 
-COURSE_ACTS(COURSE_JRB, _(" 3 JOLLY ROGER BAY"),
-       _("PLUNDER IN THE SUNKEN SHIP")    , _("CAN THE EEL COME OUT TO PLAY?") , _("TREASURE OF THE OCEAN CAVE"),
-       _("RED COINS ON THE SHIP AFLOAT")  , _("BLAST TO THE STONE PILLAR")     , _("THROUGH THE JET STREAM"))
+COURSE_ACTS(COURSE_JRB, _(" 3 "),
+       _("Escape from the Mountain")    , _("Star 2") , _("The Mountains Burning Red Coins"),
+       _("Star 4")  , _("Climbing the Cliff Side")     , _("Star 6"))
 
-COURSE_ACTS(COURSE_CCM, _(" 4 COOL, COOL MOUNTAIN"),
-       _("SLIP SLIDIN' AWAY")             , _("LI'L PENGUIN LOST")             , _("BIG PENGUIN RACE"),
-       _("FROSTY SLIDE FOR 8 RED COINS")  , _("SNOWMAN'S LOST HIS HEAD")       , _("WALL KICKS WILL WORK"))
+COURSE_ACTS(COURSE_CCM, _(" 4 Time Travel Cave"),
+       _("A Time Travelers Secret")    , _("Behind the Lava Fall") , _("A Star Set in Stone"),
+       _("Attack of the Bullys")  , _("King Bullys Revenge")     , _("Red Coins traveling through Time"))
 
 COURSE_ACTS(COURSE_BBH, _(" 5 BIG BOO'S HAUNT"),
        _("GO ON A GHOST HUNT")            , _("RIDE BIG BOO'S MERRY-GO-ROUND") , _("SECRET OF THE HAUNTED BOOKS"),
@@ -59,20 +59,20 @@ COURSE_ACTS(COURSE_RR, _("15 RAINBOW RIDE"),
        _("SWINGIN' IN THE BREEZE")        , _("TRICKY TRIANGLES!")             , _("SOMEWHERE OVER THE RAINBOW"))
 
 SECRET_STAR(COURSE_BITDW, _("   BOWSER IN THE DARK WORLD"))
-SECRET_STAR(COURSE_BITFS, _("   BOWSER IN THE FIRE SEA"))
+SECRET_STAR(COURSE_BITFS, _("   Corona Mountain"))
 SECRET_STAR(COURSE_BITS, _("   BOWSER IN THE SKY"))
-SECRET_STAR(COURSE_PSS, _("   THE PRINCESS'S SECRET SLIDE"))
-SECRET_STAR(COURSE_COTMC, _("   CAVERN OF THE METAL CAP"))
-SECRET_STAR(COURSE_TOTWC, _("   TOWER OF THE WING CAP"))
-SECRET_STAR(COURSE_VCUTM, _("   VANISH CAP UNDER THE MOAT"))
-SECRET_STAR(COURSE_WMOTR, _("   WING MARIO OVER THE RAINBOW"))
-SECRET_STAR(COURSE_SA, _("   THE SECRET AQUARIUM"))
+SECRET_STAR(COURSE_PSS, _("   Lego Brick Castle"))
+SECRET_STAR(COURSE_COTMC, _("   Frozen Mountain"))
+SECRET_STAR(COURSE_TOTWC, _("   Secret Oasis"))
+SECRET_STAR(COURSE_VCUTM, _(""))
+SECRET_STAR(COURSE_WMOTR, _("   Spooky Butters Mansion"))
+SECRET_STAR(COURSE_SA, _("   Toxic Sakura Beach"))
 SECRET_STAR(COURSE_CAKE_END, _(""))
 
-CASTLE_SECRET_STARS(_("   CASTLE SECRET STARS"))
+CASTLE_SECRET_STARS(_("   Island Secret Stars"))
 
-EXTRA_TEXT(0, _("ONE OF THE CASTLE'S SECRET STARS!"))
-EXTRA_TEXT(1, _(""))
+EXTRA_TEXT(0, _("One of the Island's Secret Stars!"))
+EXTRA_TEXT(1, _("One of Spritzies Secret Stars"))
 EXTRA_TEXT(2, _(""))
 EXTRA_TEXT(3, _(""))
 EXTRA_TEXT(4, _(""))

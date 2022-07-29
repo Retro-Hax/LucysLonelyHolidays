@@ -45,10 +45,6 @@ s32 piranha_plant_check_interactions(void) {
         if (o->oInteractStatus & INT_STATUS_WAS_ATTACKED) {
             cur_obj_play_sound_2(SOUND_OBJ2_PIRANHA_PLANT_DYING);
 
-            // Spawn 20 intangible purple particles that quickly dissipate.
-            for (i = 0; i < 20; i++) {
-                spawn_object(o, MODEL_PURPLE_MARBLE, bhvPurpleParticle);
-            }
             o->oAction = PIRANHA_PLANT_ACT_ATTACKED;
         } else {
             o->oAction = PIRANHA_PLANT_ACT_WOKEN_UP;
@@ -199,9 +195,6 @@ void piranha_plant_act_shrink_and_die(void) {
  * Wait for Mario to move far away, then respawn the Piranha Plant.
  */
 void piranha_plant_act_wait_to_respawn(void) {
-    if (o->oDistanceToMario > 1200.0f) {
-        o->oAction = PIRANHA_PLANT_ACT_RESPAWN;
-    }
 }
 
 /**

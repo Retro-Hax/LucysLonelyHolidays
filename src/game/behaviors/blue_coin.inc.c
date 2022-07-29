@@ -47,13 +47,21 @@ void bhv_hidden_blue_coin_loop(void) {
                 obj_mark_for_deletion(o);
             }
 
+            // Make Blue Coins easier to collect but only in Level TOTWC
+            // TODO: Getting the frickin Timer to work and not be faster than the normal Timer
+
             // After 200 frames of waiting and 20 2-frame blinks (for 240 frames total),
             // delete the object.
+            if (gCurrCourseNum == COURSE_TOTWC || COURSE_BITFS) {
+            if (cur_obj_wait_then_blink(500, 50)) {
+                obj_mark_for_deletion(o);
+            }
+            } else {
             if (cur_obj_wait_then_blink(200, 20)) {
                 obj_mark_for_deletion(o);
             }
-
             break;
+            }
     }
 
     o->oInteractStatus = 0;
@@ -115,16 +123,31 @@ void bhv_blue_coin_switch_loop(void) {
 
         case BLUE_COIN_SWITCH_ACT_TICKING:
             // Tick faster when the blue coins start blinking
+            if (gCurrCourseNum == COURSE_TOTWC || COURSE_BITFS) {
+            if (o->oTimer < 500) {
+                play_sound(SOUND_GENERAL2_SWITCH_TICK_FAST, gGlobalSoundSource);
+            } else {
+                play_sound(SOUND_GENERAL2_SWITCH_TICK_SLOW, gGlobalSoundSource);
+            }
+            } else {
             if (o->oTimer < 200) {
                 play_sound(SOUND_GENERAL2_SWITCH_TICK_FAST, gGlobalSoundSource);
             } else {
                 play_sound(SOUND_GENERAL2_SWITCH_TICK_SLOW, gGlobalSoundSource);
             }
+            }
 
             // Delete the switch (which stops the sound) after the last coin is collected,
             // or after the coins unload after the 240-frame timer expires.
+            if (gCurrCourseNum == COURSE_TOTWC || COURSE_BITFS) {
+            if (cur_obj_nearest_object_with_behavior(bhvHiddenBlueCoin) == NULL || o->oTimer > 600) {
+                obj_mark_for_deletion(o);
+            }
+            } else {
             if (cur_obj_nearest_object_with_behavior(bhvHiddenBlueCoin) == NULL || o->oTimer > 240) {
                 obj_mark_for_deletion(o);
+            }
+            break;
             }
 
             break;

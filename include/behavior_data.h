@@ -3,6 +3,7 @@
 
 #include "types.h"
 
+extern const BehaviorScript bhvSnowBall[];
 extern const BehaviorScript bhvStarDoor[];
 extern const BehaviorScript bhvMrI[];
 extern const BehaviorScript bhvMrIBody[];
@@ -281,8 +282,6 @@ extern const BehaviorScript bhvSparkleSpawn[];
 extern const BehaviorScript bhvSparkleParticleSpawner[];
 extern const BehaviorScript bhvSomeGfx[];
 extern const BehaviorScript bhvScuttlebug[];
-extern const BehaviorScript bhvScuttlebugSpawn[];
-extern const BehaviorScript bhvWhompKingBoss[];
 extern const BehaviorScript bhvSmallWhomp[];
 extern const BehaviorScript bhvWaterSplash[];
 extern const BehaviorScript bhvWaterDroplet[];
@@ -373,7 +372,6 @@ extern const BehaviorScript bhvCelebrationStarSparkle[];
 extern const BehaviorScript bhvStarKeyCollectionPuffSpawner[];
 extern const BehaviorScript bhvLllDrawbridgeSpawner[];
 extern const BehaviorScript bhvLllDrawbridge[];
-extern const BehaviorScript bhvSmallBomp[];
 extern const BehaviorScript bhvLargeBomp[];
 extern const BehaviorScript bhvWfSlidingPlatform[];
 extern const BehaviorScript bhvMoneybag[];

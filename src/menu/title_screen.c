@@ -239,7 +239,7 @@ s32 lvl_intro_update(s16 arg, UNUSED s32 unusedArg) {
             retVar = intro_regular();
             break;
         case LVL_INTRO_GAME_OVER:
-            retVar = intro_game_over();
+            retVar = intro_play_its_a_me_mario();
             break;
         case LVL_INTRO_LEVEL_SELECT:
             retVar = intro_level_select();

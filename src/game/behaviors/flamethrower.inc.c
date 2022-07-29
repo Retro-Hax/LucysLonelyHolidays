@@ -36,6 +36,7 @@ void bhv_flamethrower_flame_loop(void) {
 
     if (o->oBehParams2ndByte == 4) {
         o->oPosY += o->oForwardVel; // weird?
+        obj_scale_xyz(o, 30, 10, 15);
     } else {
         cur_obj_move_using_fvel_and_gravity();
     }

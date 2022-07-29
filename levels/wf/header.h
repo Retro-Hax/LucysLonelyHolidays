@@ -19,8 +19,6 @@ extern const GeoLayout wf_geo_0009A0[];
 extern const GeoLayout wf_geo_0009B8[];
 extern const GeoLayout wf_geo_0009D0[];
 extern const GeoLayout wf_geo_0009E8[];
-extern const GeoLayout wf_geo_000A00[];
-extern const GeoLayout wf_geo_000A40[];
 extern const GeoLayout wf_geo_000A58[];
 extern const GeoLayout wf_geo_000A98[];
 extern const GeoLayout wf_geo_000AB0[];
@@ -63,9 +61,6 @@ extern const Gfx wf_seg7_dl_0700BA28[];
 extern const Gfx wf_seg7_dl_0700BF50[];
 extern const Gfx wf_seg7_dl_0700D028[];
 extern const Gfx wf_seg7_dl_0700D300[];
-extern const Gfx wf_seg7_dl_0700D708[];
-extern const Gfx wf_seg7_dl_0700D9F0[];
-extern const Gfx wf_seg7_dl_0700DE20[];
 extern const Gfx wf_seg7_dl_0700E0F0[];
 extern const Gfx wf_seg7_dl_0700E3D0[];
 extern const Gfx wf_seg7_dl_0700E760[];
@@ -78,8 +73,6 @@ extern const Gfx wf_seg7_dl_0700F340[];
 extern const Gfx wf_seg7_dl_0700F610[];
 extern const Gfx wf_seg7_dl_0700F6C0[];
 extern const Gfx wf_seg7_dl_0700F7F8[];
-extern const Collision wf_seg7_collision_small_bomp[];
-extern const Collision wf_seg7_collision_large_bomp[];
 extern const Collision wf_seg7_collision_clocklike_rotation[];
 extern const Collision wf_seg7_collision_sliding_brick_platform[];
 extern const Collision wf_seg7_collision_tumbling_bridge[];
@@ -98,5 +91,8 @@ extern const struct MovtexQuadCollection wf_movtex_water[];
 
 // script
 extern const LevelScript level_wf_entry[];
+
+
+#include "levels/wf/header.inc.h"
 
 #endif

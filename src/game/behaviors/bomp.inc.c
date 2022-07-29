@@ -1,114 +1,36 @@
 // bomp.inc.c
 
-void bhv_small_bomp_init(void) {
-    o->oFaceAngleYaw -= 0x4000;
-    o->oSmallBompInitX = o->oPosX;
-    o->oTimer = random_float() * 100.0f;
-}
-
-void bhv_small_bomp_loop(void) {
-    switch (o->oAction) {
-        case BOMP_ACT_WAIT:
-            if (o->oTimer > 100) {
-                o->oAction = BOMP_ACT_POKE_OUT;
-                o->oForwardVel = 30.0f;
-            }
-            break;
-
-        case BOMP_ACT_POKE_OUT:
-            if (o->oPosX > 3450.0f) {
-                o->oPosX = 3450.0f;
-                o->oForwardVel = 0.0f;
-            }
-
-            if (o->oTimer == 15.0) {
-                o->oAction = BOMP_ACT_EXTEND;
-                o->oForwardVel = 40.0f;
-                cur_obj_play_sound_2(SOUND_OBJ_UNKNOWN2);
-            }
-            break;
-
-        case BOMP_ACT_EXTEND:
-            if (o->oPosX > 3830.0f) {
-                o->oPosX = 3830.0f;
-                o->oForwardVel = 0.0f;
-            }
-
-            if (o->oTimer == 60) {
-                o->oAction = BOMP_ACT_RETRACT;
-                o->oForwardVel = 10.0f;
-                o->oMoveAngleYaw -= 0x8000;
-                cur_obj_play_sound_2(SOUND_OBJ_UNKNOWN2);
-            }
-            break;
-
-        case BOMP_ACT_RETRACT:
-            if (o->oPosX < 3330.0f) {
-                o->oPosX = 3330.0f;
-                o->oForwardVel = 0.0f;
-            }
-
-            if (o->oTimer == 90) {
-                o->oAction = BOMP_ACT_POKE_OUT;
-                o->oForwardVel = 25.0f;
-                o->oMoveAngleYaw -= 0x8000;
-            }
-            break;
-    }
-}
-
 void bhv_large_bomp_init(void) {
     o->oMoveAngleYaw += 0x4000;
     o->oTimer = random_float() * 100.0f;
 }
 
 void bhv_large_bomp_loop(void) {
-    switch (o->oAction) {
-        case BOMP_ACT_WAIT:
-            if (o->oTimer > 100) {
-                o->oAction = BOMP_ACT_POKE_OUT;
-                o->oForwardVel = 30.0f;
-            }
-            break;
+    //obj_set_hitbox(o, &sBreakableBoxHitbox);
+    cur_obj_set_model(MODEL_SNOWBALL);
 
-        case BOMP_ACT_POKE_OUT:
-            if (o->oPosX > 3450.0f) {
-                o->oPosX = 3450.0f;
-                o->oForwardVel = 0.0f;
-            }
+    if (o->oTimer == 0) {
+        breakable_box_init();
+    }
 
-            if (o->oTimer == 15.0) {
-                o->oAction = BOMP_ACT_EXTEND;
-                o->oForwardVel = 10.0f;
-                cur_obj_play_sound_2(SOUND_OBJ_UNKNOWN2);
-            }
-            break;
+    if (cur_obj_was_attacked_or_ground_pounded()) {
+        obj_explode_and_spawn_coins(46.0f, 1);
+        create_sound_spawner(SOUND_GENERAL_BREAK_BOX);
+    }
 
-        case BOMP_ACT_EXTEND:
-            if (o->oPosX > 3830.0f) {
-                o->oPosX = 3830.0f;
-                o->oForwardVel = 0.0f;
-            }
+    if (obj_check_if_collided_with_object(o, gMarioObject) == TRUE) {
+        struct Object *hiddenStar = cur_obj_nearest_object_with_behavior(bhvHiddenStar);
 
-            if (o->oTimer == 60) {
-                o->oAction = BOMP_ACT_RETRACT;
-                o->oForwardVel = 10.0f;
-                o->oMoveAngleYaw -= 0x8000;
-                cur_obj_play_sound_2(SOUND_OBJ_UNKNOWN2);
-            }
-            break;
+        if (hiddenStar != NULL) {
+            hiddenStar->oHiddenStarTriggerCounter++;
 
-        case BOMP_ACT_RETRACT:
-            if (o->oPosX < 3330.0f) {
-                o->oPosX = 3330.0f;
-                o->oForwardVel = 0.0f;
+            if (hiddenStar->oHiddenStarTriggerCounter != 5) {
+                spawn_orange_number(hiddenStar->oHiddenStarTriggerCounter, 0, 0, 0);
             }
+            play_sound(SOUND_MENU_COLLECT_SECRET
+                       + (((u8) hiddenStar->oHiddenStarTriggerCounter - 1) << 16), gGlobalSoundSource);
+        }
 
-            if (o->oTimer == 90) {
-                o->oAction = BOMP_ACT_POKE_OUT;
-                o->oForwardVel = 25.0f;
-                o->oMoveAngleYaw -= 0x8000;
-            }
-            break;
+        o->activeFlags = ACTIVE_FLAG_DEACTIVATED;
     }
 }

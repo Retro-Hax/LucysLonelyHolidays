@@ -2954,8 +2954,7 @@ void render_course_complete_lvl_info_and_hud_str(void) {
     #define TXT_SAVEOPTIONS_X x + 12
 #endif
     #define TXT_SAVECONT_Y 0
-    #define TXT_SAVEQUIT_Y 20
-    #define TXT_CONTNOSAVE_Y 40
+    #define TXT_CONTNOSAVE_Y 20
 #endif
 
 #ifdef VERSION_EU
@@ -2971,7 +2970,6 @@ void render_save_confirmation(s16 x, s16 y, s8 *index, s16 sp6e)
         { TEXT_SAVE_AND_CONTINUE_DE }
     };
     u8 textSaveAndQuit[][22] = {
-        { TEXT_SAVE_AND_QUIT },
         { TEXT_SAVE_AND_QUIT_FR },
         { TEXT_SAVE_AND_QUIT_DE }
     };
@@ -2983,17 +2981,15 @@ void render_save_confirmation(s16 x, s16 y, s8 *index, s16 sp6e)
     s16 xOffset = get_str_x_pos_from_center(160, LANGUAGE_ARRAY(textContinueWithoutSave), 12.0f);
 #else
     u8 textSaveAndContinue[] = { TEXT_SAVE_AND_CONTINUE };
-    u8 textSaveAndQuit[] = { TEXT_SAVE_AND_QUIT };
     u8 textContinueWithoutSave[] = { TEXT_CONTINUE_WITHOUT_SAVING };
 #endif
 
-    handle_menu_scrolling(MENU_SCROLL_VERTICAL, index, 1, 3);
+    handle_menu_scrolling(MENU_SCROLL_VERTICAL, index, 1, 2);
 
     gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, gDialogTextAlpha);
 
     print_generic_string(TXT_SAVEOPTIONS_X, y + TXT_SAVECONT_Y, LANGUAGE_ARRAY(textSaveAndContinue));
-    print_generic_string(TXT_SAVEOPTIONS_X, y - TXT_SAVEQUIT_Y, LANGUAGE_ARRAY(textSaveAndQuit));
     print_generic_string(TXT_SAVEOPTIONS_X, y - TXT_CONTNOSAVE_Y, LANGUAGE_ARRAY(textContinueWithoutSave));
 
     gSPDisplayList(gDisplayListHead++, dl_ia_text_end);

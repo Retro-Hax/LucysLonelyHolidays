@@ -1,0 +1,55 @@
+diff --git a/bin/segment2.c b/bin/segment2.c
+index ea30527..1735b4d 100644
+--- a/bin/segment2.c
++++ b/bin/segment2.c
+@@ -2186,6 +2186,13 @@ const Gfx dl_draw_text_bg_box[] = {
+     gsSPEndDisplayList(),
+ };
+ 
++// Font position fix
++#ifdef FONT_POSITION_FIX
++#define UV 512
++#else
++#define UV 480
++#endif
++
+ #ifndef VERSION_EU
+ // 0x0200EE28 - 0x0200EE68
+ static const Vtx vertex_ia8_char[] = {
+@@ -2197,8 +2204,8 @@ static const Vtx vertex_ia8_char[] = {
+ #else
+     {{{     0,      0,      0}, 0, {     0,    256}, {0xff, 0xff, 0xff, 0xff}}},
+     {{{     8,      0,      0}, 0, {     0,      0}, {0xff, 0xff, 0xff, 0xff}}},
+-    {{{     8,     16,      0}, 0, {   480,      0}, {0xff, 0xff, 0xff, 0xff}}},
+-    {{{     0,     16,      0}, 0, {   480,    256}, {0xff, 0xff, 0xff, 0xff}}},
++    {{{     8,     16,      0}, 0, {    UV,      0}, {0xff, 0xff, 0xff, 0xff}}},
++    {{{     0,     16,      0}, 0, {    UV,    256}, {0xff, 0xff, 0xff, 0xff}}},
+ #endif
+ };
+ // !EU
+diff --git a/include/PatchConfig/config_QoL.h b/include/PatchConfig/config_QoL.h
+new file mode 100644
+index 0000000..dc7401e
+--- /dev/null
++++ b/include/PatchConfig/config_QoL.h
+@@ -0,0 +1,6 @@
++ /***************************
++ * QUALITY OF LIFE SETTINGS *
++ ***************************/
++
++// Toggles if the Fixed Font Position shall be enabled or disabled
++// #define FONT_POSITION_FIX
+diff --git a/include/config.h b/include/config.h
+index 044b069..66faeda 100644
+--- a/include/config.h
++++ b/include/config.h
+@@ -49,5 +49,9 @@
+ // What's the point of having a border?
+ #define BORDER_HEIGHT 0
+ #endif
++ 
++//My Patches are now inside a Folder called PatchConfig so they dont cause issues with the
++//Vanilla Decomp Config File and also to make it look more clean
++#include "PatchConfig/config_QoL.h"
+ 
+ #endif // CONFIG_H

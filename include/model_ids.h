@@ -343,13 +343,11 @@
 
 // group 2
 #define MODEL_BLARGG                      0x54        // blargg_geo
-#define MODEL_BULLY                       0x56        // bully_geo
-#define MODEL_BULLY_BOSS                  0x57        // bully_boss_geo
 
 // group 3
 #define MODEL_WATER_BOMB                  0x54        // water_bomb_geo
 #define MODEL_WATER_BOMB_SHADOW           0x55        // water_bomb_shadow_geo
-#define MODEL_KING_BOBOMB                 0x56        // king_bobomb_geo
+#define MODEL_KING_BOBOMB                 0x60        // king_bobomb_geo
 
 // group 4
 #define MODEL_MANTA_RAY                   0x54        // manta_seg5_geo_05008D14
@@ -377,6 +375,7 @@
 #define MODEL_MR_BLIZZARD_HIDDEN          0x55        // mr_blizzard_hidden_geo
 #define MODEL_MR_BLIZZARD                 0x56        // mr_blizzard_geo
 #define MODEL_PENGUIN                     0x57        // penguin_geo
+#define MODEL_SNOWBALL                    0x58        //snowball_geo
 
 // group 8
 #define MODEL_CAP_SWITCH_EXCLAMATION      0x54        // cap_switch_exclamation_seg5_dl_05002E00
@@ -419,18 +418,20 @@
 
 // group 13
 #define MODEL_BUB                         0x64        // cheep_cheep_geo
-#define MODEL_TREASURE_CHEST_BASE         0x65        // treasure_chest_base_geo
-#define MODEL_TREASURE_CHEST_LID          0x66        // treasure_chest_lid_geo
 #define MODEL_CYAN_FISH                   0x67        // cyan_fish_geo
 #define MODEL_WATER_RING                  0x68        // water_ring_geo
 #define MODEL_SKEETER                     0x69        // skeeter_geo
 
 // group 14
+#define MODEL_BULLY                       0x56        // bully_geo
+#define MODEL_BULLY_BOSS                  0x57        // bully_boss_geo
 #define MODEL_PIRANHA_PLANT               0x64        // piranha_plant_geo
 #define MODEL_WHOMP                       0x67        // whomp_geo
 #define MODEL_KOOPA_WITH_SHELL            0x68        // koopa_with_shell_geo
-#define MODEL_METALLIC_BALL               0x65        // metallic_ball_geo
-#define MODEL_CHAIN_CHOMP                 0x66        // chain_chomp
+#define MODEL_METALLIC_BALL               0x6D        // metallic_ball_geo
+#define MODEL_CHAIN_CHOMP                 0x6C        // chain_chomp
+#define MODEL_TREASURE_CHEST_BASE         0x65        // treasure_chest_base_geo
+#define MODEL_TREASURE_CHEST_LID          0x66        // treasure_chest_lid_geo
 #define MODEL_KOOPA_FLAG                  0x6A        // koopa_flag_geo
 #define MODEL_WOODEN_POST                 0x6B        // wooden_post_geo
 
@@ -510,10 +511,8 @@
 // find me
 #define MODEL_UNKNOWN_AC                  0xAC        // according to an special preset, it was the original id of the castle floor trap
 #define MODEL_WF_SLIDING_PLATFORM         0xAD        // wf_geo_000A98
-#define MODEL_WF_SMALL_BOMP               0xAE        // wf_geo_000A00
 #define MODEL_WF_ROTATING_WOODEN_PLATFORM 0xAF        // wf_geo_000A58
 #define MODEL_WF_TUMBLING_BRIDGE_PART     0xB0        // wf_geo_000AB0
-#define MODEL_WF_LARGE_BOMP               0xB1        // wf_geo_000A40
 #define MODEL_WF_TUMBLING_BRIDGE          0xB2        // wf_geo_000AC8
 #define MODEL_BOWSER_BOMB                 0xB3        // bowser_bomb_geo
 #define MODEL_WATER_MINE                  0xB3        // water_mine_geo

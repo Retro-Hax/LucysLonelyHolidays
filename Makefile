@@ -23,7 +23,7 @@ TARGET_N64 ?= 1
 #   ido - uses the SGI IRIS Development Option compiler, which is used to build
 #         an original matching N64 ROM
 #   gcc - uses the GNU C Compiler
-COMPILER ?= ido
+COMPILER ?= gcc
 $(eval $(call validate-option,COMPILER,ido gcc))
 
 
@@ -42,8 +42,8 @@ ifeq      ($(VERSION),jp)
   VERSION_JP_US  ?= true
 else ifeq ($(VERSION),us)
   DEFINES   += VERSION_US=1
-  OPT_FLAGS := -g
-  GRUCODE   ?= f3d_old
+  OPT_FLAGS := -O3
+  GRUCODE   ?= f3dzex
   VERSION_JP_US  ?= true
 else ifeq ($(VERSION),eu)
   DEFINES   += VERSION_EU=1
@@ -57,7 +57,7 @@ else ifeq ($(VERSION),sh)
   VERSION_JP_US  ?= false
 endif
 
-TARGET := sm64.$(VERSION)
+TARGET := LLH.$(VERSION)
 
 
 # GRUCODE - selects which RSP microcode to use.
@@ -101,14 +101,14 @@ ifeq      ($(COMPILER),ido)
 else ifeq ($(COMPILER),gcc)
   NON_MATCHING := 1
   MIPSISET     := -mips3
-  OPT_FLAGS    := -O2
+  OPT_FLAGS    := -O3
 endif
 
 
 # NON_MATCHING - whether to build a matching, identical copy of the ROM
 #   1 - enable some alternate, more portable code that does not produce a matching ROM
 #   0 - build a matching ROM
-NON_MATCHING ?= 0
+NON_MATCHING ?= 1
 $(eval $(call validate-option,NON_MATCHING,0 1))
 
 ifeq ($(TARGET_N64),0)
@@ -124,7 +124,7 @@ endif
 # COMPARE - whether to verify the SHA-1 hash of the ROM after building
 #   1 - verifies the SHA-1 hash of the selected version of the game
 #   0 - does not verify the hash
-COMPARE ?= 1
+COMPARE ?= 0
 $(eval $(call validate-option,COMPARE,0 1))
 
 TARGET_STRING := sm64.$(VERSION).$(GRUCODE)
@@ -187,7 +187,7 @@ ifeq ($(filter clean distclean print-%,$(MAKECMDGOALS)),)
 
   # Make tools if out of date
   $(info Building tools...)
-  DUMMY != $(MAKE) -s -C $(TOOLS_DIR) $(if $(filter-out ido0,$(COMPILER)$(USE_QEMU_IRIX)),all-except-recomp,) >&2 || echo FAIL
+  #DUMMY != $(MAKE) -s -C $(TOOLS_DIR) $(if $(filter-out ido0,$(COMPILER)$(USE_QEMU_IRIX)),all-except-recomp,) >&2 || echo FAIL
     ifeq ($(DUMMY),FAIL)
       $(error Failed to build tools)
     endif
@@ -290,7 +290,9 @@ endif
 
 AS        := $(CROSS)as
 ifeq ($(COMPILER),gcc)
-  CC      := $(CROSS)gcc
+  CC      := $(CROSS)gcc 
+  $(BUILD_DIR)/actors/%.o:           OPT_FLAGS := -O2 -mlong-calls
+  $(BUILD_DIR)/levels/%.o:           OPT_FLAGS := -O2 -mlong-calls
 else
   ifeq ($(USE_QEMU_IRIX),1)
     IRIX_ROOT := $(TOOLS_DIR)/ido5.3_compiler
@@ -366,6 +368,7 @@ MIO0TOOL              := $(TOOLS_DIR)/mio0
 N64CKSUM              := $(TOOLS_DIR)/n64cksum
 N64GRAPHICS           := $(TOOLS_DIR)/n64graphics
 N64GRAPHICS_CI        := $(TOOLS_DIR)/n64graphics_ci
+BINPNG                := $(TOOLS_DIR)/BinPNG.py #pip install pypng bitstring 
 TEXTCONV              := $(TOOLS_DIR)/textconv
 AIFF_EXTRACT_CODEBOOK := $(TOOLS_DIR)/aiff_extract_codebook
 VADPCM_ENC            := $(TOOLS_DIR)/vadpcm_enc
@@ -478,6 +481,7 @@ $(BUILD_DIR)/include/text_strings.h: $(BUILD_DIR)/include/text_menu_strings.h
 $(BUILD_DIR)/src/menu/file_select.o: $(BUILD_DIR)/include/text_strings.h
 $(BUILD_DIR)/src/menu/star_select.o: $(BUILD_DIR)/include/text_strings.h
 $(BUILD_DIR)/src/game/ingame_menu.o: $(BUILD_DIR)/include/text_strings.h
+$(BUILD_DIR)/src/game/mem_error_screen.o: $(BUILD_DIR)/include/text_strings.h
 
 
 #==============================================================================#
@@ -495,14 +499,14 @@ $(BUILD_DIR)/%.inc.c: %.png
 	$(V)$(N64GRAPHICS) -s $(TEXTURE_ENCODING) -i $@ -g $< -f $(lastword ,$(subst ., ,$(basename $<)))
 
 # Color Index CI8
-$(BUILD_DIR)/%.ci8: %.ci8.png
-	$(call print,Converting:,$<,$@)
-	$(V)$(N64GRAPHICS_CI) -i $@ -g $< -f ci8
+$(BUILD_DIR)/%.ci8.inc.c: %.ci8.png
+	$(call print,Converting CI:,$<,$@)
+	$(V)$(BINPNG) $< $@ 8
 
 # Color Index CI4
-$(BUILD_DIR)/%.ci4: %.ci4.png
-	$(call print,Converting:,$<,$@)
-	$(V)$(N64GRAPHICS_CI) -i $@ -g $< -f ci4
+$(BUILD_DIR)/%.ci4.inc.c: %.ci4.png
+	$(call print,Converting CI:,$<,$@)
+	$(V)$(BINPNG) $< $@ 4
 
 
 #==============================================================================#

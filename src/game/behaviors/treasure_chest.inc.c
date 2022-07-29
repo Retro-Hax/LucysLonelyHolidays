@@ -177,10 +177,10 @@ void bhv_treasure_chest_jrb_loop(void) {
 }
 
 void bhv_treasure_chest_init(void) {
-    spawn_treasure_chest(1, -4500, -5119, 1300, -0x6001);
-    spawn_treasure_chest(2, -1800, -5119, 1050, 0x1FFF);
-    spawn_treasure_chest(3, -4500, -5119, -1100, 9102);
-    spawn_treasure_chest(4, -2400, -4607, 125, 16019);
+    spawn_treasure_chest(1, 5526, 598, 4858, 0x7FFF);
+    spawn_treasure_chest(2, -5682, 598, 4866, 0x7FFF);
+    spawn_treasure_chest(3, -5613, 981, -2601, 0x7FFF);
+    spawn_treasure_chest(4, 5526, 981, -2548, 0x7FFF);
 
     o->oTreasureChestUnkF4 = 1;
     o->oTreasureChestUnkFC = 0;
@@ -198,7 +198,8 @@ void bhv_treasure_chest_loop(void) {
         case 1:
             if (o->oTimer == 60) {
                 spawn_mist_particles();
-                spawn_default_star(-1900.0f, -4000.0f, -1400.0f);
+                gCurrentObject->oBehParams = 0x04 << 24;
+                spawn_default_star(351.0f, 710.0f, 384.0f);
                 o->oAction = 2;
             }
             break;

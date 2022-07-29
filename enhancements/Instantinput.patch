@@ -1,0 +1,41 @@
+diff --git a/src/game/game_init.c b/src/game/game_init.c
+index 4be1c7b..9de5001 100644
+--- a/src/game/game_init.c
++++ b/src/game/game_init.c
+@@ -338,9 +338,12 @@ void render_init(void) {
+     end_master_display_list();
+     exec_display_list(&gGfxPool->spTask);
+ 
+-    sRenderingFramebuffer++;
+-    gGlobalTimer++;
+-}
++    // Skip incrementing the initial framebuffer index on emulators so that they display immediately as the Gfx task finishes
++    if ((*(volatile u32 *)0xA4100010) != 0) { // Read RDP Clock Register, has a value of zero on emulators
++        sRenderingFramebuffer++;
++    }
++     gGlobalTimer++;
++ }
+ 
+ /**
+  * Selects the location of the F3D output buffer (gDisplayListHead).
+@@ -373,11 +376,15 @@ void display_and_vsync(void) {
+     osViSwapBuffer((void *) PHYSICAL_TO_VIRTUAL(gPhysicalFramebuffers[sRenderedFramebuffer]));
+     profiler_log_thread5_time(THREAD5_END);
+     osRecvMesg(&gGameVblankQueue, &gMainReceivedMesg, OS_MESG_BLOCK);
+-    if (++sRenderedFramebuffer == 3) {
+-        sRenderedFramebuffer = 0;
+-    }
+-    if (++sRenderingFramebuffer == 3) {
+-        sRenderingFramebuffer = 0;
++ 
++    // Skip swapping buffers on emulator so that they display immediately as the Gfx task finishes
++    if ((*(volatile u32 *)0xA4100010) != 0) { // Read RDP Clock Register, has a value of zero on emulators
++        if (++sRenderedFramebuffer == 3) {
++            sRenderedFramebuffer = 0;
++        }
++        if (++sRenderingFramebuffer == 3) {
++            sRenderingFramebuffer = 0;
++        }
+     }
+     gGlobalTimer++;
+ }

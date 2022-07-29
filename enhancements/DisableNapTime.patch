@@ -1,0 +1,71 @@
+diff --git a/include/PatchConfig/config_QoL.h b/include/PatchConfig/config_QoL.h
+new file mode 100644
+index 0000000..7b77195
+--- /dev/null
++++ b/include/PatchConfig/config_QoL.h
+@@ -0,0 +1,6 @@
++ /***************************
++ * QUALITY OF LIFE SETTINGS *
++ ***************************/
++
++// Prevents Mario from falling asleep while idle
++// #define NO_SLEEP
+diff --git a/include/config.h b/include/config.h
+index 044b069..f64d510 100644
+--- a/include/config.h
++++ b/include/config.h
+@@ -50,4 +50,8 @@
+ #define BORDER_HEIGHT 0
+ #endif
+ 
++//My Patches are now inside a Folder called PatchConfig so they dont cause issues with the
++//Vanilla Decomp Config File and also to make it look more clean
++#include "PatchConfig/config_QoL.h"
++
+ #endif // CONFIG_H
+diff --git a/src/game/mario_actions_stationary.c b/src/game/mario_actions_stationary.c
+index 6475e1f..a759c77 100644
+--- a/src/game/mario_actions_stationary.c
++++ b/src/game/mario_actions_stationary.c
+@@ -120,11 +120,13 @@ s32 act_idle(struct MarioState *m) {
+     }
+ 
+     if (m->actionState == 3) {
++#ifndef NO_SLEEP
+         if ((m->area->terrainType & TERRAIN_MASK) == TERRAIN_SNOW) {
+             return set_mario_action(m, ACT_SHIVERING, 0);
+         } else {
+             return set_mario_action(m, ACT_START_SLEEPING, 0);
+         }
++#endif
+     }
+ 
+     if (m->actionArg & 1) {
+@@ -152,6 +154,19 @@ s32 act_idle(struct MarioState *m) {
+             // here to make sure that Mario would be able to sleep here,
+             // and that he's gone through 10 cycles before sleeping.
+             // actionTimer is used to track how many cycles have passed.
++#ifdef NO_SLEEP
++            if (++m->actionState == 3) {
++                m->actionState = 0;
++            } else {
++                // If Mario hasn't turned his head 10 times yet, stay idle instead of going to sleep.
++                m->actionTimer++;
++                if (m->actionTimer < 10) {
++                    m->actionState = 0;
++                }
++            }
++        }
++    }
++#else
+             if (++m->actionState == 3) {
+                 f32 deltaYOfFloorBehindMario = m->pos[1] - find_floor_height_relative_polar(m, -0x8000, 60.0f);
+                 if (deltaYOfFloorBehindMario < -24.0f || 24.0f < deltaYOfFloorBehindMario || m->floor->flags & SURFACE_FLAG_DYNAMIC) {
+@@ -166,6 +181,7 @@ s32 act_idle(struct MarioState *m) {
+             }
+         }
+     }
++#endif
+ 
+     stationary_ground_step(m);
+ 

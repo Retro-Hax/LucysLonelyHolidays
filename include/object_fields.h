@@ -223,6 +223,15 @@
 #define /*0x10C*/ oBobombBuddyPosYCopy         OBJECT_FIELD_F32(0x21)
 #define /*0x110*/ oBobombBuddyPosZCopy         OBJECT_FIELD_F32(0x22)
 
+/* Spritzie */
+#define /*0x0F4*/ oSpritzieBlinkTimer       OBJECT_FIELD_S32(0x1B)
+#define /*0x0F8*/ oSpritzieHasTalkedToLucy OBJECT_FIELD_S32(0x1C)
+#define /*0x0FC*/ oSpritzieRole             OBJECT_FIELD_S32(0x1D)
+#define /*0x100*/ oSpritzeStarStatus        OBJECT_FIELD_S32(0x1E)
+#define /*0x108*/ oSpritziePosXCopy         OBJECT_FIELD_F32(0x20)
+#define /*0x10C*/ oSpritziePosYCopy         OBJECT_FIELD_F32(0x21)
+#define /*0x110*/ oSpritziePosZCopy         OBJECT_FIELD_F32(0x22)
+
 /* Bob-omb Explosion Bubble */
 #define /*0x0FC*/ oBobombExpBubGfxScaleFacX OBJECT_FIELD_S32(0x1D)
 #define /*0x100*/ oBobombExpBubGfxScaleFacY OBJECT_FIELD_S32(0x1E)
