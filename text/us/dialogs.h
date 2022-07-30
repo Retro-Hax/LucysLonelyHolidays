@@ -1270,6 +1270,7 @@ Marker.』 When you collect\n\
 all 8 Red Coins, the Star\n\
 will appear here."))
 
+//Unused
 DEFINE_DIALOG(DIALOG_105, 1, 4, 95, 200, _("\
 Oh Geez! I hope im not\n\
 too late to the Party\n\
@@ -1285,7 +1286,7 @@ tell you where they are\n\
 here are the level\n\
 locations atleast:\n\
 This Hubworld,\n\
-Fly Guys Kingdom,\n\
+Fly Guy Kingdom,\n\
 Tropical Resort,\n\
 If you get all of them\n\
 i'll even give you\n\

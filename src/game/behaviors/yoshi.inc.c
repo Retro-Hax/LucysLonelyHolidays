@@ -9,8 +9,7 @@ void bhv_spritzie_init(void) {
     o->oFriction = 0.8f;
     o->oBuoyancy = 1.3f;
     o->oInteractionSubtype = INT_SUBTYPE_NPC;
-
-    if (save_file_get_total_star_count(gCurrSaveFileNum - 1, COURSE_MIN - 1, COURSE_MAX - 1) < 35
+    if (save_file_get_total_star_count(gCurrSaveFileNum - 1, COURSE_MIN - 1, COURSE_MAX - 1) < 39
         || sYoshiDead == TRUE) {
         o->activeFlags = ACTIVE_FLAG_DEACTIVATED;
     }
@@ -48,14 +47,14 @@ if (save_file_get_total_star_count(gCurrSaveFileNum - 1, COURSE_MIN - 1, COURSE_
             o->oAction = SPRITZIE_SPAWN_SECRET_STARS;
             }
 if (save_file_get_total_star_count(gCurrSaveFileNum - 1, COURSE_MIN - 1, COURSE_MAX - 1) \
-== 44 && cutscene_object_with_dialog(CUTSCENE_DIALOG, o, DIALOG_106)) {
+== 39 && cutscene_object_with_dialog(CUTSCENE_DIALOG, o, DIALOG_106)) {
             set_mario_npc_dialog(MARIO_DIALOG_STOP);
 
             o->activeFlags &= ~ACTIVE_FLAG_INITIATED_TIME_STOP;
             o->oAction = SPRITZIE_SPAWN_50_STAR;
             }
 if (save_file_get_total_star_count(gCurrSaveFileNum - 1, COURSE_MIN - 1, COURSE_MAX - 1) \
-== 45 && cutscene_object_with_dialog(CUTSCENE_DIALOG, o, DIALOG_106)) {
+== 40 && cutscene_object_with_dialog(CUTSCENE_DIALOG, o, DIALOG_106)) {
             set_mario_npc_dialog(MARIO_DIALOG_STOP);
 
             o->activeFlags &= ~ACTIVE_FLAG_INITIATED_TIME_STOP;

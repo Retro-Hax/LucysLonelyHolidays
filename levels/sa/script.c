@@ -85,21 +85,6 @@ const LevelScript level_sa_entry[] = {
 		/* Fast64 end persistent block [area commands] */
 	END_AREA(),
 
-	AREA(2, sa_area_2),
-		WARP_NODE(0x0A, LEVEL_BOB, 0x01, 0x0A, WARP_NO_CHECKPOINT),
-		WARP_NODE(0xF0, LEVEL_CASTLE_GROUNDS, 0x01, 0xC0, WARP_NO_CHECKPOINT),
-		WARP_NODE(0xF1, LEVEL_CASTLE_GROUNDS, 0x01, 0xC1, WARP_NO_CHECKPOINT),
-		OBJECT(MODEL_CASTLE_GROUNDS_WARP_PIPE, -4688, 1607, -620, 180, 90, 0, 0x000A0000, bhvSpinAirborneWarp),
-		OBJECT(MODEL_BULLY_BOSS, -4046, -1316, -635, 0, 0, 0, 0x01000000, bhvBigBullyWithMinions),
-		OBJECT_WITH_ACTS(MODEL_NONE, -3584, -1316, -635, 180, 90, 0, 0x03000000, bhvEyerokBoss, ACT_2 | ACT_3 | ACT_4 | ACT_5 | ACT_6),
-		TERRAIN(sa_area_2_collision),
-		MACRO_OBJECTS(sa_area_2_macro_objs),
-		SET_BACKGROUND_MUSIC(0x00, SEQ_EVENT_BOSS),
-		TERRAIN_TYPE(TERRAIN_GRASS),
-		/* Fast64 begin persistent block [area commands] */
-		/* Fast64 end persistent block [area commands] */
-	END_AREA(),
-
 	FREE_LEVEL_POOL(),
 	MARIO_POS(0x01, 90, 6001, 1504, 890),
 	CALL(0, lvl_init_or_update),
