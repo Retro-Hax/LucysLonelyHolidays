@@ -515,8 +515,6 @@ extern const BehaviorScript bhvFlyguyFlame[];
 extern const BehaviorScript bhvSnufit[];
 extern const BehaviorScript bhvSnufitBalls[];
 extern const BehaviorScript bhvHorizontalGrindel[];
-extern const BehaviorScript bhvEyerokBoss[];
-extern const BehaviorScript bhvEyerokHand[];
 extern const BehaviorScript bhvKlepto[];
 extern const BehaviorScript bhvBird[];
 extern const BehaviorScript bhvRacingPenguin[];

@@ -1758,40 +1758,23 @@ the big Star! But Bowser\n\
 is just ahead...can you\n\
 hear the Princess calling?"))
 
-DEFINE_DIALOG(DIALOG_144, 1, 6, 150, 200, _("\
-You've recovered 30\n\
-Power Stars! Now you can\n\
-open the door with the\n\
-big Star! But before you\n\
-move on, how's it going\n\
-otherwise?\n\
-Did you pound the two\n\
-columns down? You didn't\n\
-lose your hat, did you?\n\
-If you did, you'll have to\n\
-stomp on the condor to\n\
-get it back!\n\
-They say that Bowser has\n\
-sneaked out of the sea\n\
-and into the underground.\n\
-Have you finally\n\
-cornered him?"))
+DEFINE_DIALOG(DIALOG_144, 1, 4, 150, 200, _("\
+You've recovered 39\n\
+Power Stars! Now its\n\
+Time to get your Final\n\
+Power Star as a Special\n\
+Reward! Dont tell me you\n\
+never asked yourself why\n\
+theres a Stair Step behind\n\
+the Mansion?"))
 
 DEFINE_DIALOG(DIALOG_145, 1, 6, 150, 200, _("\
-You've recovered 50\n\
+You've recovered 40\n\
 Power Stars! Now you can\n\
-open the Star Door on the\n\
-third floor. Bowser's\n\
-there, you know.\n\
-\n\
-Oh! You've found all of\n\
-the Cap Switches, haven't\n\
-you? Red, green and blue?\n\
-The Caps you get from the\n\
-colored blocks are really\n\
-helpful.\n\
-Hurry along, now. The\n\
-third floor is just ahead."))
+pat yourself on the\n\
+back and chill on the\n\
+Island but anyways\n\
+hope you enjoyed this Hack."))
 
 DEFINE_DIALOG(DIALOG_146, 1, 6, 150, 200, _("\
 You've found 70 Power\n\

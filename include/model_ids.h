@@ -423,8 +423,6 @@
 // group 14
 #define MODEL_BULLY                       0x56        // bully_geo
 #define MODEL_BULLY_BOSS                  0x57        // bully_boss_geo
-#define MODEL_EYEROK_LEFT_HAND            0x58        // eyerok_left_hand_geo
-#define MODEL_EYEROK_RIGHT_HAND           0x59        // eyerok_right_hand_geo
 #define MODEL_PIRANHA_PLANT               0x64        // piranha_plant_geo
 #define MODEL_WHOMP                       0x67        // whomp_geo
 #define MODEL_KOOPA_WITH_SHELL            0x68        // koopa_with_shell_geo

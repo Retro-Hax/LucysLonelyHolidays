@@ -325,8 +325,6 @@ const LevelScript script_func_global_15[] = {
     LOAD_MODEL_FROM_GEO(MODEL_SCUTTLEBUG,              scuttlebug_geo),
     LOAD_MODEL_FROM_GEO(MODEL_MR_I_IRIS,               mr_i_iris_geo),
     LOAD_MODEL_FROM_GEO(MODEL_MR_I,                    mr_i_geo),
-    LOAD_MODEL_FROM_GEO(MODEL_EYEROK_LEFT_HAND,        eyerok_left_hand_geo),
-    LOAD_MODEL_FROM_GEO(MODEL_EYEROK_RIGHT_HAND,       eyerok_right_hand_geo),
     RETURN(),
 };
 

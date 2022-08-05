@@ -38,15 +38,6 @@ void spritzie_act_talk(void) {
         o->activeFlags |= ACTIVE_FLAG_INITIATED_TIME_STOP;
 
 if (save_file_get_total_star_count(gCurrSaveFileNum - 1, COURSE_MIN - 1, COURSE_MAX - 1) \
->= 35 && cutscene_object_with_dialog(CUTSCENE_DIALOG, o, DIALOG_105)) {
-            set_mario_npc_dialog(MARIO_DIALOG_STOP);
-
-            o->activeFlags &= ~ACTIVE_FLAG_INITIATED_TIME_STOP;
-            o->oSpritzieHasTalkedToLucy = SPRITZIE_HAS_TALKED;
-            o->oInteractStatus = 0;
-            o->oAction = SPRITZIE_SPAWN_SECRET_STARS;
-            }
-if (save_file_get_total_star_count(gCurrSaveFileNum - 1, COURSE_MIN - 1, COURSE_MAX - 1) \
 == 39 && cutscene_object_with_dialog(CUTSCENE_DIALOG, o, DIALOG_106)) {
             set_mario_npc_dialog(MARIO_DIALOG_STOP);
 
@@ -93,10 +84,6 @@ void spritzie_actions(void) {
         case SPRITZIE_SPAWN_50_STAR:
             spritzie_spawn_final_star();
             break;
-
-        case SPRITZIE_SPAWN_SECRET_STARS:
-            spritzie_spawn_secret_star();
-            break;
     }
 
     set_object_visibility(o, 3000);
@@ -110,7 +97,7 @@ void bhv_spritzie_loop(void) {
     o->oInteractStatus = 0;
 }
 
-// This Spawns the 45th Star after collecting all 44 Stars
+// This Spawns the 40 Star after collecting all 39 Stars
 // TODO: Make Sar only spawn Once
 void spritzie_spawn_final_star(void) {
 
@@ -120,62 +107,3 @@ void spritzie_spawn_final_star(void) {
 o->oAction = SPRITZIE_ACT_IDLE;
 }
 
-// This Spawns the Secret Stars after talking with Spritzie
-void spritzie_spawn_secret_star(void) {
-
-    // The only Stage hiding also Warp Actors
-    // COURSE_NONE is all Hubworlds Combined aka Castle Grounds, Castle Courtyard and Inside Castle
-    if (gCurrCourseNum == COURSE_NONE) {
-    save_file_get_course_star_count(gCurrSaveFileNum, gCurrCourseNum);
-    struct Object *warppipe = spawn_object(o, MODEL_CASTLE_GROUNDS_WARP_PIPE,  bhvWarpPipe);
-    warppipe->oBehParams2ndByte= 0xAB;
-    warppipe->oPosX= -3988;
-    warppipe->oPosY= -191;
-    warppipe->oPosZ= -4578;
-    struct Object *warp = spawn_object(o, MODEL_NONE, bhvWarp);
-    warp->oBehParams2ndByte = 0xAF;
-    warp->oPosX= -7275;
-    warp->oPosY= -1340;
-    warp->oPosZ= -6301;
-
-    warppipe->activeFlags = ACTIVE_FLAG_ACTIVE;
-    warp->activeFlags = ACTIVE_FLAG_ACTIVE;
-
-    struct Object *star = spawn_object(o, MODEL_STAR, bhvStar); //0x00000000
-    star->oPosX= -3796;
-    star->oPosY= 37;
-    star->oPosZ= -4293;
-
-    star->activeFlags = ACTIVE_FLAG_ACTIVE;
-
-    struct Object *star2 = spawn_object(o, MODEL_STAR, bhvStar); //0x00010000
-    star2->oPosX= -5545;
-    star2->oPosY= -683;
-    star2->oPosZ= 174;
-
-    star2->activeFlags = ACTIVE_FLAG_ACTIVE;
-
-}
-
-    //if (gCurrCourseNum == COURSE_BOB) 
-
-    if (gCurrCourseNum == COURSE_WF & gCurrAreaIndex == 0x01) {
-    struct Object *star = spawn_object(o, MODEL_STAR, bhvStar);
-    star->oPosX= -47;
-    star->oPosY= -332;
-    star->oPosZ= 5326;
-    
-    star->activeFlags = ACTIVE_FLAG_ACTIVE & ACTIVE_FLAG_IN_DIFFERENT_ROOM;
-    } else if (gCurrCourseNum == COURSE_WF & gCurrAreaIndex == 0x02) {
-	struct Object *star = spawn_object(o, MODEL_STAR, bhvStar);
-    star->oPosX= -308;
-    star->oPosY= 235;
-    star->oPosZ= 3929;
-
-    star->activeFlags = ACTIVE_FLAG_ACTIVE & ACTIVE_FLAG_IN_DIFFERENT_ROOM;
-    }
-
-    //if (gCurrCourseNum == COURSE_JRB)
-
-o->oAction = SPRITZIE_ACT_IDLE;
-}

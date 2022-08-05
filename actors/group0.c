@@ -6,7 +6,6 @@
 #include "make_const_nonconst.h"
 
 // Note: This bin does not use bin IDs, unlike the other segmented bins.
-#include "lucy/model.inc.c"
 
 #include "bubble/model.inc.c"
 
@@ -25,3 +24,5 @@
 #include "white_particle_small/model.inc.c"
 
 #include "sparkle_animation/model.inc.c"
+
+#include "mario/model.inc.c"

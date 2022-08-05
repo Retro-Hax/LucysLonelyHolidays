@@ -62,11 +62,6 @@ static const LevelScript script_func_local_5[] = {
     RETURN(),
 };
 
-static const LevelScript script_func_local_6[] = {
-    OBJECT(/*model*/ MODEL_NONE, /*pos*/ 0, -1534, -3693, /*angle*/ 0, 0, 0, /*behParam*/ 0x03000000, /*beh*/ bhvEyerokBoss),
-    RETURN(),
-};
-
 const LevelScript level_ssl_entry[] = {
     INIT_LEVEL(),
     LOAD_MIO0(        /*seg*/ 0x07, _ssl_segment_7SegmentRomStart, _ssl_segment_7SegmentRomEnd),
@@ -135,7 +130,6 @@ const LevelScript level_ssl_entry[] = {
     AREA(/*index*/ 3, ssl_geo_00088C),
         WARP_NODE(/*id*/ 0xF0, /*destLevel*/ LEVEL_CASTLE, /*destArea*/ 0x03, /*destNode*/ 0x33, /*flags*/ WARP_NO_CHECKPOINT),
         WARP_NODE(/*id*/ 0xF1, /*destLevel*/ LEVEL_CASTLE, /*destArea*/ 0x03, /*destNode*/ 0x65, /*flags*/ WARP_NO_CHECKPOINT),
-        JUMP_LINK(script_func_local_6),
         TERRAIN(/*terrainData*/ ssl_seg7_area_3_collision),
         MACRO_OBJECTS(/*objList*/ ssl_seg7_area_3_macro_objs),
         INSTANT_WARP(/*index*/ 2, /*destArea*/ 2, /*displace*/ 0, 0, 0),

@@ -60,8 +60,3 @@ UNUSED static const u64 binid_11 = 11;
 #include "scuttlebug/anims/data.inc.c"
 #include "scuttlebug/anims/table.inc.c"
 UNUSED static const u64 binid_12 = 12;
-
-#include "eyerok/model.inc.c"
-#include "eyerok/anims/data.inc.c"
-#include "eyerok/anims/table.inc.c"
-UNUSED static const u64 binid_13 = 13;

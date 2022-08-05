@@ -5814,28 +5814,6 @@ const BehaviorScript bhvHorizontalGrindel[] = {
     END_LOOP(),
 };
 
-const BehaviorScript bhvEyerokBoss[] = {
-    BEGIN(OBJ_LIST_GENACTOR),
-    OR_INT(oFlags, (OBJ_FLAG_COMPUTE_ANGLE_TO_MARIO | OBJ_FLAG_COMPUTE_DIST_TO_MARIO | OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
-    SET_HOME(),
-    BEGIN_LOOP(),
-        CALL_NATIVE(bhv_eyerok_boss_loop),
-    END_LOOP(),
-};
-
-const BehaviorScript bhvEyerokHand[] = {
-    BEGIN(OBJ_LIST_SURFACE),
-    OR_INT(oFlags, (OBJ_FLAG_COMPUTE_ANGLE_TO_MARIO | OBJ_FLAG_COMPUTE_DIST_TO_MARIO | OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
-    LOAD_ANIMATIONS(oAnimations, eyerok_seg5_anims_050116E4),
-    ANIMATE(6),
-    SET_OBJ_PHYSICS(/*Wall hitbox radius*/ 150, /*Gravity*/ 0, /*Bounciness*/ 0, /*Drag strength*/ 0, /*Friction*/ 1000, /*Buoyancy*/ 200, /*Unused*/ 0, 0),
-    SET_HOME(),
-    SET_INT(oAnimState, 3),
-    BEGIN_LOOP(),
-        CALL_NATIVE(bhv_eyerok_hand_loop),
-    END_LOOP(),
-};
-
 const BehaviorScript bhvKlepto[] = {
     BEGIN(OBJ_LIST_GENACTOR),
     OR_INT(oFlags, (OBJ_FLAG_COMPUTE_ANGLE_TO_MARIO | OBJ_FLAG_ACTIVE_FROM_AFAR | OBJ_FLAG_COMPUTE_DIST_TO_MARIO | OBJ_FLAG_SET_FACE_YAW_TO_MOVE_YAW | OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),

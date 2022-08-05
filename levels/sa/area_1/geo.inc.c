@@ -23,6 +23,8 @@ const GeoLayout sa_area_1_geo[] = {
 		GEO_TRANSLATE_ROTATE_WITH_DL(LAYER_OPAQUE, 837, 19, -3729, 90, 0, -90, sa_dl_chemicalbarrel_017_mesh_layer_1),
 		GEO_TRANSLATE_ROTATE_WITH_DL(LAYER_OPAQUE, 2200, 19, -3443, 90, 0, -45, sa_dl_chemicalbarrel_018_mesh_layer_1),
 		GEO_TRANSLATE_ROTATE_WITH_DL(LAYER_OPAQUE, 3230, 19, -2566, 90, 0, -45, sa_dl_chemicalbarrel_019_mesh_layer_1),
+		GEO_TRANSLATE_NODE_WITH_DL(LAYER_OPAQUE, 1882, 654, 900, sa_dl_chemicalbarrel_020_mesh_layer_1),
+		GEO_TRANSLATE_NODE_WITH_DL(LAYER_OPAQUE, -8675, 346, 24, sa_dl_chemicalbarrel_021_mesh_layer_1),
 		GEO_DISPLAY_LIST(LAYER_OPAQUE, sa_dl_Circle_mesh_layer_1),
 		GEO_TRANSLATE_ROTATE_WITH_DL(LAYER_OPAQUE, 6295, 1103, 3307, 90, 0, 0, sa_dl_palmtree_mesh_layer_1),
 		GEO_TRANSLATE_ROTATE_WITH_DL(LAYER_OPAQUE, 7025, 1103, -1285, 90, 0, 0, sa_dl_palmtree_001_mesh_layer_1),
