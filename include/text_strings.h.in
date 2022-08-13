@@ -184,7 +184,7 @@
 #define TEXT_SURE _("SURE?")
 #define TEXT_YES _("YES")
 #define TEXT_NO _("NO")
-#define TEXT_FILE_MARIO_A_JUST_ERASED _("MARIO A JUST ERASED")
+#define TEXT_FILE_MARIO_A_JUST_ERASED _(" LUCY A JUST ERASED")
 
 /**
  * Menus Text (Pause, Course Completed)
@@ -195,7 +195,7 @@
 #define TEXT_CONTINUE _("CONTINUE")
 #define TEXT_EXIT_COURSE _("EXIT COURSE")
 #ifndef VERSION_EU // "R" text is different in EU
-#define TEXT_CAMERA_ANGLE_R _("SET CAMERA ANGLE WITH R")
+#define TEXT_CAMERA_ANGLE_R _("SET CAMERA ANGLE WITH [R]")
 #endif
 
 // Camera Options

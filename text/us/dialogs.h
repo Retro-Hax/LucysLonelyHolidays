@@ -81,12 +81,9 @@ You can talk to us\n\
 whenever you'd like to!"))
 
 DEFINE_DIALOG(DIALOG_003, 1, 5, 95, 200, _("\
-Thank you, Mario! for \n\
+Thank you, Lucy! for \n\
 coming here. The Pimp \n\
-is back! (There was \n\
-supposed to be a Custom \n\
-Boss but we ran out of \n\
-Budget Sorry :( ) \n\
+is back!\n\
 He kicked King bob Omb \n\
 off his own Resort!\n\
 I know you two had \n\
@@ -99,6 +96,11 @@ so please help us! \n\
 If you do i gladly \n\
 open you the Pipe for \n\
 the Castle Ruins"))
+// Unused Text for DIALOG_003
+/* (There was \n\
+supposed to be a Custom \n\
+Boss but we ran out of \n\
+Budget Sorry :( ) \n\ */
 
 DEFINE_DIALOG(DIALOG_004, 1, 3, 95, 200, _("\
 Welcome to the CastleRuins\n\
@@ -218,16 +220,16 @@ Would you like to Save?\n\
 
 DEFINE_DIALOG(DIALOG_013, 1, 5, 30, 200, _("\
 You've collected 100\n\
-coins! Mario gains more\n\
-power from the castle.\n\
+coins! Lucy gains more\n\
+power from the Stars.\n\
 Do you want to Save?\n\
 //Yes////No"))
 
 DEFINE_DIALOG(DIALOG_014, 1, 4, 30, 200, _("\
 Wow! Another Power Star!\n\
-Mario gains more courage\n\
+Lucy gains more courage\n\
 from the power of the\n\
-castle.\n\
+stars.\n\
 Do you want to Save?\n\
 \n\
 //You Bet//Not Now"))
@@ -248,30 +250,14 @@ ride wherever you want to\n\
 go! Shred those enemies!"))
 
 DEFINE_DIALOG(DIALOG_017, 1, 4, 30, 200, _("\
-I'm the Big Bob-omb, lord\n\
-of all blasting matter,\n\
-king of ka-booms the\n\
-world over!\n\
-How dare you scale my\n\
-mountain? By what right\n\
-do you set foot on my\n\
-imperial mountaintop?\n\
-You may have eluded my\n\
-guards, but you'll never\n\
-escape my grasp...\n\
-\n\
-...and you'll never take\n\
+You'll never take\n\
 away my Power Star. I\n\
-hereby challenge you,\n\
-Mario!\n\
+hereby challenge you!\n\
 If you want the Star I\n\
 hold, you must prove\n\
 yourself in battle.\n\
-\n\
-Can you pick me up from\n\
-the back and hurl me to\n\
-this royal turf? I think\n\
-that you cannot!"))
+Be aware tho that i'm \n\
+quite shocking!"))
 
 DEFINE_DIALOG(DIALOG_018, 1, 4, 30, 200, _("\
 I'm sleeping because...\n\
@@ -1397,22 +1383,11 @@ after all. I won't gravel,\n\
 er, grovel. Here, you win.\n\
 Take this with you!"))
 
-DEFINE_DIALOG(DIALOG_116, 1, 5, 95, 200, _("\
+DEFINE_DIALOG(DIALOG_116, 1, 4, 95, 200, _("\
 Whaaa....Whaaat?\n\
 Can it be that a\n\
 pipsqueak like you has\n\
-defused the Bob-omb\n\
-king????\n\
-You might be fast enough\n\
-to ground me, but you'll\n\
-have to pick up the pace\n\
-if you want to take King\n\
-Bowser by the tail.\n\
-Methinks my troops could\n\
-learn a lesson from you!\n\
-Here is your Star, as I\n\
-promised, Mario.\n\
-\n\
+defused the pimp????\n\
 If you want to see me\n\
 again, select this Star\n\
 from the menu. For now,\n\
@@ -1528,8 +1503,8 @@ Don't become his lunch."))
 DEFINE_DIALOG(DIALOG_128, 1, 4, 95, 200, _("\
 You must fight with\n\
 honor! It is against the\n\
-royal rules to throw the\n\
-king out of the ring!"))
+rules to throw the\n\
+pimp out of the ring!"))
 
 DEFINE_DIALOG(DIALOG_129, 1, 5, 30, 200, _("\
 Welcome to the Vanish\n\

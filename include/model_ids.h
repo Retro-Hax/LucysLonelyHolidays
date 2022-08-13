@@ -428,10 +428,10 @@
 #define MODEL_KOOPA_WITH_SHELL            0x68        // koopa_with_shell_geo
 #define MODEL_TREASURE_CHEST_BASE         0x65        // treasure_chest_base_geo
 #define MODEL_TREASURE_CHEST_LID          0x66        // treasure_chest_lid_geo
-#define MODEL_SCUTTLEBUG                  0x69        // scuttlebug_geo
+#define MODEL_SCUTTLEBUG                  0x25        // scuttlebug_geo
 #define MODEL_MR_I_IRIS                   0x70        // mr_i_iris_geo
 #define MODEL_MR_I                        0x71        // mr_i_geo
-#define MODEL_SNUFIT                      0x72        // snufit_geo
+#define MODEL_SNUFIT                      0x26        // snufit_geo
 #define MODEL_KOOPA_FLAG                  0x6A        // koopa_flag_geo
 #define MODEL_WOODEN_POST                 0x6B        // wooden_post_geo
 #define MODEL_METALLIC_BALL               0x6D        // metallic_ball_geo
