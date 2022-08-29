@@ -738,7 +738,7 @@ s16 level_trigger_warp(struct MarioState *m, s32 warpOp) {
                 sDelayedWarpTimer = 48;
                 sSourceWarpNodeId = WARP_NODE_DEATH;
                 play_transition(WARP_TRANSITION_FADE_INTO_BOWSER, 0x30, 0x00, 0x00, 0x00);
-                play_sound(SOUND_MENU_BOWSER_LAUGH, gGlobalSoundSource);
+                //play_sound(SOUND_MENU_BOWSER_LAUGH, gGlobalSoundSource);
                 break;
 
             case WARP_OP_WARP_FLOOR:
@@ -1299,6 +1299,7 @@ s32 lvl_set_current_level(UNUSED s16 arg0, s32 levelNum) {
     sWarpCheckpointActive = FALSE;
     gCurrLevelNum = levelNum;
     gCurrCourseNum = gLevelToCourseNumTable[levelNum - 1];
+	if (gCurrLevelNum == LEVEL_WMOTR) return 0;
 	if (gCurrLevelNum == LEVEL_COTMC) return 0;
 	if (gCurrLevelNum == LEVEL_CASTLE_GROUNDS) return 0;
 
@@ -1335,6 +1336,6 @@ s32 lvl_set_current_level(UNUSED s16 arg0, s32 levelNum) {
  * Play the "thank you so much for to playing my game" sound.
  */
 s32 lvl_play_the_end_screen_sound(UNUSED s16 arg0, UNUSED s32 arg1) {
-    play_sound(SOUND_MENU_THANK_YOU_PLAYING_MY_GAME, gGlobalSoundSource);
+    //play_sound(SOUND_MENU_THANK_YOU_PLAYING_MY_GAME, gGlobalSoundSource);
     return 1;
 }

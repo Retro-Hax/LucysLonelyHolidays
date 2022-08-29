@@ -76,7 +76,7 @@ void king_bobomb_act_2(void) {
         }
 
         if (o->oKingBobombUnk108 == 0) {
-            o->oForwardVel = 3.0f;
+            o->oForwardVel = 6.0f;
             cur_obj_rotate_yaw_toward(o->oAngleToMario, 0x100);
         } else {
             o->oForwardVel = 0.0f;
@@ -288,7 +288,7 @@ void king_bobomb_act_5(void) { // bobomb returns home
                 o->oPosY = o->oHomeY;
                 o->oVelY = 0;
                 o->oForwardVel = 0;
-                o->oGravity = -4.0f;
+                o->oGravity = -8.0f;
 
                 o->oKingBobombUnkF8 = 0;
 

@@ -1,6 +1,6 @@
 void scroll_castle_grounds_dl_Circle_001_mesh_layer_1_vtx_0() {
 	int i = 0;
-	int count = 11;
+	int count = 9;
 	int width = 64 * 0x20;
 	int height = 64 * 0x20;
 
@@ -29,7 +29,7 @@ void scroll_castle_grounds_dl_Circle_001_mesh_layer_1_vtx_0() {
 
 void scroll_castle_grounds_dl_Gift_mesh_layer_1_vtx_0() {
 	int i = 0;
-	int count = 35;
+	int count = 24;
 	int width = 64 * 0x20;
 	int height = 64 * 0x20;
 
@@ -58,7 +58,7 @@ void scroll_castle_grounds_dl_Gift_mesh_layer_1_vtx_0() {
 
 void scroll_castle_grounds_dl_NurbsPath_mesh_layer_1_vtx_0() {
 	int i = 0;
-	int count = 269;
+	int count = 261;
 	int width = 64 * 0x20;
 	int height = 64 * 0x20;
 

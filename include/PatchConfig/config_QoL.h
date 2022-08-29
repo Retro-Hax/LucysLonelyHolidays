@@ -18,7 +18,7 @@
 #define NO_FALL_DAMAGE
 
 // Disables the scream that mario makes when falling off a great height (this is separate from actual fall damage)
-// #define NO_FALL_DAMAGE_SOUND
+#define NO_FALL_DAMAGE_SOUND
 
 // Toggles if the Castle Music Fix shall be enabled or disabled (If disabled the Music Inside the Castle may randomly cut off or simply not play)
 #define CASTLE_MUSIC_FIX

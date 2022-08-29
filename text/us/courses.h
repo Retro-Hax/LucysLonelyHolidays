@@ -72,7 +72,7 @@ SECRET_STAR(COURSE_CAKE_END, _(""))
 CASTLE_SECRET_STARS(_("   Island Secret Stars"))
 
 EXTRA_TEXT(0, _("One of the Island's Secret Stars!"))
-EXTRA_TEXT(1, _("One of Spritzies Secret Stars"))
+EXTRA_TEXT(1, _("One of Spritzies Secret Stars")) // Unused
 EXTRA_TEXT(2, _(""))
 EXTRA_TEXT(3, _(""))
 EXTRA_TEXT(4, _(""))

@@ -6,7 +6,6 @@ extern const GeoLayout wf_area_2_geo[];
 extern const GeoLayout wf_area_2[];
 extern const Collision wf_area_2_collision[];
 extern const MacroObject wf_area_2_macro_objs[];
-extern Lights1 wf_dl_Walls_v4_lights;
 extern u8 wf_dl_castle_grounds_textures_08000_rgba16_ci8[];
 extern u8 wf_dl_castle_grounds_textures_08000_rgba16_ci8_pal_rgba16[];
 extern u8 wf_dl_TexturSMG__288__ci4[];

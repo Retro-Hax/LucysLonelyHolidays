@@ -337,9 +337,7 @@
 #define MODEL_BULLET_BILL                 0x54        // bullet_bill_geo
 #define MODEL_YELLOW_SPHERE               0x55        // yellow_sphere_geo
 #define MODEL_HOOT                        0x56        // hoot_geo
-#define MODEL_YOSHI_EGG                   0x57        // yoshi_egg_geo
 #define MODEL_THWOMP                      0x58        // thwomp_geo
-#define MODEL_HEAVE_HO                    0x59        // heave_ho_geo
 
 // group 2
 #define MODEL_BLARGG                      0x54        // blargg_geo
@@ -391,7 +389,6 @@
 
 // group 10
 #define MODEL_BIRDS                       0x54        // birds_geo
-#define MODEL_YOSHI                       0x55        // yoshi_geo
 
 // group 11
 #define MODEL_ENEMY_LAKITU                0x54        // enemy_lakitu_geo
@@ -436,6 +433,8 @@
 #define MODEL_WOODEN_POST                 0x6B        // wooden_post_geo
 #define MODEL_METALLIC_BALL               0x6D        // metallic_ball_geo
 #define MODEL_CHAIN_CHOMP                 0x6C        // chain_chomp
+#define MODEL_YOSHI                       0x6E        // yoshi_geo
+#define MODEL_HEAVE_HO                    0x6F        // heave_ho_geo
 
 // group 15
 #define MODEL_MIPS                        0x64        // mips_geo

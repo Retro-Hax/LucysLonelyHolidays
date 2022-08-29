@@ -1,7 +1,3 @@
-Lights1 wf_dl_Walls_v4_lights = gdSPDefLights1(
-	0x7F, 0x7F, 0x7F,
-	0xFE, 0xFE, 0xFE, 0x28, 0x28, 0x28);
-
 Gfx wf_dl_castle_grounds_textures_08000_rgba16_ci8_aligner[] = {gsSPEndDisplayList()};
 u8 wf_dl_castle_grounds_textures_08000_rgba16_ci8[] = {
 	0x00, 0x01, 0x02, 0x00, 0x03, 0x04, 0x05, 0x06, 
@@ -11411,7 +11407,7 @@ Gfx mat_revert_wf_dl_Walls2_v4[] = {
 
 Gfx mat_wf_dl_Walls_v4[] = {
 	gsDPPipeSync(),
-	gsDPSetCombineLERP(TEXEL0, 0, SHADE, 0, 0, 0, 0, ENVIRONMENT, TEXEL0, 0, SHADE, 0, 0, 0, 0, ENVIRONMENT),
+	gsDPSetCombineLERP(0, 0, 0, TEXEL0, 0, 0, 0, ENVIRONMENT, 0, 0, 0, TEXEL0, 0, 0, 0, ENVIRONMENT),
 	gsSPTexture(65535, 65535, 0, 0, 1),
 	gsDPSetTextureLUT(G_TT_RGBA16),
 	gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, wf_dl_Lightwall__1__ci8_pal_rgba16),
@@ -11428,7 +11424,6 @@ Gfx mat_wf_dl_Walls_v4[] = {
 	gsDPPipeSync(),
 	gsDPSetTile(G_IM_FMT_CI, G_IM_SIZ_8b, 4, 0, 0, 0, G_TX_WRAP | G_TX_NOMIRROR, 6, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0),
 	gsDPSetTileSize(0, 0, 0, 124, 252),
-	gsSPSetLights1(wf_dl_Walls_v4_lights),
 	gsSPEndDisplayList(),
 };
 

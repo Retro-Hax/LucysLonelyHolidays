@@ -1293,8 +1293,7 @@ your YT Videos you give\n\
 people smiles on their\n\
 Faces with this said\n\
 Goodbye, and\n\
-Thanks for Playing\n\
-Lucys Lonely Holidays!"))
+Thanks for Playing"))
 
 DEFINE_DIALOG(DIALOG_107, 1, 3, 95, 200, _("\
 Ghosts...\n\

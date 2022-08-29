@@ -2251,7 +2251,7 @@ void print_erase_menu_prompt(s16 x, s16 y) {
     if (sCursorClickingTimer == 2) {
         // ..and is hovering "YES", delete file
         if (sEraseYesNoHoverState == MENU_ERASE_HOVER_YES) {
-            play_sound(SOUND_MARIO_WAAAOOOW, gGlobalSoundSource);
+            //play_sound(SOUND_MARIO_WAAAOOOW, gGlobalSoundSource);
 #if ENABLE_RUMBLE
             queue_rumble_data(5, 80);
 #endif

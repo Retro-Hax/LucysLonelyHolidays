@@ -60,3 +60,13 @@ UNUSED static const u64 binid_11 = 11;
 #include "scuttlebug/anims/data.inc.c"
 #include "scuttlebug/anims/table.inc.c"
 UNUSED static const u64 binid_12 = 12;
+
+#include "heave_ho/model.inc.c"
+#include "heave_ho/anims/data.inc.c"
+#include "heave_ho/anims/table.inc.c"
+UNUSED static const u64 binid_13 = 13;
+
+#include "yoshi/model.inc.c"
+#include "yoshi/anims/data.inc.c"
+#include "yoshi/anims/table.inc.c"
+UNUSED static const u64 binid_14 = 14;
