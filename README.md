@@ -6,7 +6,7 @@
 
 ## Installation & Building
 
-Install & Build Instructions can be found here: [sm64] (https://github.com/n64decomp/sm64)
+Install & Build Instructions can be found here: [sm64](https://github.com/n64decomp/sm64)
 
 If you've successfully set up the sm64 repo clone this repo the same way and copy the content inside the `CustomAssets` Folder to the Root of this Repo (Say Yes incase there is a Merge/Replace Question by your File Manager) and do `make` afterwards your Game should've compiled sucessfully
 and you should see a LLH.<VERSION>.z64 file inside your `build` folder. (<VERSION> is usually `us` unless you've changed it inside the `MakeFile`)
