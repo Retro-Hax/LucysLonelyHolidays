@@ -1331,11 +1331,3 @@ s32 lvl_set_current_level(UNUSED s16 arg0, s32 levelNum) {
 
     return 1;
 }
-
-/**
- * Play the "thank you so much for to playing my game" sound.
- */
-s32 lvl_play_the_end_screen_sound(UNUSED s16 arg0, UNUSED s32 arg1) {
-    //play_sound(SOUND_MENU_THANK_YOU_PLAYING_MY_GAME, gGlobalSoundSource);
-    return 1;
-}

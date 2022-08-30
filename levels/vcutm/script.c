@@ -112,7 +112,7 @@ const LevelScript level_vcutm_entry[] = {
 		OBJECT(MODEL_NONE, 4960, -1151, -1527, -20, 0, 0, 0x00000000, bhvCoinFormation),
 		OBJECT(MODEL_NONE, 4074, -1819, -1763, 0, 0, 0, 0x00000000, bhvCoinFormation),
 		OBJECT(MODEL_NONE, 4344, -1819, 99, 0, 45, 0, 0x00000000, bhvCoinFormation),
-		OBJECT(MODEL_NONE, 6976, -1819, 1107, 0, 0, 0, 0x000A0000, bhvCoinFormation),
+		OBJECT(MODEL_NONE, 6976, -1819, 1107, 0, 0, 0, 0x00000000, bhvCoinFormation),
 		OBJECT(MODEL_NONE, 6279, -732, -2027, 0, 0, 0, 0x000A0000, bhvCoinFormation),
 		OBJECT(MODEL_RED_COIN, 5743, -1819, -1268, 0, 0, 0, 0x00000000, bhvRedCoin),
 		OBJECT(MODEL_RED_COIN, -7475, -1920, -8145, 0, 0, 0, 0x00000000, bhvRedCoin),

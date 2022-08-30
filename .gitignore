@@ -1,3 +1,6 @@
+/devkitpro-keyring.pkg.tar.xz
+*.orig
+
 # Object files
 *.o
 *.obj

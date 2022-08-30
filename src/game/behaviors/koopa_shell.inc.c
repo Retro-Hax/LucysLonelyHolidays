@@ -13,49 +13,19 @@ struct ObjectHitbox sKoopaShellHitbox = {
 };
 
 void koopa_shell_spawn_water_drop(void) {
-    UNUSED u8 filler[4];
-
-    spawn_object(o, MODEL_WAVE_TRAIL, bhvObjectWaveTrail);
-
-    if (gMarioStates[0].forwardVel > 10.0f) {
-        struct Object *drop = spawn_object_with_scale(o, MODEL_WHITE_PARTICLE_SMALL,
-                                                      bhvWaterDroplet, 1.5f);
-        drop->oVelY = random_float() * 30.0f;
-        obj_translate_xz_random(drop, 110.0f);
-    }
+// Removed cuz Console
 }
 
 void bhv_koopa_shell_flame_loop(void) {
-    if (o->oTimer == 0) {
-        o->oMoveAngleYaw = random_u16();
-        o->oVelY = random_float() * 30.0f;
-        o->oGravity = -4.0f;
-        o->oAnimState = random_float() * 10.0f;
-        obj_translate_xz_random(o, 110.0f);
-        o->oKoopaShellFlameScale = 4.0f;
-    }
-
-    cur_obj_update_floor_height();
-    cur_obj_move_using_fvel_and_gravity();
-
-    if (o->oFloorHeight > o->oPosY || o->oTimer > 10) {
-        obj_mark_for_deletion(o);
-    }
-
-    o->oKoopaShellFlameScale += -0.3;
-    cur_obj_scale(o->oKoopaShellFlameScale);
+// Removed cuz Console
 }
 
 void bhv_koopa_shell_flame_spawn(void) {
-    s32 i;
-    for (i = 0; i < 2; i++) {
-        spawn_object(o, MODEL_RED_FLAME, bhvKoopaShellFlame);
-    }
+// Removed cuz Console
 }
 
 void koopa_shell_spawn_sparkles(f32 a) {
-    struct Object *sp1C = spawn_object(o, MODEL_NONE, bhvSparkleSpawn);
-    sp1C->oPosY += a;
+// Removed cuz Console
 }
 
 void bhv_koopa_shell_loop(void) {
