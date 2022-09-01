@@ -116,7 +116,7 @@ const LevelScript level_castle_grounds_entry[] = {
 		OBJECT(MODEL_NONE, 941, -2278, 88, 0, 90, 0, 0x00210000, bhvLaunchDeathWarp),
 		OBJECT(MODEL_NONE, 1985, -2846, 932, 0, -180, 0, 0x00010000, bhvWarp),
 		OBJECT(MODEL_NONE, 946, -2272, 101, 0, 90, 0, 0x00200000, bhvLaunchStarCollectWarp),
-		OBJECT(MODEL_YOSHI, -7254, -1805, -6416, 0, -180, 0, 0x00000000, bhvYoshi),
+		OBJECT(MODEL_WOODEN_SIGNPOST, -7254, -1805, -6416, 0, -180, 0, 0x00000000, bhvYoshi),
 		OBJECT(MODEL_STAR, -4115, 947, -4741, 0, 35, 0, 0x00000000, bhvStar),
 		OBJECT(MODEL_NONE, -4526, -2008, -17, 90, -90, 0, 0x00C10000, bhvLaunchDeathWarp),
 		OBJECT(MODEL_CASTLE_GROUNDS_WARP_PIPE, -4526, -2008, -17, 0, -90, 0, 0x000C0000, bhvWarpPipe),
